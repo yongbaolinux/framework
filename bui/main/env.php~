@@ -280,6 +280,7 @@
             'libxml'=>'These functions/constants are available as of PHP 5.1.0, and the following core extensions rely on this libxml extension: DOM, libxml, SimpleXML, SOAP, WDDX, XSL, XML, XMLReader, XMLRPC 和 XMLWriter.',
             'mbstring'=>'多字节字符串函数库',
             'mcrypt'=>'Mcrypt 加密函数库 需要：libmcrypt.dll',
+            'memcache'=>'Memcache模块提供了于memcached方便的面向过程及面向对象的接口，memcached是为了降低动态web应用 从数据库加载数据而产生的一种常驻进程缓存产品',
             'mhash'=>'Mhash 函数库 PHP >= 4.3.0 需要：libmhash.dll（已附带）',
             'mime_magic'=>'Mimetype 函数库 需要：magic.mime（已附带）',
             'ming'=>'Ming 函数库（Flash）',
@@ -477,7 +478,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ((true) as $key => $module) { ?>
+                        <?php foreach (get_ini_all() as $key => $module) { ?>
                             <tr class="bui-grid-row bui-grid-row-odd">
                                 <td class="bui-grid-cell ">
                                     <div class="bui-grid-cell-inner">

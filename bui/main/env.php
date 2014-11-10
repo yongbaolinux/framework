@@ -478,7 +478,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach (get_ini_all() as $key => $module) { ?>
+                        <?php foreach (ini_get_all() as $key => $module) { ?>
                             <tr class="bui-grid-row bui-grid-row-odd">
                                 <td class="bui-grid-cell ">
                                     <div class="bui-grid-cell-inner">
