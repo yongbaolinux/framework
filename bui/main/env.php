@@ -59,21 +59,57 @@
                  </div>
              </div>
              <div class="row detail-row">
-                 <div class="span8">
-                     <label>Apache加载模块：</label><span class="detail-text"><?php foreach(apache_get_modules() as $key=>$module){
+                 <!--<div class="span8">
+                     <label>Apache加载模块：</label>
+				<span class="detail-text"><?php foreach(apache_get_modules() as $key=>$module){
                              if($key%2 == 1){
                                  echo "<a href='http://httpd.apache.org/docs/2.4/mod/".$module.".html' target='_new' style='background-color:#ccc;'>".$module."</a> ";
                              } else {
                                  echo "<a href='http://httpd.apache.org/docs/2.4/mod/".$module.".html' target='_new'>".$module."</a> ";
                              }
                          }?></span>
-                 </div>
+                 </div>-->
+			<div class="span24">
+				<label>Apache加载模块：</label>
+ <div id="grid">
+   <div class="bui-simple-grid bui-simple-list bui-grid-border" style="width: 950px;" aria-disabled="false" aria-pressed="false">
+    <table cellspacing="0" cellpadding="0" class="bui-grid-table">
+     <thead>
+      <tr>
+       <th width="80" class="bui-grid-hd ">
+        <div class="bui-grid-hd-inner">
+         <span class="bui-grid-hd-title">模块名</span>
+        </div></th>
+       <th width="100" class="bui-grid-hd ">
+        <div class="bui-grid-hd-inner">
+         <span class="bui-grid-hd-title">模块备注</span>
+        </div></th>
+      </tr>
+     </thead>
+     <tbody>
+	<?php foreach(apache_get_modules() as $key=>$module){ ?>
+      <tr class="bui-grid-row bui-grid-row-odd">
+       <td class="bui-grid-cell ">
+        <div class="bui-grid-cell-inner">
+         <span class="bui-grid-cell-text"><a href='http://httpd.apache.org/docs/2.4/mod/<?php echo $module;?>.html' target='_new' style='/*background-color:#ccc;*/'><?php echo $module;?></a></span>
+        </div></td>
+       <td class="bui-grid-cell ">
+        <div class="bui-grid-cell-inner">
+         <span class="bui-grid-cell-text">李四</span>
+        </div></td>
+      </tr>
+<?php } ?>
+     </tbody>
+    </table>
+   </div>
+  </div>
+          </div>
                  <div class="span8">
                      <label>服务器操作系统：</label><span class="detail-text"><?=php_uname()?></span>
                  </div>
                  <div class="span8">
                      <label>服务器CPU架构平台：</label><span class="detail-text"><?php 
-                     echo PHP_OS;
+ 			if(substr(PHP_OS) == 'WIN'){
                      ob_start();
                      system('systeminfo',$retval);
                      $return = ob_get_contents();
@@ -87,6 +123,10 @@
                              echo iconv('gbk','utf-8',$temp[1]);
                          }
                      }
+} else {
+
+
+}
                      ?></span>
                  </div>
              </div>
@@ -100,10 +140,83 @@
                  <div class="span8">
                      <label>PHP版本：</label><span class="detail-text"><?=PHP_VERSION?></span>
                  </div>
-                 <div class="span8">
-                     <label>PHP加载模块：</label><span class="detail-text"><?=system('php -m')?></span>
+                 <!--<div class="span8">
+                     <label>已加载的PHP普通模块：</label><span class="detail-text"><?=system('php -m')?></span>
+                 </div>-->
+		     <div class="span24">
+                     <label>已加载的PHP普通模块：</label>
+			    <div id="grid">
+   <div class="bui-simple-grid bui-simple-list bui-grid-border" style="width: 950px;" aria-disabled="false" aria-pressed="false">
+    <table cellspacing="0" cellpadding="0" class="bui-grid-table">
+     <thead>
+      <tr>
+       <th width="80" class="bui-grid-hd ">
+        <div class="bui-grid-hd-inner">
+         <span class="bui-grid-hd-title">模块名</span>
+        </div></th>
+       <th width="100" class="bui-grid-hd ">
+        <div class="bui-grid-hd-inner">
+         <span class="bui-grid-hd-title">模块备注</span>
+        </div></th>
+      </tr>
+     </thead>
+     <tbody>
+	<?php foreach(get_loaded_extensions(false) as $key=>$module){ ?>
+      <tr class="bui-grid-row bui-grid-row-odd">
+       <td class="bui-grid-cell ">
+        <div class="bui-grid-cell-inner">
+         <span class="bui-grid-cell-text"><a href="http://php.net/manual/zh/book.<?php echo $module;?>.php" target="_new"><?php echo $module;?></a></span>
+        </div></td>
+       <td class="bui-grid-cell ">
+        <div class="bui-grid-cell-inner">
+         <span class="bui-grid-cell-text">李四</span>
+        </div></td>
+      </tr>
+<?php } ?>
+     </tbody>
+    </table>
+   </div>
+  			</div><!-- grid end -->
                  </div>
+			
              </div>
+	<div class="row detail-row">
+		<div class="span24">
+                     <label>已加载的Zend模块：</label>
+			    <div id="grid">
+   <div class="bui-simple-grid bui-simple-list bui-grid-border" style="width: 950px;" aria-disabled="false" aria-pressed="false">
+    <table cellspacing="0" cellpadding="0" class="bui-grid-table">
+     <thead>
+      <tr>
+       <th width="80" class="bui-grid-hd ">
+        <div class="bui-grid-hd-inner">
+         <span class="bui-grid-hd-title">模块名</span>
+        </div></th>
+       <th width="100" class="bui-grid-hd ">
+        <div class="bui-grid-hd-inner">
+         <span class="bui-grid-hd-title">模块备注</span>
+        </div></th>
+      </tr>
+     </thead>
+     <tbody>
+	<?php foreach(get_loaded_extensions(true) as $key=>$module){ ?>
+      <tr class="bui-grid-row bui-grid-row-odd">
+       <td class="bui-grid-cell ">
+        <div class="bui-grid-cell-inner">
+         <span class="bui-grid-cell-text"><?php echo $module;?></span>
+        </div></td>
+       <td class="bui-grid-cell ">
+        <div class="bui-grid-cell-inner">
+         <span class="bui-grid-cell-text">李四</span>
+        </div></td>
+      </tr>
+<?php } ?>
+     </tbody>
+    </table>
+   </div>
+  			</div><!-- grid end -->
+                 </div>
+		</div>
          </div>
          <div class="detail-section">
              
