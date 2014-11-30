@@ -1,0 +1,8 @@
+#Fri Mar 21 08:43:48 CST 2014
+org.eclipse.php.debug.coreinstalledPHPInis=/etc/php.ini
+org.eclipse.php.debug.coreinstalledPHPDebuggers=org.eclipse.php.debug.core.zendDebugger
+org.eclipse.php.debug.coreinstalledPHPDefaults=org.eclipse.php.debug.core.zendDebugger\=php
+eclipse.preferences.version=1
+org.eclipse.php.debug.coreinstalledPHPLocations=/usr/bin/php
+org.eclipse.php.debug.corephp_versions=null
+org.eclipse.php.debug.coreinstalledPHPNames=php
