@@ -114,5 +114,16 @@ class core_common
     static public function require_class(){
 
     }
+    
+    /**
+     * 判断某一变量是否为空
+     */
+    static public function is_empty($var){
+        if(isset($var) && !empty($var)){
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
 ?>

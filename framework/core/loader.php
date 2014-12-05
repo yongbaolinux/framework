@@ -1,4 +1,4 @@
-<?php
+<?php   if ( ! defined('DRPATH')) exit('访问错误');
 /**
  * 实现自动加载功能
  * 自动加载类
