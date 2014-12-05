@@ -1,8 +1,10 @@
-<?php
+<?php   if ( ! defined('DRPATH')) exit('访问错误');
 class core_common
 {
     /**
      * 获取数组的维度
+     * @param array $arr
+     * @return int 所给数组的维度
      */
     static public function arrayLevel($arr)
     {
@@ -19,6 +21,15 @@ class core_common
         return ++$level;
     }
 
+    /**
+     * 浏览器友好输出
+     * TODO 摘自thinkphp 需要修改和研究 有版权嫌疑
+     * @param $var
+     * @param bool $echo
+     * @param null $label
+     * @param bool $strict
+     * @return mixed|null|string
+     */
     static public function dump($var, $echo = true, $label = null, $strict = true)
     {
         $label = ($label === null) ? '' : rtrim($label) . ' ';
@@ -45,6 +56,15 @@ class core_common
             return $output;
     }
 
+    /**
+     * 对二维数组按内层键值数组的某个键值对整个二维数组进行排序
+     * TODO 摘自网络 需要研究和修改 有版权和BUG嫌疑
+     * @param $arr
+     * @param $keys
+     * @param string $type
+     * @param bool $keep
+     * @return array
+     */
     static public function array_sort($arr, $keys, $type = 'asc', $keep = true)
     {
         $keysvalue = $new_array = array();
@@ -67,6 +87,11 @@ class core_common
         return $new_array;
     }
 
+    /**
+     * 对数组的键值进行urlencode操作(参数为字符串亦可)
+     * @param array $arr
+     * @return mixed
+     */
     static public function advance_urlencode($arr)
     {
         if (is_array($arr) && count($arr) > 0) {
@@ -79,8 +104,15 @@ class core_common
             }
             return $arr;
         } else {
-            return;
+            return urlencode($arr);
         }
+    }
+
+    /**
+     * 加载类库
+     */
+    static public function require_class(){
+
     }
 }
 ?>

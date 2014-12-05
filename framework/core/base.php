@@ -19,6 +19,12 @@ class core_base{
         return  self::$instance[$className];
     }
 
+    public function __get($key){
+        echo '您所访问的属性 '.$key.'不存在';
+    }
 
+    public function __set($key,$value){
+        echo '您设置的属性 '.$key.'不存在';
+    }
 }
 ?>

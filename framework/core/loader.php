@@ -15,6 +15,7 @@ class loader{
         $classFilePathArr = explode('_',$className);
         $classFilePathDir = rtrim(DRPATH,'/').'/'.$classFilePathArr[0];
         $classFilePath = $classFilePathDir.'/'.$classFilePathArr[1].'.php';
+        //echo $classFilePath;
         if(file_exists($classFilePath)){
             require_once $classFilePath;
             self::$_loaded_file[] = $classFilePath;

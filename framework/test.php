@@ -8,6 +8,7 @@
  */
 
 require './core/init.php';
-core_log::getInstance('file',array('./'),'',array())->write_log('hah');
-core_config::getInstance();
+//core_log::getInstance('file',array('./'),'',array())->write_log('hah');
+//core_config::getInstance();
+drives_db_base::getInstance();
 ?>
