@@ -10,5 +10,11 @@
 require './core/init.php';
 //core_log::getInstance('file',array('./'),'',array())->write_log('hah');
 //core_config::getInstance();
-drives_db_base::getInstance();
+ try {
+    $db = core_db::getInstance();
+} catch(Exception $e){
+    echo $e->getMessage();
+}
+var_dump($db->query("DELETE FROM `user`"));
+//core_db::getInstance();
 ?>

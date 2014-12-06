@@ -125,5 +125,9 @@ class core_common
             return true;
         }
     }
+    
+    /**
+     * 
+     */
 }
 ?>

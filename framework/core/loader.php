@@ -13,19 +13,20 @@ class loader{
         }
         //根据要加载的类名获取包含该类的文件路径
         $classFilePathArr = explode('_',$className);
-        $classFilePathDir = rtrim(DRPATH,'/').'/'.$classFilePathArr[0];
-        $classFilePath = $classFilePathDir.'/'.$classFilePathArr[1].'.php';
+        $classFilePathDir = rtrim(DRPATH,'/').'/'.implode('/',$classFilePathArr);
+        $classFilePath = $classFilePathDir.'.php';
         //echo $classFilePath;
         if(file_exists($classFilePath)){
             require_once $classFilePath;
             self::$_loaded_file[] = $classFilePath;
             if(!class_exists($className)){
-                throw new \Exception('类定义不存在，请确认类名是否采用"目录名_文件名"的形式');
+                //throw new \Exception('类定义不存在，请确认类名是否采用"目录名_文件名"的形式');
             } else {
                 self::$_loaded_class[] = $className;
             }
         } else {
-            throw new \Exception('类文件不存在');
+            //throw new \Exception('类文件不存在');
+            echo '类文件不存在';
         }
     }
 }

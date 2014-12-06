@@ -123,7 +123,7 @@ class core_log extends core_base{
             $filePath = $this->_log_save_path.$fileName.'.log';
             if(is_file($filePath)){
                 //如果日志文件存在 直接写日志文件
-                $content = '['.date($this->_log_format,$time).']'.$msg;
+                $content = '['.date($this->_log_format,$time).']'.$msg."\r\n";
                 $fp = fopen($filePath,'a');
                 if($fp){
                     flock($fp,LOCK_EX);

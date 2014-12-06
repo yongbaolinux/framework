@@ -6,7 +6,7 @@
  * Date: 2014/12/1
  * Time: 0:27
  */
-class drivers_db_base extends core_base{
+class core_db extends core_base{
     protected $dbhost;          //数据库主机地址
     protected $dbport;          //数据库服务端口
     protected $dbtype;          //数据库类型
@@ -16,12 +16,27 @@ class drivers_db_base extends core_base{
     protected $dbcharacter;     //数据库连接字符集
     protected $dbpconnect;      //是否开启持久连接
     
+    protected $dbtransaction;   //是否开启事务
+    
+    static protected $dbInstance;   //数据库驱动对象实例
 
     public function __construct(){
-        core_log::getInstance()->write_log('数据库类已初始化');
+        core_log::getInstance('file',array('./'))->write_log('数据库类已初始化');
         $this->_init_config();
+        //$driver_name = 'drivers_db_'.$this->dbtype.'_driver';    //待实例化的数据库驱动
+        //if(!class_exists($driver_name)){    //自动加载
+           //throw new Exception("数据库驱动类不存在，请检查驱动文件是否存在或查看{$driver_name}类是否定义");
+        //}
+        //self::$dbInstance = new $driver_name; //将这几行放入__initialize函数中 否则会发生堆栈溢出
     }
-
+    
+    public function __initialize(){
+        $driver_name = 'drivers_db_'.$this->dbtype.'_driver';    //待实例化的数据库驱动
+        if(!class_exists($driver_name)){    //自动加载
+           throw new Exception("数据库驱动类不存在，请检查驱动文件是否存在或查看{$driver_name}类是否定义");
+        }
+        self::$dbInstance = new $driver_name;
+    }
     /**
      * 利用config配置类初始化数据库参数
      */
@@ -66,4 +81,45 @@ class drivers_db_base extends core_base{
         $this->dbpconnect = $dbconfig['pconnect'] ? $dbconfig['pconnect'] : '0';
     }
     
+    /**
+     * 查询方法query
+     */
+    public function query($sql){
+        try {
+            return self::$dbInstance->_query($sql);
+        } catch(Exception $e){
+            core_log::getInstance()->write_log($e->getFile().":".$e->getLine()."行:".$e->getMessage());
+        }
+    }
+    
+    /**
+     * 事务处理方法
+     */
+    public function transaction($sqls = array()){
+        try {
+            self::$dbInstance->_transaction($sqls);
+        } catch (Exception $e){
+            core_log::getInstance()->write_log($e->getFile().":".$e->getLine()."行:".$e->getMessage());
+        }
+    }
+    
+    /**
+     * 锁表
+     * @param string $tableName 要锁住的表名
+     * @param boolean $flag 设置锁的类型  true为共享锁  false为排他锁
+     */
+    public function lock($tableName,$flag=true){
+        if(core_common::is_empty($tableName)){
+            throw new Exception('待锁的表名不能为空');
+        }
+        self::$dbInstance->_lock($tableName,$flag);
+    }
+    
+    /**
+     * 解锁表
+     */
+    public function unlock(){
+        self::$dbInstance->_unlock();
+    }
 }
+?>

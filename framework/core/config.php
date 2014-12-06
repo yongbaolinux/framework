@@ -16,7 +16,11 @@ class core_config extends core_base{
         $this->allowed_conf_files = array('db','redis','session','cookie','memcache');
         $this->_include_config_file();
     }
-
+    
+    public function __initialize(){
+        
+    }
+    
     /**
      * 内部私有方法 用于初始化配置类的时候加载配置文件
      */
