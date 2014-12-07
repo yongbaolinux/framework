@@ -1,6 +1,6 @@
-<?php   if ( ! defined('DRPATH')) exit('访问错误');
+﻿<?php   if ( ! defined('DRPATH')) exit('访问错误');
 /**
- * mysql的底层驱动
+ * mysql??????
  */
 class drivers_db_mysql_driver extends core_db{
     private $connetid;      //数据库连接句柄
@@ -9,18 +9,23 @@ class drivers_db_mysql_driver extends core_db{
         parent::__construct();
         if(core_common::is_empty($this->connetid) || !is_resource($this->connetid)){
             if(intval($this->dbpconnect)){
-                $this->connetid = mysql_pconnect($this->dbhost.":".$this->dbport,$this->dbusername,$this->dbpassword);
+                $this->connetid = @mysql_pconnect($this->dbhost.":".$this->dbport,$this->dbusername,$this->dbpassword);
+
             } else {
-                $this->connetid = mysql_connect($this->dbhost.":".$this->dbport,$this->dbusername,$this->dbpassword);
+                $this->connetid = @mysql_connect($this->dbhost.":".$this->dbport,$this->dbusername,$this->dbpassword);
             }
             if(!$this->connetid){
-                core_log::getInstance()->write_log(mysql_error());
+                $error_msg = '数据库连接错误'.mysql_errno().'-'.iconv('gbk','utf-8',mysql_error());
+                core_log::getInstance()->write_log($error_msg);
+                throw new Exception($error_msg);
             } else {
                 if(mysql_select_db($this->dbname) === false){
-                    throw new Exception('选择数据库失败,请确认该数据库是否存在');
+                    core_log::getInstance()->write_log('??????????,????????????????');
+                    //throw new Exception('??????????,????????????????');
                 }
                 if(mysql_set_charset($this->dbcharacter) === false){
-                    throw new Exception('设置客户端字符集失败');
+                    //throw new Exception('??????????????');
+                    core_log::getInstance()->write_log('??????????????');
                 }
             }
         }
@@ -28,7 +33,7 @@ class drivers_db_mysql_driver extends core_db{
     
     public function _query($sql){
         if(core_common::is_empty($sql)){
-            throw new Exception('SQL语句不能为空');
+            throw new Exception('SQL????????');
         } else {
             $sql = $this->_filter_sql($sql);
             return $this->_fetch_result(mysql_query($sql,$this->connetid));
@@ -36,7 +41,7 @@ class drivers_db_mysql_driver extends core_db{
     }
     
     /**
-     * SQL安全处理
+     * SQL???????
      * @param string $sql
      * @return string 
      */
@@ -45,7 +50,7 @@ class drivers_db_mysql_driver extends core_db{
     }
     
     /**
-     * 数组形式的SQLs 安全处理
+     * ?????????SQLs ???????
      * @param array $sqls
      * @return array
      */
@@ -54,7 +59,7 @@ class drivers_db_mysql_driver extends core_db{
     }
     
     /**
-     * Mysql查询结果处理
+     * Mysql????????
      * @param resource or boolean $res
      * @return array
      */
@@ -64,7 +69,7 @@ class drivers_db_mysql_driver extends core_db{
             while($row = mysql_fetch_array($res,MYSQL_ASSOC)){
                 $result['result'][] = $row;
             }
-            $result['count'] = mysql_num_rows($res);        //select语句返回了多少行
+            $result['count'] = mysql_num_rows($res);        //select????????????
         } elseif ($res === true) {      //INSERT UPDATE DELETE
             $result['result'] = true;
             $result['count'] = mysql_affected_rows($this->connetid);
@@ -76,8 +81,8 @@ class drivers_db_mysql_driver extends core_db{
     }
     
     /**
-     * 事务处理底层方法
-     * @param array $sqls 数组形式的待执行的SQL语句
+     * ??????????
+     * @param array $sqls ???????????????SQL???
      */
     public function _transaction($sqls){
         //$sqls = $this->_filter_sqls($sqls);
@@ -93,13 +98,16 @@ class drivers_db_mysql_driver extends core_db{
     }
     
     /**
-     * 锁表处理底层方法
+     * 锁表底层方法
      */
      public function _lock($tableName,$flag){
          if($flag){
-            mysql_query("LOCK TABLES `".$tableName."` READ");
+             if(mysql_query("LOCK TABLES `".$tableName."` READ") === false) {
+                 $php_errormsg = "SQL语句执行错误:" . mysql_errno() . "-" . mysql_error();
+                 
+             }
          } else {
-            mysql_query("LOCK TABLES `".$tableName."` WRITE");
+             mysql_query("LOCK TABLES `".$tableName."` WRITE");
          }
      }
      
