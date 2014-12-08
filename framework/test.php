@@ -15,6 +15,8 @@ require './core/init.php';
 } catch(Exception $e){
     echo $e->getMessage();
 }
-var_dump($db->query("DELETE FROM `user`"));
+//var_dump($db->query("DELETE FROM `user`"));
 //core_db::getInstance();
+$db->lock("user");
+$db->unlock();
 ?>
