@@ -7,7 +7,6 @@
  * Time: 23:46
  */
 
-
 require './core/init.php';
 //core_log::getInstance('file',array('./'),'',array())->write_log('hah');
 //core_config::getInstance();
@@ -41,6 +40,9 @@ $memcache = core_cache::getInstance();
 $memcache->connect();
 //$memcache->add('test_key','test_values');
 $memcache->add('test_key','abc');
-echo class_charset::get_charset('./test.php');
+//$str = class_charset::set_charset('你好!','gbk');
+//echo class_charset::advance_urlencode('你好!');
+//$str = class_charset::set_charset($str,'gbk');
+echo class_charset::advance_urlencode('你好!');
 
 ?>

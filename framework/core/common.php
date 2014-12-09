@@ -88,27 +88,6 @@ class core_common
     }
 
     /**
-     * 对数组的键值进行urlencode操作(参数为字符串亦可)
-     * @param array $arr
-     * @return mixed
-     */
-    static public function advance_urlencode($arr)
-    {
-        if (is_array($arr) && count($arr) > 0) {
-            foreach ($arr as &$v) {
-                if (is_array($v)) {
-                    $v = self::advance_urlencode($v);
-                } else {
-                    $v = urlencode($v);
-                }
-            }
-            return $arr;
-        } else {
-            return urlencode($arr);
-        }
-    }
-
-    /**
      * 加载类库
      */
     static public function require_class(){
@@ -137,16 +116,19 @@ class core_common
     
     /**
      * 对字符串进行转义操作
+     * 支持数组
      */
     static public function advance_addslashes($str){
         if(is_array($str)){
             foreach ($str as &$v){
-                $v = advance_addslashes($v);
+                $v = self::advance_addslashes($v);
             }
         } else {
             $str = addslashes($str);
         }
         return $str;
     }
+    
+    
 }
 ?>
