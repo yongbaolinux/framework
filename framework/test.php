@@ -41,4 +41,6 @@ $memcache = core_cache::getInstance();
 $memcache->connect();
 //$memcache->add('test_key','test_values');
 $memcache->add('test_key','abc');
+echo class_charset::get_charset('./test.php');
+
 ?>

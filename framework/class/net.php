@@ -1,4 +1,4 @@
-<?php
+<?php   if(!defined('DRPATH')) exit('访问错误');
 /**
  * Created by PhpStorm.
  * User: Administrator
