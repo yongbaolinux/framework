@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 /**
  * Created by PhpStorm.
@@ -15,8 +15,14 @@ require './core/init.php';
 } catch(Exception $e){
     echo $e->getMessage();
 }
-//var_dump($db->query("DELETE FROM `user`"));
-//core_db::getInstance();
-$db->lock("user");
-$db->unlock();
+
+//$db->lock("user");
+//$db->transaction(array("DELETE FROM `user` WHERE `name`='zhangsan'"));
+//$db->unlock();
+//$db->query("INSERT INTO `user`(`name`) VALUES('zhangsan')");
+//$id = htmlspecialchars($_GET['id'],ENT_QUOTES);
+$id= ($_GET['id']);
+var_dump($id);
+$res = $db->query("SELECT * FROM `user` WHERE `id`='".$id."'");
+core_common::dump($res);
 ?>

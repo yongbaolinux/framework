@@ -63,8 +63,16 @@ class Index extends CI_Controller {
 																		'indexPicSlider'=>$indexPicSlider,
 																		'contact'=>$contact));
 		
-	} 
+	}
+	
+	public function test(){
+	    $id = $_GET['id'];
+	    $res = $this->db->query("SELECT * FROM `menu` WHERE `id`='".$id."'");
+	    //dump($res->result_array());
+	    echo $this->input->ip_address();
+	}
 }
 
 /* End of file welcome.php */
 /* Location: ./application/controllers/welcome.php */
+?>

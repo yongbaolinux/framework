@@ -127,7 +127,26 @@ class core_common
     }
     
     /**
-     * 
+     * 打印一条SQL执行错误信息 并抛出一个异常
      */
+    static public function print_sql_error(){
+        $php_errormsg = "SQL执行错误:".mysql_errno()."-".mysql_error();
+        core_log::getInstance()->write_log($php_errormsg);
+        throw new Exception($php_errormsg);
+    }
+    
+    /**
+     * 对字符串进行转义操作
+     */
+    static public function advance_addslashes($str){
+        if(is_array($str)){
+            foreach ($str as &$v){
+                $v = advance_addslashes($v);
+            }
+        } else {
+            $str = addslashes($str);
+        }
+        return $str;
+    }
 }
 ?>

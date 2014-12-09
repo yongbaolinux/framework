@@ -21,7 +21,7 @@ class core_db extends core_base{
     static protected $dbInstance;   //数据库驱动对象实例
 
     public function __construct(){
-        core_log::getInstance('file',array('./'))->write_log('数据库类已初始化');
+        core_log::getInstance('file',array('./'))->write_log("数据库类已初始化\n");
         $this->_init_config();
         //$driver_name = 'drivers_db_'.$this->dbtype.'_driver';    //待实例化的数据库驱动
         //if(!class_exists($driver_name)){    //自动加载
@@ -32,10 +32,11 @@ class core_db extends core_base{
     
     public function __initialize(){
         $driver_name = 'drivers_db_'.$this->dbtype.'_driver';    //待实例化的数据库驱动
-        if(!class_exists($driver_name)){    //自动加载
-           throw new Exception("数据库驱动类不存在，请检查驱动文件是否存在或查看{$driver_name}类是否定义");
+        if(!class_exists($driver_name)) {    //自动加载
+            throw new Exception("数据库驱动类不存在，请检查驱动文件是否存在或查看{$driver_name}类是否定义");
         }
         self::$dbInstance = new $driver_name;
+
     }
     /**
      * 利用config配置类初始化数据库参数
@@ -120,6 +121,13 @@ class core_db extends core_base{
      */
     public function unlock(){
         self::$dbInstance->_unlock();
+    }
+    
+    /**
+     * 返回最近一次 insert操作的 id
+     */
+    public function insert_last_id(){
+        return self::$dbInstance->_insert_last_id();
     }
 }
 ?>
