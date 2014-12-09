@@ -104,6 +104,10 @@ class drivers_db_mysql_driver extends core_db{
      public function _lock($tableName,$flag){
          if($flag){
              $res = mysql_query("LOCK TABLES `".$tableName."` READ");
+             if(mysql_query("LOCK TABLES `".$tableName."` READ") === false) {
+                 $php_errormsg = "SQL语句执行错误:" . mysql_errno() . "-" . mysql_error();
+
+             }
          } else {
              $res = mysql_query("LOCK TABLES `".$tableName."` WRITE");
          }
