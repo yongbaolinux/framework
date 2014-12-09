@@ -37,7 +37,7 @@ class class_net{
      * @return bool true 合法的IPv4地址 false 非法的IPv4地址
      */
     static function is_valid_ipv4($ipv4='0.0.0.0'){
-
+        return true;
     }
 
     /**

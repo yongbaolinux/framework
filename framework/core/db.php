@@ -31,11 +31,11 @@ class core_db extends core_base{
     }
     
     public function __initialize(){
-        $driver_name = 'drivers_db_'.$this->dbtype.'_driver';    //待实例化的数据库驱动
-        if(!class_exists($driver_name)) {    //自动加载
-            throw new Exception("数据库驱动类不存在，请检查驱动文件是否存在或查看{$driver_name}类是否定义");
+        $db_driver_name = 'drivers_db_'.$this->dbtype.'_driver';    //待实例化的数据库驱动
+        if(!class_exists($db_driver_name)) {    //自动加载
+            throw new Exception("数据库驱动类不存在，请检查驱动文件是否存在或查看{$db_driver_name}类是否定义");
         }
-        self::$dbInstance = new $driver_name;
+        self::$dbInstance = new $db_driver_name;
 
     }
     /**
