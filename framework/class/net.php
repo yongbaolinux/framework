@@ -48,6 +48,15 @@ class class_net{
     static function is_valid_ipv6($ipv6){
 
     }
+    
+    /**
+     * 判断一个端口是否是合法的端口数值范围
+     * @param $port
+     * @return bool true 合法的端口地址   false 非法的端口地址
+     */
+    static function is_valid_port($port){
+        return ((intval($port) >=0) && (intval($port) <= 65535));
+    }
 
 }
 ?>

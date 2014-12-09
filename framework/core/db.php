@@ -22,7 +22,7 @@ class core_db extends core_base{
 
     public function __construct(){
         core_log::getInstance('file',array('./'))->write_log("数据库类已初始化\n");
-        $this->_init_config();
+        $this->_check_config();
         //$driver_name = 'drivers_db_'.$this->dbtype.'_driver';    //待实例化的数据库驱动
         //if(!class_exists($driver_name)){    //自动加载
            //throw new Exception("数据库驱动类不存在，请检查驱动文件是否存在或查看{$driver_name}类是否定义");
@@ -41,7 +41,7 @@ class core_db extends core_base{
     /**
      * 利用config配置类初始化数据库参数
      */
-    protected  function _init_config(){
+    protected  function _check_config(){
         $dbconfig = core_config::getInstance()->get_config('db');
         //不实现默认配置 必须填写配置文件 否则抛出异常
         if(!core_common::is_empty($dbconfig['host'])){
