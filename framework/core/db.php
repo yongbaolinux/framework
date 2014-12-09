@@ -16,7 +16,7 @@ class core_db extends core_base{
     protected $dbcharacter;     //数据库连接字符集
     protected $dbpconnect;      //是否开启持久连接
     
-    protected $dbtransaction;   //是否开启事务
+    //protected $dbtransaction;   //是否开启事务
     
     static protected $dbInstance;   //数据库驱动对象实例
 
