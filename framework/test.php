@@ -43,6 +43,7 @@ $memcache->add('test_key','abc');
 //$str = class_charset::set_charset('你好!','gbk');
 //echo class_charset::advance_urlencode('你好!');
 //$str = class_charset::set_charset($str,'gbk');
-echo class_charset::advance_urlencode('你好!');
-
+//echo class_charset::advance_urlencode('你好!');
+//echo class_cookie::setCookie("123","456");
+var_dump(class_session::getSession());
 ?>
