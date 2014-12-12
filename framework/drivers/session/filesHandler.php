@@ -4,7 +4,7 @@
  * 文件处理session机制
  * 2014-12-10
  */
-class drivers_session_fileHandler{
+class drivers_session_filesHandler{
     private $save_path;
     
     public function open($savePath,$sessionName){

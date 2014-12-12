@@ -22,9 +22,14 @@ class core_sessHandler extends core_base{
     
     /**
      * 自定义会话存储控制机制开启
+     * 先检测会话机制是否已经开启
+     * 若会话已开启 则先行关闭 重新定义了会话存储机制后 再开启    (由于使用class_session::setSession/getSession系列
+     * 函数会调用class_session::startSession 所以这里不再需要手动开启会话)
      */
-    public function start(){
-        session_set_save_handler(array($dbhandler,'open'),array($dbhandler,'close'),array($dbhandler,'read'),array($dbhandler,'write'),array($dbhandler,'destroy'),array($dbhandler,'gc'));
+    public function run(){
+        class_session::closeSession();
+        session_set_save_handler(array($this->handlerInstance,'open'),array($this->handlerInstance,'close'),array($this->handlerInstance,'read'),array($this->handlerInstance,'write'),array($this->handlerInstance,'destroy'),array($this->handlerInstance,'gc'));
+        //class_session::startSession();
     }
 }
 ?>

@@ -1,25 +1,37 @@
 <?php   if ( ! defined('DRPATH')) exit('访问错误');
 /**
- * session操作类
- * author yongbaolinux
+ * Session操作类
+ * @author yongbaolinux
  * 2014-12-10
+ * TODO 去掉自定义的常量 使用PHP自身的常量 - PHP_SESSION_DISABLED/PHP_SESSION_NONE/PHP_SESSION_ACTIVE
  */
 class class_session{
-    static private $session_status = -1;
-    const PHP_SESSION_DISABLED = -1;        //会话不可用
-    const PHP_SESSION_NONE = 0;             //会话可用 但还没有内容
-    const PHP_SESSION_ACTIVE = 1;           //会话可用 并包含内容
+    static private $session_status = 0;
+    const PHP_SESSION_DISABLED = 0;        //会话不可用
+    const PHP_SESSION_NONE = 1;             //会话可用 但不能全局访问
+    const PHP_SESSION_ACTIVE = 2;           //全局会话可用 
+    
     /**
      * 检测会话是否已经自动开启
      * 如果没有开启就开启会话
+     * php >= 5.4 session_status函数可用
+     * 由于 getSession/setSession系列函数会自动调用该函数
+     * 所以不需要手动调用该函数
+     * 在应用程序中直接使用 getSession/setSession系列函数即可
      */
-    static protected function _init_env(){
-        if(self::$session_status === self::PHP_SESSION_DISABLED){
-            $auto_start = ini_get('session.auto_start');
-            if(!$auto_start){
+    static protected function startSession(){
+        if(function_exists('session_status')){
+            if(session_status() === PHP_SESSION_DISABLED || session_status() === PHP_SESSION_NONE){
                 session_start();
             }
-            self::$session_status = self::PHP_SESSION_ACTIVE;
+        } else {
+            if(self::$session_status === self::PHP_SESSION_DISABLED){
+                $auto_start = ini_get('session.auto_start');
+                if(!$auto_start){
+                    session_start();
+                }
+                self::$session_status = self::PHP_SESSION_ACTIVE;
+            }
         }
     }
     
@@ -30,8 +42,8 @@ class class_session{
      * @param string $key 键名
      * @return mixed|NULL
      */
-    static function getSession($key=''){
-        self::_init_env();
+    static public function getSession($key=''){
+        self::startSession();
         if(core_common::is_empty($key)){
             return $_SESSION;
         } else {
@@ -52,8 +64,8 @@ class class_session{
      * @param unknown $key
      * @param string $value
      */
-    static function setSession($key,$value=''){
-        self::_init_env();
+    static public function setSession($key,$value=''){
+        self::startSession();
         if(core_common::is_empty($key)){
             throw new Exception("设置会话的键名不能为空");
         }
@@ -65,8 +77,8 @@ class class_session{
      * 清除对应键名的会员 若未指定键名 则清除所有会话
      * @param  $key 要清除的会话键名
      */
-    static function cleanSession($key=''){
-        self::_init_env();
+    static public function cleanSession($key=''){
+        self::startSession();
         if(core_common::is_empty($key)){
             unset($_SESSION);
         }
@@ -76,13 +88,36 @@ class class_session{
     }
     
     /**
-     * 修改会话配置
+     * 返回当前会话开启状态
+     * php >= 5.4 session_status函数可用
      */
-    static function statSession(){
-        
+    static public function statusSession(){
+        if(function_exists('session_status')){
+            return session_status();
+        } else {
+            return self::$session_status;
+        }
     }
     
-    
-    
+    /**
+     * 关闭当前会话
+     * php >= 5.4 session_status函数可用
+     */
+    static public function closeSession(){
+        if(function_exists('session_status')){
+            if(session_status() === PHP_SESSION_ACTIVE){
+                session_write_close();
+            }
+        } else {
+            if(self::$session_status === self::PHP_SESSION_ACTIVE){
+                session_write_close();
+                self::$session_status = self::PHP_SESSION_DISABLED;
+            } else {
+                if(@ini_get('session.auto_start')){
+                    session_write_close();
+                }
+            }
+        }
+    }
 }
 ?>

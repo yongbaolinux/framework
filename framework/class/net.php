@@ -55,8 +55,16 @@ class class_net{
      * @return bool true 合法的端口地址   false 非法的端口地址
      */
     static function is_valid_port($port){
-        return ((intval($port) >=0) && (intval($port) <= 65535));
+        return (intval($port) >=0) && (intval($port) <= 65535);
     }
-
+    
+    /**
+     * 判断客户端的请求是否是一个Ajax请求
+     * 不应太依赖该函数 因为任何请求头都是可以伪造的
+     * @return true 是Ajax请求  / false不是Ajax请求
+     */
+    static function is_ajax(){
+        return $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+    }
 }
 ?>

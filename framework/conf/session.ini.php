@@ -2,7 +2,7 @@
 //配置参数
 return array(
     'session'=>array(
-        'handler'=>'files',
+        'handler'=>'db',
         'files_path'=>'/',
         'table_name'=>'session'
         
