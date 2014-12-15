@@ -148,6 +148,5 @@ class core_log extends core_base{
         }
     }
 
-
 }
 ?>

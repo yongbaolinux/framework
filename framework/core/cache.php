@@ -10,6 +10,9 @@ class core_cache extends core_base{
     protected $pwd;     //连接缓存服务器密码
     protected $port;    //缓存服务端口
     protected $type;    //缓存系统类型
+    protected $flag;    //是否对数据进行压缩
+    protected $persistent;  //是否与缓存服务器进行持久连接
+    protected $expire;  //设置缓存数据过期时间
     
     static $cacheInstance;  //缓存对象实例
     public function __construct(){
@@ -74,6 +77,8 @@ class core_cache extends core_base{
         } else {
             $this->port = $cache_port;
         }
+        $this->flag = (bool)$cache_config['flag'];          //是否启用数据压缩
+        $this->expire = (int)$cache_config['expire'] ? $cache_config['expire'] : 3600;   //设置缓存数据过期时间
     }
     
     /**
@@ -100,7 +105,9 @@ class core_cache extends core_base{
             } else {
                  dl ( $this->type.'.so' );
             } */
-            throw new Exception('PHP未加载相应扩展,请手动修改php.ini配置文件以确认添加该模块');
+            //throw new Exception("PHP未加载{$this->type}相应扩展,请手动修改php.ini配置文件以确认添加该模块");
+            //没有加载dll就加载memcache操作类
+            require_once    rtrim(DRPATH,'/').'/'.ucfirst($this->type).'.php';
         }
         //var_dump(extension_loaded($this->type));
     }
@@ -114,22 +121,57 @@ class core_cache extends core_base{
     
     /**
      * 连接到缓存服务器抽象接口
+     * core_cache::getInstance()实例化后可以直接
+     * 使用core_cache::getInstance()->add来添加数据
+     * 不需要显示使用connect函数去连接缓存服务器
+     * 因为在实例化core_cache类的时候已自动连接到缓存服务器
+     * 除非是手动连接到除配置文件外的另一台缓存服务器上
+     * @param $host 缓存服务器主机地址
+     * @param $port 缓存服务端口
      */
-    public function connect(){
+    public function connect($host,$port){
         if($this->type !== 'file'){
-            self::$cacheInstance->connect();
+            self::$cacheInstance->_connect($host,$port);
         }
     }
-    
+
     /**
-     * 添加数据到缓存服务器抽象接口
+     * 向连接池中添加一台缓存服务器
+     * @param $host 缓存服务器主机地址
+     * @param $port 缓存服务端口
+     */
+    public function addServer($host,$port){
+        if(!$this->type !== 'file'){
+            self::$cacheInstance->_addServer($host,$port,$this->persistent);
+        }
+    }
+
+    /**
+     * 添加数据到缓存服务器的抽象接口
+     * 如果缓存服务器中已存在该数据
+     * 则会添加失败
      * @param string $key   数据键名
      * @param string $value 数据键值
      */
     public function add($key,$value){
         if($this->type !== 'file'){
-            self::$cacheInstance->add($key,$value);
+            self::$cacheInstance->_add($key,$value,$this->flag,$this->expire);
         }
     }
+
+    /**
+     * 修改缓存服务器数据的抽象接口
+     * 如果缓存中已存在该数据 则会修改原数据
+     * 如果缓存中不存在该数据 则会新增数据
+     * @param string $key   待修改数据的键名
+     * @param string $value 修改后的键值数据
+     */
+    public function set($key,$value){
+        if($this->type !== 'file') {
+            self::$cacheInstance->_set($key, $value, $this->flag, $this->expire);
+        }
+    }
+
+
 }
 ?>

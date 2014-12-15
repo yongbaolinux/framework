@@ -36,15 +36,18 @@ require './core/init.php';
 //}
 //$db->lock('user');
 //core_common::dump($_SERVER);
-$memcache = core_cache::getInstance();
-$memcache->connect();
+//core_cache::getInstance()->add('test_key','test_value2');
+core_cache::getInstance()->set('test_key','test_value2');
+//core_cache::getInstance()->addServer('127.0.0.1',11212);
+//core_cache::getInstance()->add('test_key2','test_value2');
+//core_cache::getInstance()->add('test_key3','test_value3');
 //$memcache->add('test_key','test_values');
-$memcache->add('test_key','abc');
 //$str = class_charset::set_charset('你好!','gbk');
 //echo class_charset::advance_urlencode('你好!');
 //$str = class_charset::set_charset($str,'gbk');
 //echo class_charset::advance_urlencode('你好!');
 //echo class_cookie::setCookie("123","456");
 //var_dump(class_session::getSession());
-echo ceil(4.1);
+//echo ceil(4.1);
+
 ?>

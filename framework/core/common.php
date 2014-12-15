@@ -129,6 +129,13 @@ class core_common
         return $str;
     }
     
-    
+    /**
+     * 在页面上输出异常信息
+     */
+    static public function print_exception($e){
+        include rtrim(DRPATH.'/').'/error/show_exception.php';
+    }
+
+
 }
 ?>
