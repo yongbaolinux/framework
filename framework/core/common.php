@@ -131,11 +131,19 @@ class core_common
     
     /**
      * 在页面上输出异常信息
+     * @param Exception $e 异常对象
      */
     static public function print_exception($e){
         include rtrim(DRPATH.'/').'/error/show_exception.php';
     }
 
-
+    /**
+     * 在页面上输出异常信息并记录日志
+     * @param Exception $e 异常对象
+     */
+    static public function print_exception_log($e){
+        self::print_exception($e);
+        core_log::getInstance()->write_log('出错文件名:'.$e->getFile().'===错误行:第'.$e->getLine().'行===错误信息:'.$e->getMessage());
+    }
 }
 ?>

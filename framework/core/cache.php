@@ -172,6 +172,17 @@ class core_cache extends core_base{
         }
     }
 
-
+    /**
+     * 删除缓存服务器数据的抽象接口
+     * @param string $key 待删除数据的键名
+     * @param string $timeout 为0则立即删除 如果指定某个值的时间 则会在那个时间值内删除(单位为 s)
+     */
+    public function delete($key,$timeout=0){
+        if($this->type !== 'file'){
+            self::$cacheInstance->_delete($key, $timeout);
+        }
+    }
+    
+    
 }
 ?>

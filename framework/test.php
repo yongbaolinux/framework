@@ -11,9 +11,9 @@ require './core/init.php';
 //core_log::getInstance('file',array('./'),'',array())->write_log('hah');
 //core_config::getInstance();
  try {
-    $db = core_db::getInstance();
+    //$db = core_db::getInstance();
 } catch(Exception $e){
-    echo $e->getMessage();
+    //echo $e->getMessage();
 }
 
 //$db->lock("user");
@@ -36,8 +36,8 @@ require './core/init.php';
 //}
 //$db->lock('user');
 //core_common::dump($_SERVER);
-//core_cache::getInstance()->add('test_key','test_value2');
-core_cache::getInstance()->set('test_key','test_value2');
+//core_cache::getInstance()->add('test_key','test_value');
+//core_cache::getInstance()->set('test_key','test_value');
 //core_cache::getInstance()->addServer('127.0.0.1',11212);
 //core_cache::getInstance()->add('test_key2','test_value2');
 //core_cache::getInstance()->add('test_key3','test_value3');
@@ -49,5 +49,5 @@ core_cache::getInstance()->set('test_key','test_value2');
 //echo class_cookie::setCookie("123","456");
 //var_dump(class_session::getSession());
 //echo ceil(4.1);
-
+echo urlencode('http://m.koudaizhuan.com/koudaizuan-weixin/oAuth2.php');
 ?>

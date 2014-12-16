@@ -1,30 +1,30 @@
-<?php   if(!defined('DRPATH')) exit('·ÃÎÊ´íÎó');
+ï»¿<?php   if(!defined('DRPATH')) exit('è®¿é—®é”™è¯¯');
 
 /**
- * »á»°´æ´¢»úÖÆ³éÏó¿ØÖÆ²ã
+ * ä¼šè¯å­˜å‚¨æœºåˆ¶æŠ½è±¡æ§åˆ¶å±‚
  * @author yongbaolinux
  * 2014-12-10
  */
 class core_sessHandler extends core_base{
-    private $handlerInstance;                                                   //»á»°¿ØÖÆ»úÖÆÊµÀı
-    private $allowed_handlers = array('redis','db','memcache','files');        //ËùÔÊĞíµÄ»á»°¿ØÖÆ»úÖÆÁĞ±í
+    private $handlerInstance;                                                   //ä¼šè¯æ§åˆ¶æœºåˆ¶å®ä¾‹
+    private $allowed_handlers = array('redis','db','memcache','files');        //æ‰€å…è®¸çš„ä¼šè¯æ§åˆ¶æœºåˆ¶åˆ—è¡¨
     
     public function __initialize(){
-        //¸ù¾İÅäÖÃ²ÉÈ¡ºÎÖÖ»á»°´æ´¢»úÖÆ
+        //æ ¹æ®é…ç½®é‡‡å–ä½•ç§ä¼šè¯å­˜å‚¨æœºåˆ¶
         $handlerType = core_config::getInstance()->get_config('session','handler');
         if(in_array($handlerType,$this->allowed_handlers)){
             $handlerClassName = 'drivers_session_'.$handlerType.'Handler';
             $this->handlerInstance = new $handlerClassName;
         } else {
-            throw new Exception("»á»°´æ´¢»úÖÆÅäÖÃÓĞÎó,Çë¼ì²é»á»°ÅäÖÃÎÄ¼ş   session.ini.php");
+            throw new Exception("ä¼šè¯å­˜å‚¨æœºåˆ¶é…ç½®æœ‰è¯¯,è¯·æ£€æŸ¥ä¼šè¯é…ç½®æ–‡ä»¶   session.ini.php");
         }
     }
     
     /**
-     * ×Ô¶¨Òå»á»°´æ´¢¿ØÖÆ»úÖÆ¿ªÆô
-     * ÏÈ¼ì²â»á»°»úÖÆÊÇ·ñÒÑ¾­¿ªÆô
-     * Èô»á»°ÒÑ¿ªÆô ÔòÏÈĞĞ¹Ø±Õ ÖØĞÂ¶¨ÒåÁË»á»°´æ´¢»úÖÆºó ÔÙ¿ªÆô    (ÓÉÓÚÊ¹ÓÃclass_session::setSession/getSessionÏµÁĞ
-     * º¯Êı»áµ÷ÓÃclass_session::startSession ËùÒÔÕâÀï²»ÔÙĞèÒªÊÖ¶¯¿ªÆô»á»°)
+     * è‡ªå®šä¹‰ä¼šè¯å­˜å‚¨æ§åˆ¶æœºåˆ¶å¼€å¯
+     * å…ˆæ£€æµ‹ä¼šè¯æœºåˆ¶æ˜¯å¦å·²ç»å¼€å¯
+     * è‹¥ä¼šè¯å·²å¼€å¯ åˆ™å…ˆè¡Œå…³é—­ é‡æ–°å®šä¹‰äº†ä¼šè¯å­˜å‚¨æœºåˆ¶å å†å¼€å¯    (ç”±äºä½¿ç”¨class_session::setSession/getSessionç³»åˆ—
+     * å‡½æ•°ä¼šè°ƒç”¨class_session::startSession æ‰€ä»¥è¿™é‡Œä¸å†éœ€è¦æ‰‹åŠ¨å¼€å¯ä¼šè¯)
      */
     public function run(){
         class_session::closeSession();
