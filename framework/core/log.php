@@ -39,14 +39,16 @@ class core_log extends core_base{
      *  TODO 如果参数缺失 就从配置文件中读取 暂时用字面值代替
      */
     public function __initialize(){
-        $type = (@func_get_arg(0)) ? @func_get_arg(0) : 'file';
+        /*$type = (@func_get_arg(0)) ? @func_get_arg(0) : 'file';
         $params = (@func_get_arg(1)) ? @func_get_arg(1) : array();
         $log_format = (@func_get_arg(2)) ? @func_get_arg(2) : 'Y-m-d H:i:s';
         $log_level = (@func_get_arg(3)) ? @func_get_arg(3) : 1;
         $this->parse_params($type,$params);
         $this->_log_save_type = $type;
         $this->_log_level = $log_level;
-        $this->_log_format = $log_format;
+        $this->_log_format = $log_format;*/
+        $log_config = core_config::getInstance()->get_config('log');
+        $this->parse_params($log_config);
 
     }
     /**
@@ -55,15 +57,18 @@ class core_log extends core_base{
      * @param $params
      * @throws Exception
      */
-    private function parse_params($type,$params){
-        if(is_string($type) && !empty($type) && in_array($type,$this->_log_save_allowed_type)){
-            if(is_array($params) && count($params) > 0) {
-                switch ($type) {
+    private function parse_params($config){
+        if(is_string($config['type']) && !empty($config['type']) && in_array($config['type'],$this->_log_save_allowed_type)){
+                switch ($config['type']) {
                     case 'file':
-                        if(is_string($params[0]) && is_dir($params[0])){
-                            $this->_log_save_path = $params[0];
+                        if(is_string($config['path']) && is_dir($config['path']) && is_writeable($config['path'])){
+                            $this->_log_save_path = $config['path'];
                         } else{
-                            throw new Exception('日志记录配置参数错误 必须为目录');
+                            try {
+                                throw new Exception('日志记录配置参数错误 必须为已存在的目录 若不存在 请手动创建 并且需要可写权限');
+                            }catch (Exception $e){
+                                core_common::print_exception($e);       //不能使用print_exception_log 因为会无限异常
+                            }
                         }
                         break;
                     case 'db':
@@ -73,9 +78,9 @@ class core_log extends core_base{
                     default:
                         break;
                 }
-            } else{
-                throw new Exception('日志记录配置为空');
-            }
+                $this->_log_save_type = $config['type'];
+                $this->_log_format = $config['format'];
+                $this->_log_level = $config['level'];
         } else{
             throw new Exception('日志记录类型错误');
         }
@@ -116,7 +121,6 @@ class core_log extends core_base{
      * @param string $msg 要记录的信息
      */
     private function write_log_to_file($msg){
-        if(is_writeable($this->_log_save_path)){
             //生成文件名 按天存放日志记录
             $time = time();
             $fileName = date('Y-m-d',$time);
@@ -143,9 +147,6 @@ class core_log extends core_base{
                     echo $e->getMessage();
                 }
             }
-        } else {
-            throw new \Exception('日志存放目录没有写权限');
-        }
     }
 
 }

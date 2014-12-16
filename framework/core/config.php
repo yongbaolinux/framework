@@ -13,7 +13,7 @@ class core_config extends core_base{
 
     public function __construct(){
         self::$config = array();
-        $this->allowed_conf_files = array('db','redis','session','cookie','memcache','cache');
+        $this->allowed_conf_files = array('db','session','cookie','cache','log');
         $this->_include_config_file();
     }
     

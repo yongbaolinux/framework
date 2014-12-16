@@ -14,7 +14,7 @@ class core_cache extends core_base{
     protected $persistent;  //是否与缓存服务器进行持久连接
     protected $expire;  //设置缓存数据过期时间
     
-    static $cacheInstance;  //缓存对象实例
+    static protected $cacheInstance;  //缓存对象实例
     public function __construct(){
         core_log::getInstance()->write_log('缓存基类已初始化');
         $this->_check_config();
@@ -173,7 +173,7 @@ class core_cache extends core_base{
     }
 
     /**
-     * 删除缓存服务器数据的抽象接口
+     * 按键名删除缓存服务器数据的抽象接口
      * @param string $key 待删除数据的键名
      * @param string $timeout 为0则立即删除 如果指定某个值的时间 则会在那个时间值内删除(单位为 s)
      */
@@ -182,7 +182,32 @@ class core_cache extends core_base{
             self::$cacheInstance->_delete($key, $timeout);
         }
     }
-    
-    
+
+    /**
+     * 删除缓存服务器中所有数据的抽象接口
+     */
+    public function flush(){
+        if($this->type !== 'file'){
+            self::$cacheInstance->_flush();
+        }
+    }
+
+    /**
+     * 按键名获取缓存服务器上一个或多个元素的抽象接口
+     */
+    public function get($key){
+        if($this->type !== 'file'){
+            return self::$cacheInstance->_get($key);
+        }
+    }
+
+    /**
+     * 返回连接池中所有缓存服务器运行状态的抽象接口
+     */
+    public function status(){
+        if($this->type !== 'file'){
+            return call_user_func_array(array(self::$cacheInstance,'_status'),func_get_args());
+        }
+    }
 }
 ?>

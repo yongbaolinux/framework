@@ -17,7 +17,7 @@ class drivers_cache_memcache_driver extends core_cache{
                 throw new Exception('连接memcached服务失败,请检查memcached服务是否已在  11211端口开启');
             }
         } else {
-            throw new Exception('初始化Memcache对象失败');
+            throw new Exception('初始化Memcache对象失败,请检查memcache.dll或memcache.so扩展是否安装');
         }
     }
 
@@ -39,7 +39,13 @@ class drivers_cache_memcache_driver extends core_cache{
      * @param $persistent
      */
     public function _addServer($host,$port,$persistent){
-        $this->memcache->addServer($host,$port,$persistent);
+        if(!$this->memcache->addServer($host,$port,$persistent)){
+            try{
+                throw new Exception('添加memcached服务到连接池失败');
+            } catch (Exception $e){
+                core_common::print_exception_log($e);
+            }
+        }
     }
 
     /**
@@ -52,7 +58,7 @@ class drivers_cache_memcache_driver extends core_cache{
     public function _add($key,$value,$flag=false,$expire=3600){
         if(!$this->memcache->add($key,$value,$flag,$expire)){
             try{
-                throw new Exception('向memcached中添加缓存数据失败,已经存在相同的数据键名');
+                throw new Exception('向memcached中添加缓存数据失败,可能已存在相同的数据键名');
             } catch (Exception $e){
                 core_common::print_exception_log($e);
             }
@@ -78,7 +84,7 @@ class drivers_cache_memcache_driver extends core_cache{
     }
     
     /**
-     * 删除 memcached服务器中的缓存数据
+     * 按键名删除memcached服务器中的缓存数据
      * @param string $key       待删除的缓存数据键名
      * @param int    $timeout   缓存数据在 $timeout 秒后被删除 若为0 则立即删除
      */
@@ -93,7 +99,46 @@ class drivers_cache_memcache_driver extends core_cache{
     }
     
     /**
-     * 
+     * 删除memcached服务器中的所有数据
      */
+    public function _flush(){
+        if(!$this->memcache->flush()){
+            try{
+                throw new Exception('清空memcached缓存数据失败,原因未知');
+            } catch(Exception $e){
+                core_common::print_exception_log($e);
+            }
+        }
+    }
+
+    /**
+     * 按键名获取memcached服务器中的一个或多个元素
+     * @param string array $key 待查找的键名
+     */
+    public function _get($key){
+        return $this->memcache->get($key);
+    }
+
+    /**
+     * 返回所有连接池中服务器的运行状态数据
+     * false 说明该memcached缓存服务未开启
+     */
+    public function _status(){
+        $callback = func_get_arg(0);
+        $params = func_get_args();
+        unset($params[0]);
+        switch($callback){
+            case 'getExtendedStats':
+                return @call_user_func_array(array($this->memcache,'getExtendedStats'),$params);
+            case 'getServerStatus':
+                return @call_user_func_array(array($this->memcache,'getServerStatus'),$params);
+            case 'getStats':
+                return @call_user_func_array(array($this->memcache,'getStats'),$params);
+            case 'getVersion':
+                return @call_user_func_array(array($this->memcache,'getVersion'),$params);
+            default:
+                break;
+        }
+    }
 }
 ?>
