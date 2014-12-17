@@ -1,15 +1,15 @@
-<?php   if(!defined('DRPATH')) exit('·ÃÎÊ´íÎó');
+ï»¿<?php   if(!defined('DRPATH')) exit('è®¿é—®é”™è¯¯');
 
 /**
- * °²È«¿ØÖÆÀà
+ * å®‰å…¨æŽ§åˆ¶ç±»
  * @author yongbaolinux
  * 2014-12-11
  */
 class class_safe{
     
     /**
-     * ¶Ô²ÎÊý×ªÒå
-     * ¹ýÂËSQL×¢Èë·çÏÕ
+     * å¯¹å‚æ•°è½¬ä¹‰
+     * è¿‡æ»¤SQLæ³¨å…¥é£Žé™©
      */
     static protected function _filter_sql_inject($sql=''){
         return core_common::advance_addslashes($sql);

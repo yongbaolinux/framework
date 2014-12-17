@@ -1,23 +1,23 @@
-<?php   if ( ! defined('DRPATH')) exit('·ÃÎÊ´íÎó');
+ï»¿<?php   if ( ! defined('DRPATH')) exit('è®¿é—®é”™è¯¯');
 /**
- * Session²Ù×÷Àà
+ * Sessionæ“ä½œç±»
  * @author yongbaolinux
  * 2014-12-10
- * TODO È¥µô×Ô¶¨ÒåµÄ³£Á¿ Ê¹ÓÃPHP×ÔÉíµÄ³£Á¿ - PHP_SESSION_DISABLED/PHP_SESSION_NONE/PHP_SESSION_ACTIVE
+ * TODO å»æ‰è‡ªå®šä¹‰çš„å¸¸é‡ ä½¿ç”¨PHPè‡ªèº«çš„å¸¸é‡ - PHP_SESSION_DISABLED/PHP_SESSION_NONE/PHP_SESSION_ACTIVE
  */
 class class_session{
     static private $session_status = 0;
-    const PHP_SESSION_DISABLED = 0;        //»á»°²»¿ÉÓÃ
-    const PHP_SESSION_NONE = 1;             //»á»°¿ÉÓÃ µ«²»ÄÜÈ«¾Ö·ÃÎÊ
-    const PHP_SESSION_ACTIVE = 2;           //È«¾Ö»á»°¿ÉÓÃ 
+    const PHP_SESSION_DISABLED = 0;        //ä¼šè¯ä¸å¯ç”¨
+    const PHP_SESSION_NONE = 1;             //ä¼šè¯å¯ç”¨ ä½†ä¸èƒ½å…¨å±€è®¿é—®
+    const PHP_SESSION_ACTIVE = 2;           //å…¨å±€ä¼šè¯å¯ç”¨ 
     
     /**
-     * ¼ì²â»á»°ÊÇ·ñÒÑ¾­×Ô¶¯¿ªÆô
-     * Èç¹ûÃ»ÓĞ¿ªÆô¾Í¿ªÆô»á»°
-     * php >= 5.4 session_statusº¯Êı¿ÉÓÃ
-     * ÓÉÓÚ getSession/setSessionÏµÁĞº¯Êı»á×Ô¶¯µ÷ÓÃ¸Ãº¯Êı
-     * ËùÒÔ²»ĞèÒªÊÖ¶¯µ÷ÓÃ¸Ãº¯Êı
-     * ÔÚÓ¦ÓÃ³ÌĞòÖĞÖ±½ÓÊ¹ÓÃ getSession/setSessionÏµÁĞº¯Êı¼´¿É
+     * æ£€æµ‹ä¼šè¯æ˜¯å¦å·²ç»è‡ªåŠ¨å¼€å¯
+     * å¦‚æœæ²¡æœ‰å¼€å¯å°±å¼€å¯ä¼šè¯
+     * php >= 5.4 session_statuså‡½æ•°å¯ç”¨
+     * ç”±äº getSession/setSessionç³»åˆ—å‡½æ•°ä¼šè‡ªåŠ¨è°ƒç”¨è¯¥å‡½æ•°
+     * æ‰€ä»¥ä¸éœ€è¦æ‰‹åŠ¨è°ƒç”¨è¯¥å‡½æ•°
+     * åœ¨åº”ç”¨ç¨‹åºä¸­ç›´æ¥ä½¿ç”¨ getSession/setSessionç³»åˆ—å‡½æ•°å³å¯
      */
     static protected function startSession(){
         if(function_exists('session_status')){
@@ -36,10 +36,10 @@ class class_session{
     }
     
     /**
-     * ¸ù¾İÄ³¸ö¼üÃû»ñÈ¡Ä³¸ö»á»°µÄ¼üÖµ
-     * »ñÈ¡Ç°ÏÈ¼ì²â»á»°ÊÇ·ñ×Ô¶¯¿ªÆô
-     * ±ØĞëÒª¿ªÆô»á»°²ÅÄÜÊ¹ÓÃ¸Ã¹¦ÄÜ
-     * @param string $key ¼üÃû
+     * æ ¹æ®æŸä¸ªé”®åè·å–æŸä¸ªä¼šè¯çš„é”®å€¼
+     * è·å–å‰å…ˆæ£€æµ‹ä¼šè¯æ˜¯å¦è‡ªåŠ¨å¼€å¯
+     * å¿…é¡»è¦å¼€å¯ä¼šè¯æ‰èƒ½ä½¿ç”¨è¯¥åŠŸèƒ½
+     * @param string $key é”®å
      * @return mixed|NULL
      */
     static public function getSession($key=''){
@@ -56,26 +56,26 @@ class class_session{
     }
    
     /**
-     * ÉèÖÃÄ³¸ö»á»°µÄÖµ
-     * Í¬ÉÏ ÒªÏÈ¿ªÆô»á»°²ÅÄÜÊ¹ÓÃ¸Ã¹¦ÄÜ
-     * ·ñÔòÔÚÁíÒ»Ò³Ãæ¶ÁÈ¡²»µ½¸Ã»á»°Öµ
-     * Ò²¾ÍÊÇËµ È«¾Ö»á»°Ã»ÓĞÉúĞ§
-     * ¿ªÆôÇ°ÏÈ¼ì²âÏµÍ³ÊÇ·ñÒÑ×Ô¶¯¿ªÆô
+     * è®¾ç½®æŸä¸ªä¼šè¯çš„å€¼
+     * åŒä¸Š è¦å…ˆå¼€å¯ä¼šè¯æ‰èƒ½ä½¿ç”¨è¯¥åŠŸèƒ½
+     * å¦åˆ™åœ¨å¦ä¸€é¡µé¢è¯»å–ä¸åˆ°è¯¥ä¼šè¯å€¼
+     * ä¹Ÿå°±æ˜¯è¯´ å…¨å±€ä¼šè¯æ²¡æœ‰ç”Ÿæ•ˆ
+     * å¼€å¯å‰å…ˆæ£€æµ‹ç³»ç»Ÿæ˜¯å¦å·²è‡ªåŠ¨å¼€å¯
      * @param unknown $key
      * @param string $value
      */
     static public function setSession($key,$value=''){
         self::startSession();
         if(core_common::is_empty($key)){
-            throw new Exception("ÉèÖÃ»á»°µÄ¼üÃû²»ÄÜÎª¿Õ");
+            throw new Exception("è®¾ç½®ä¼šè¯çš„é”®åä¸èƒ½ä¸ºç©º");
         }
         $_SESSION[$key] = $value;
     }
     
     /**
-     * Çå³ı»á»°
-     * Çå³ı¶ÔÓ¦¼üÃûµÄ»áÔ± ÈôÎ´Ö¸¶¨¼üÃû ÔòÇå³ıËùÓĞ»á»°
-     * @param  $key ÒªÇå³ıµÄ»á»°¼üÃû
+     * æ¸…é™¤ä¼šè¯
+     * æ¸…é™¤å¯¹åº”é”®åçš„ä¼šå‘˜ è‹¥æœªæŒ‡å®šé”®å åˆ™æ¸…é™¤æ‰€æœ‰ä¼šè¯
+     * @param  $key è¦æ¸…é™¤çš„ä¼šè¯é”®å
      */
     static public function cleanSession($key=''){
         self::startSession();
@@ -88,8 +88,8 @@ class class_session{
     }
     
     /**
-     * ·µ»Øµ±Ç°»á»°¿ªÆô×´Ì¬
-     * php >= 5.4 session_statusº¯Êı¿ÉÓÃ
+     * è¿”å›å½“å‰ä¼šè¯å¼€å¯çŠ¶æ€
+     * php >= 5.4 session_statuså‡½æ•°å¯ç”¨
      */
     static public function statusSession(){
         if(function_exists('session_status')){
@@ -100,8 +100,8 @@ class class_session{
     }
     
     /**
-     * ¹Ø±Õµ±Ç°»á»°
-     * php >= 5.4 session_statusº¯Êı¿ÉÓÃ
+     * å…³é—­å½“å‰ä¼šè¯
+     * php >= 5.4 session_statuså‡½æ•°å¯ç”¨
      */
     static public function closeSession(){
         if(function_exists('session_status')){

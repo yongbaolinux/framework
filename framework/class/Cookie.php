@@ -1,16 +1,16 @@
-<?php   if ( ! defined('DRPATH')) exit('·ÃÎÊ´íÎó');
+ï»¿<?php   if ( ! defined('DRPATH')) exit('è®¿é—®é”™è¯¯');
 /**
- * cookie²Ù×÷Àà
+ * cookieæ“ä½œç±»
  * @author yongbaolinux
  * 2014-12-10
  */
 class class_cookie{
     static function setCookie($key,$value,$expire='',$path='',$domain='',$secure=null,$httponly=null){
         if(core_common::is_empty($key)){
-            throw new Exception("cookie¼üÃû²»ÄÜÎª¿Õ");
+            throw new Exception("cookieé”®åä¸èƒ½ä¸ºç©º");
         }
         if(core_common::is_empty($value)){
-            throw new Exception("cookie¼üÖµ²»ÄÜÎª¿Õ");
+            throw new Exception("cookieé”®å€¼ä¸èƒ½ä¸ºç©º");
         }
         $cookie_config = core_config::getInstance()->get_config('cookie');
         $expire = !core_common::is_empty($expire) ? intval($expire) : ($cookie_config['expire'] ? $cookie_config['expire'] : 3600);

@@ -11,13 +11,24 @@ class drivers_cache_memcache_driver extends core_cache{
     
     public function __construct(){
         parent::__construct();
-        $this->memcache = new Memcache;
+        //检查是否安装有php的memcache扩展
+        //优先使用memcache扩展 如果没有该扩展 使用memcached扩展
+        //如果没有安装任何扩展 就加载memcached原生操作类
+        if(extension_loaded('memcache')) {
+            $this->memcache = new Memcache;
+        } elseif(extension_loaded('memcached')){
+            $this->memcache = new Memcached;
+        } else{
+            $this->memcache = class_memcached::getInstance();
+        }
         if(is_object($this->memcache)){
-            if(!$this->memcache->connect($this->host,$this->port)){
-                throw new Exception('连接memcached服务失败,请检查memcached服务是否已在  11211端口开启');
+            if(method_exists($this->memcache,'connect')) {
+                if (!$this->memcache->connect($this->host, $this->port)) {
+                    throw new Exception('连接memcached服务失败,请检查memcached服务是否已在  11211端口开启');
+                }
             }
         } else {
-            throw new Exception('初始化Memcache对象失败,请检查memcache.dll或memcache.so扩展是否安装');
+            throw new Exception('初始化Memcache对象失败,请检查memcache.dll或memcache.so扩展是否安装及是否有memcache操作类');
         }
     }
 
@@ -39,11 +50,13 @@ class drivers_cache_memcache_driver extends core_cache{
      * @param $persistent
      */
     public function _addServer($host,$port,$persistent){
-        if(!$this->memcache->addServer($host,$port,$persistent)){
-            try{
-                throw new Exception('添加memcached服务到连接池失败');
-            } catch (Exception $e){
-                core_common::print_exception_log($e);
+        if(method_exists($this->memcache,'addServer')) {
+            if (!$this->memcache->addServer($host, $port, $persistent)) {
+                try {
+                    throw new Exception('添加memcached服务到连接池失败');
+                } catch (Exception $e) {
+                    core_common::print_exception_log($e);
+                }
             }
         }
     }

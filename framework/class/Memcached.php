@@ -93,7 +93,7 @@ define("COMPRESSION_SAVINGS", 0.20);
  * @author  Ryan T. Dean <rtdean@cytherianage.net>
  * @package memcached-client
  */
-class memcached
+class class_memcached extends core_base
 {
    // {{{ properties
    // {{{ public
@@ -233,6 +233,9 @@ class memcached
       $this->_host_dead = array();
    }
 
+    function __initialize(){
+
+    }
    // }}}
    // {{{ add()
 

@@ -96,6 +96,7 @@ class core_cache extends core_base{
      * 检查环境 是否安装相应缓存系统的扩展
      * 如果检测到相应模块没有加载 会根据OS的类型和ext文件夹来动态加载
      * 加载失败会抛出异常
+     * TODO 将这个功能移至底层类
      */
     protected function _check_env_mem(){
         if(extension_loaded($this->type) === false){
@@ -106,8 +107,8 @@ class core_cache extends core_base{
                  dl ( $this->type.'.so' );
             } */
             //throw new Exception("PHP未加载{$this->type}相应扩展,请手动修改php.ini配置文件以确认添加该模块");
-            //没有加载dll就加载memcache操作类
-            require_once    rtrim(DRPATH,'/').'/'.ucfirst($this->type).'.php';
+            //没有加载dll就使用使用memcached操作类
+            //require_once    rtrim(DRPATH,'/').'/'.ucfirst($this->type).'.php';
         }
         //var_dump(extension_loaded($this->type));
     }
