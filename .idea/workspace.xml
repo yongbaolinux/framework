@@ -25,42 +25,27 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="cache.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/framework/core/cache.php">
+      <file leaf-file-name="env.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/bui/main/env.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33862433" vertical-offset="222" max-vertical-offset="3942">
-              <caret line="23" column="17" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="driver.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/framework/drivers/cache/memcache/driver.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="126" max-vertical-offset="2934">
-              <caret line="7" column="35" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Memcached.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/framework/class/Memcached.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1311" max-vertical-offset="17316">
-              <caret line="48" column="63" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="63" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/framework/test.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="230" max-vertical-offset="1026">
-              <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-              <folding />
+            <state vertical-scroll-proportion="0.74603176" vertical-offset="729" max-vertical-offset="1692">
+              <caret line="64" column="145" selection-start-line="64" selection-start-column="145" selection-end-line="64" selection-end-column="145" />
+              <folding>
+                <marker date="1418837592362" expanded="true" signature="64:935" placeholder="..." />
+                <marker date="1418837592362" expanded="true" signature="72:624" placeholder="..." />
+                <marker date="1418837592362" expanded="true" signature="474:615" placeholder="..." />
+                <marker date="1418837592362" expanded="true" signature="485:604" placeholder="{...}" />
+                <marker date="1418837592362" expanded="true" signature="632:935" placeholder="..." />
+                <marker date="1418837592362" expanded="true" signature="657:935" placeholder="..." />
+                <marker date="1418837592362" expanded="true" signature="688:935" placeholder="..." />
+                <marker date="1418837592362" expanded="true" signature="747:935" placeholder="..." />
+                <marker date="1418837592362" expanded="true" signature="817:935" placeholder="..." />
+                <marker date="1418837592362" expanded="true" signature="854:935" placeholder="..." />
+                <marker date="1418837592362" expanded="true" signature="1019:1101" placeholder="..." />
+                <marker date="1418837592362" expanded="true" signature="3414:3431" placeholder="..." />
+                <marker date="1418837592362" expanded="true" signature="3469:3499" placeholder="..." />
+                <marker date="1418837592362" expanded="true" signature="3784:3797" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -108,6 +93,7 @@
         <option value="$PROJECT_DIR$/framework/drivers/cache/memcache/driver.php" />
         <option value="$PROJECT_DIR$/framework/test.php" />
         <option value="$PROJECT_DIR$/framework/core/cache.php" />
+        <option value="$PROJECT_DIR$/bui/main/env.php" />
       </list>
     </option>
   </component>
@@ -180,6 +166,38 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="projects" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -305,14 +323,15 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952693" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32626426" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17349927" sideWeight="0.49842766" order="1" side_tool="false" content_ui="tabs" x="946" y="115" width="243" height="594" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17349927" sideWeight="0.5015723" order="0" side_tool="true" content_ui="combo" x="558" y="46" width="250" height="636" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17349927" sideWeight="0.5015723" order="0" side_tool="true" content_ui="combo" x="558" y="46" width="250" height="636" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.15812592" sideWeight="0.50117093" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952693" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -323,7 +342,6 @@
       <window_info id="PHP-CGI Server" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952693" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35691825" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32861635" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -374,13 +392,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/Core_d.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8255613" vertical-offset="3759" max-vertical-offset="6897">
-          <caret line="223" column="55" selection-start-line="223" selection-start-column="55" selection-end-line="223" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/company/system/core/Loader.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="23807">
@@ -729,9 +740,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/framework/core/cache.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33862433" vertical-offset="222" max-vertical-offset="3942">
-          <caret line="23" column="17" selection-start-line="23" selection-start-column="17" selection-end-line="23" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.46560848" vertical-offset="222" max-vertical-offset="3942">
+          <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bui/main/env.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.74603176" vertical-offset="729" max-vertical-offset="1692">
+          <caret line="64" column="145" selection-start-line="64" selection-start-column="145" selection-end-line="64" selection-end-column="145" />
+          <folding>
+            <marker date="1418837592362" expanded="true" signature="64:935" placeholder="..." />
+            <marker date="1418837592362" expanded="true" signature="72:624" placeholder="..." />
+            <marker date="1418837592362" expanded="true" signature="474:615" placeholder="..." />
+            <marker date="1418837592362" expanded="true" signature="485:604" placeholder="{...}" />
+            <marker date="1418837592362" expanded="true" signature="632:935" placeholder="..." />
+            <marker date="1418837592362" expanded="true" signature="657:935" placeholder="..." />
+            <marker date="1418837592362" expanded="true" signature="688:935" placeholder="..." />
+            <marker date="1418837592362" expanded="true" signature="747:935" placeholder="..." />
+            <marker date="1418837592362" expanded="true" signature="817:935" placeholder="..." />
+            <marker date="1418837592362" expanded="true" signature="854:935" placeholder="..." />
+            <marker date="1418837592362" expanded="true" signature="1019:1101" placeholder="..." />
+            <marker date="1418837592362" expanded="true" signature="3414:3431" placeholder="..." />
+            <marker date="1418837592362" expanded="true" signature="3469:3499" placeholder="..." />
+            <marker date="1418837592362" expanded="true" signature="3784:3797" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
