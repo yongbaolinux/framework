@@ -60,13 +60,19 @@
              </div>
              <div class="row detail-row">
                  <div class="span8">
-                     <label>Apache服务器加载模块：</label><span class="detail-text"><?php foreach(apache_get_modules() as $key=>$module){
+                     <label>Apache加载模块：</label><span class="detail-text"><?php foreach(apache_get_modules() as $key=>$module){
                              if($key%2 == 1){
                                  echo "<a href='http://httpd.apache.org/docs/2.4/mod/".$module.".html' target='_new' style='background-color:#ccc;'>".$module."</a> ";
                              } else {
                                  echo "<a href='http://httpd.apache.org/docs/2.4/mod/".$module.".html' target='_new'>".$module."</a> ";
                              }
                          }?></span>
+                 </div>
+                 <div class="span8">
+                     <label>服务器操作系统：</label><span class="detail-text"><?=php_uname()?></span>
+                 </div>
+                 <div class="span8">
+                     <label>服务器操作系统：</label><span class="detail-text"><?=php_sapi_name()?></span>
                  </div>
              </div>
          </div>
