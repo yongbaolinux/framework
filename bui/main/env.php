@@ -21,7 +21,7 @@
      <div class="detail-page">
          <h2>信息</h2>
          <div class="detail-section">
-             <h3>服务器信息</h3>
+             <h3>服务器硬件及软件信息</h3>
              <div class="row detail-row">
                  <div class="span8">
                      <label>服务器IP：</label><span class="detail-text"><?=$_SERVER['SERVER_ADDR']?></span>
@@ -72,7 +72,22 @@
                      <label>服务器操作系统：</label><span class="detail-text"><?=php_uname()?></span>
                  </div>
                  <div class="span8">
-                     <label>服务器CPU：</label><span class="detail-text"></span>
+                     <label>服务器CPU架构平台：</label><span class="detail-text"><?php 
+                     echo PHP_OS;
+                     ob_start();
+                     system('systeminfo',$retval);
+                     $return = ob_get_contents();
+                     ob_end_clean();
+                     $arr = explode("\n",$return);
+                     foreach ($arr as $item){
+                         $temp = explode(":",$item);
+                         //从ob缓存中取出来的字符集为gbk 转换成utf8
+                         $temp[0] = iconv('gbk','utf-8',$temp[0]);
+                         if($temp[0] == '系统类型'){
+                             echo iconv('gbk','utf-8',$temp[1]);
+                         }
+                     }
+                     ?></span>
                  </div>
              </div>
          </div>
@@ -84,6 +99,9 @@
                  </div>
                  <div class="span8">
                      <label>PHP版本：</label><span class="detail-text"><?=PHP_VERSION?></span>
+                 </div>
+                 <div class="span8">
+                     <label>PHP加载模块：</label><span class="detail-text"><?=system('php -m')?></span>
                  </div>
              </div>
          </div>
