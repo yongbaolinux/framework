@@ -1,4 +1,4 @@
-<?php @ini_set('short_open_tag' , 'On');?>
+<?php @ini_get('short_open_tag' , 'On');?>
 <!DOCTYPE HTML>
 <html>
  <head>
@@ -72,12 +72,20 @@
                      <label>服务器操作系统：</label><span class="detail-text"><?=php_uname()?></span>
                  </div>
                  <div class="span8">
-                     <label>服务器操作系统：</label><span class="detail-text"><?=php_sapi_name()?></span>
+                     <label>服务器CPU：</label><span class="detail-text"></span>
                  </div>
              </div>
          </div>
          <div class="detail-section">
-
+			<h3>PHP信息</h3>
+            <div class="row detail-row">
+                 <div class="span8">
+                     <label>PHP接口类型：</label><span class="detail-text"><?=php_sapi_name()?></span>
+                 </div>
+                 <div class="span8">
+                     <label>PHP版本：</label><span class="detail-text"><?=PHP_VERSION?></span>
+                 </div>
+             </div>
          </div>
          <div class="detail-section">
              
