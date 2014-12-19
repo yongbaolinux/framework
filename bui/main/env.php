@@ -73,18 +73,19 @@
                  </div>
                  <div class="span8">
                      <label>服务器CPU架构平台：</label><span class="detail-text"><?php 
-                     echo PHP_OS;
-                     ob_start();
-                     system('systeminfo',$retval);
-                     $return = ob_get_contents();
-                     ob_end_clean();
-                     $arr = explode("\n",$return);
-                     foreach ($arr as $item){
-                         $temp = explode(":",$item);
-                         //从ob缓存中取出来的字符集为gbk 转换成utf8
-                         $temp[0] = iconv('gbk','utf-8',$temp[0]);
-                         if($temp[0] == '系统类型'){
-                             echo iconv('gbk','utf-8',$temp[1]);
+                     if(substr(PHP_OS,0,3) == 'WIN') {
+                         ob_start();
+                         system('systeminfo', $retval);
+                         $return = ob_get_contents();
+                         ob_end_clean();
+                         $arr = explode("\n", $return);
+                         foreach ($arr as $item) {
+                             $temp = explode(":", $item);
+                             //从ob缓存中取出来的字符集为gbk 转换成utf8
+                             $temp[0] = iconv('gbk', 'utf-8', $temp[0]);
+                             if ($temp[0] == '系统类型') {
+                                 echo iconv('gbk', 'utf-8', $temp[1]);
+                             }
                          }
                      }
                      ?></span>
@@ -101,7 +102,10 @@
                      <label>PHP版本：</label><span class="detail-text"><?=PHP_VERSION?></span>
                  </div>
                  <div class="span8">
-                     <label>PHP加载模块：</label><span class="detail-text"><?=system('php -m')?></span>
+                     <label>PHP加载模块：</label><span class="detail-text"><?php
+                         echo implode(' ',get_loaded_extensions());
+
+                         ?></span>
                  </div>
              </div>
          </div>

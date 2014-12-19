@@ -36,7 +36,7 @@ require './core/init.php';
 //}
 //$db->lock('user');
 //core_common::dump($_SERVER);
-core_cache::getInstance()->add('test_key','test_value');
+//core_cache::getInstance()->add('test_key','test_value');
 //core_cache::getInstance()->set('test_key', 'test_value');
 //core_cache::getInstance()->addServer('127.0.0.1',11212);
 //core_cache::getInstance()->add('test_key2','test_value2');
@@ -54,4 +54,5 @@ core_cache::getInstance()->add('test_key','test_value');
 //core_common::dump(core_cache::getInstance()->status('getServerStatus','127.0.0.1','11211'));
 //core_common::dump(core_cache::getInstance()->status('getStats'));   //整个缓存系统的信息
 //core_common::dump(core_cache::getInstance()->status('getVersion'));
+system('php -m');
 ?>
