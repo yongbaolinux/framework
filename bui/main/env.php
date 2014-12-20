@@ -458,7 +458,41 @@
     <div class="row detail-row">
         <div class="span24">
             <label>PHP核心功能检测：</label>
+            <?php //用一个大数组来维护核心功能性的中文注解
+            //desc 用于描述该功能 switch是否对其值进行显示转换 不需要转换的就是本身就是数值 需要转换的是把 1 转成 On/0 转成 Off诸如此类
+            $php_core_info = array(
+                'allow_url_fopen'=>array('desc'=>'是否允许fopen函数远程打开一个url链接'),
+                'allow_url_include'=>array('desc'=>'是否允许远程通过url包含一个php文件'),
+                'asp_tags'=>array('desc'=>'是否开启ASP风格的标记'),
+                'auto_detect_line_endings'=>array('desc'=>'是否在不同的系统上自动侦测换行符,以便fgets()和file()函数正常工作'),
+                'date.timezone'=>array('desc'=>'默认时区','noswitch'=>1),
+                'default_charset'=>array('desc'=>'默认字符集'),
+                'default_mimetype'=>array('desc'=>'默认的mime类型','noswitch'=>1),
+                'display_errors'=>array('desc'=>'是否显示php错误信息'),
+                'default_socket_timeout'=>array('desc'=>'默认socket连接超时时间','noswitch'=>1),
+                'display_startup_errors'=>array('desc'=>'是否打开PHP启动过程的错误提示,如果开启会将错误输入到系统的事件查看器'),
+                'enable_dl'=>array('desc'=>'是否开启动态加载扩展'),
+                'enable_post_data_reading'=>array('desc'=>'是否开启$_POST/$_FILES的获取,如果关闭该项,就只能用php://input来读取POST和FILES数据'),
+                'error_log'=>array('desc'=>'错误日志存放路径','noswitch'=>1),
+                'engine'=>array('desc'=>'打开或关闭 PHP 解析。本指令仅在将PHP作为Apache的模块运行时才有用'),
+                'error_reporting'=>array('desc'=>'设置php报告错误级别','noswitch'=>1),
+                'expose_php'=>array('desc'=>'是否暴露php的某些信息，关掉该项可以提高安全性'),
+                'extension_dir'=>array('desc'=>'php扩展存放路径','noswitch'=>1),
+                'file_uploads'=>array('desc'=>'是否允许通过HTTP进行文件上传'),
+                'html_errors'=>array('desc'=>'是否在错误信息中关闭HTML标签。这种新的HTML格式的错误信息是可以点击，它引导用户前往描述该错误或者导致该错误发生的函数的参考信息页面'),
+                'iconv.input_encoding'=>array(),
+                'iconv.internal_encoding'=>array(),
+                'iconv.output_encoding'=>array(),
+                'ignore_repeated_errors'=>array('desc'=>'是否忽略同一个文件同一行代码上的重复信息'),
+                'ignore_repeated_source'=>array('desc'=>'是否忽略重复消息,不管消息是不是来自同一文件同一行'),
+                'ignore_user_abort'=>array('desc'=>'客户端断开连接后，脚本是否继续运行'),
 
+            );
+            //转换函数
+            function getStatus($status){
+                return $status ? 'On' : 'Off';
+            }
+            ?>
             <div id="grid">
                 <div class="bui-simple-grid bui-simple-list bui-grid-border" style="width: 950px;" aria-disabled="false"
                      aria-pressed="false">
@@ -478,20 +512,27 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach (ini_get_all() as $key => $module) { ?>
+                        <?php foreach (ini_get_all('core') as $key => $value) { if(isset($php_core_info[$key]) && !empty($php_core_info[$key])){ ?>
                             <tr class="bui-grid-row bui-grid-row-odd">
                                 <td class="bui-grid-cell ">
                                     <div class="bui-grid-cell-inner">
-                                        <span class="bui-grid-cell-text"><?php echo $module; ?></span>
+                                        <span class="bui-grid-cell-text"><?php echo $key.'  ('.$php_core_info[$key]['desc'].')';?></span>
                                     </div>
                                 </td>
                                 <td class="bui-grid-cell ">
                                     <div class="bui-grid-cell-inner">
-                                        <span class="bui-grid-cell-text">PHP调试工具</span>
+                                        <span class="bui-grid-cell-text"><?php
+                                            if(isset($php_core_info[$key]['noswitch'])){
+                                                echo $value['global_value'];
+                                            } else {
+                                                echo getStatus($value['global_value']);
+                                            }
+                                            ?></span>
                                     </div>
                                 </td>
                             </tr>
-                        <?php } ?>
+                        <?php }
+                            } ?>
                         </tbody>
                     </table>
                 </div>
