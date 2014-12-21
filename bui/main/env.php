@@ -20,11 +20,8 @@
 <body>
 <div class="container">
 <div class="detail-page">
-<h2>信息</h2>
-
 <div class="detail-section">
     <h3>服务器硬件及软件信息</h3>
-
     <div class="row detail-row">
         <div class="span8">
             <label>服务器IP：</label><span class="detail-text"><?= $_SERVER['SERVER_ADDR'] ?></span>
@@ -59,6 +56,51 @@
                  </div>-->
         <div class="span8">
             <label>服务器标识字符串：</label><span class="detail-text"><?= $_SERVER['SERVER_SOFTWARE'] ?></span>
+        </div>
+    </div>
+    <div class="row detail-row">
+        <div class="span8">
+            <label>服务器计算机名：</label><span class="detail-text"><?= getenv('COMPUTERNAME') ?></span>
+        </div>
+        <div class="span8">
+            <label>服务器用户域：</label><span class="detail-text"><?= getenv('USERDOMAIN') ?></span>
+        </div>
+        <div class="span8">
+            <label>服务器用户名：</label><span class="detail-text"><?= getenv('USERNAME') ?></span>
+        </div>
+    </div>
+    <div class="row detail-row">
+        <div class="span24">
+            <label>服务器操作系统：</label><span class="detail-text"><?= php_uname() ?></span>
+        </div>
+    </div>
+    <div class="row detail-row">
+        <div class="span16">
+            <label>服务器CPU架构平台：</label><span class="detail-text"><?php
+                echo getenv('PROCESSOR_IDENTIFIER');
+                if (substr(PHP_OS, 0, 3) == 'WIN') {
+                    /*ob_start();
+                    system('systeminfo', $retval);
+                    $return = ob_get_contents();
+                    ob_end_clean();
+                    $arr = explode("\n", $return);
+                    foreach ($arr as $item) {
+                        $temp = explode(":", $item);
+                        //从ob缓存中取出来的字符集为gbk 转换成utf8
+                        $temp[0] = iconv('gbk', 'utf-8', $temp[0]);
+                        if ($temp[0] == '系统类型') {
+                            echo iconv('gbk', 'utf-8', $temp[1]);
+                        }
+                    }*/
+                } else {
+
+
+                }
+                ?></span>
+        </div>
+        <div class="span8">
+            <label>服务器CPU数量：</label>
+            <span class="detail-text"><?=getenv('NUMBER_OF_PROCESSORS')?></span>
         </div>
     </div>
     <div class="row detail-row">
@@ -203,32 +245,9 @@
                 </div>
             </div>
         </div>
-        <div class="span8">
-            <label>服务器操作系统：</label><span class="detail-text"><?= php_uname() ?></span>
-        </div>
-        <div class="span8">
-            <label>服务器CPU架构平台：</label><span class="detail-text"><?php
-                if (substr(PHP_OS, 0, 3) == 'WIN') {
-                    /*ob_start();
-                    system('systeminfo', $retval);
-                    $return = ob_get_contents();
-                    ob_end_clean();
-                    $arr = explode("\n", $return);
-                    foreach ($arr as $item) {
-                        $temp = explode(":", $item);
-                        //从ob缓存中取出来的字符集为gbk 转换成utf8
-                        $temp[0] = iconv('gbk', 'utf-8', $temp[0]);
-                        if ($temp[0] == '系统类型') {
-                            echo iconv('gbk', 'utf-8', $temp[1]);
-                        }
-                    }*/
-                } else {
-
-
-                }
-                ?></span>
-        </div>
     </div>
+
+
 </div>
 <div class="detail-section">
     <h3>PHP信息</h3>
@@ -457,9 +476,9 @@
     </div>
     <div class="row detail-row">
         <div class="span24">
-            <label>PHP核心功能检测：</label>
-            <?php //用一个大数组来维护核心功能性的中文注解
-            //desc 用于描述该功能 switch是否对其值进行显示转换 不需要转换的就是本身就是数值 需要转换的是把 1 转成 On/0 转成 Off诸如此类
+            <label>PHP配置检测：</label>
+            <?php //用一个大数组来维护配置的中文注解
+            //desc 用于描述该配置项 switch是否对其值进行显示转换 不需要转换的就是本身就是数值 需要转换的是把 1 转成 On/0 转成 Off诸如此类
             $php_core_info = array(
                 'allow_url_fopen'=>array('desc'=>'是否允许fopen函数远程打开一个url链接'),
                 'allow_url_include'=>array('desc'=>'是否允许远程通过url包含一个php文件'),
@@ -486,11 +505,35 @@
                 'ignore_repeated_errors'=>array('desc'=>'是否忽略同一个文件同一行代码上的重复信息'),
                 'ignore_repeated_source'=>array('desc'=>'是否忽略重复消息,不管消息是不是来自同一文件同一行'),
                 'ignore_user_abort'=>array('desc'=>'客户端断开连接后，脚本是否继续运行'),
+                'implicit_flush'=>array('desc'=>'是否每段信息块输出后自动刷新，这等同于每次使用print echo 函数或每个HTML代码块后调用 flush函数，在WEB下默认关闭'),
+                'include_path'=>array('desc'=>'指定require include 等函数查找文件的目录','noswitch'=>1),
+                'log_errors'=>array('desc'=>'设置是否将脚本运行的错误信息记录到服务器错误日志或者error_log之中'),
+                'log_errors_max_len'=>array('desc'=>'设置 log_errors 的最大字节数','noswitch'=>1),
+                'max_execution_time'=>array('desc'=>'设置了脚本被解析器中止之前允许的最大执行时间，单位秒','noswitch'=>1),
+                'max_file_uploads'=>array('desc'=>'一个表单所能上传的文件数最大值','noswitch'=>1),
+                'max_input_nesting_level'=>array('desc'=>'设置输入变量的嵌套深度($_POST[1][2]','noswitch'=>1),
+                'max_input_time'=>array('desc'=>'设置PHP解析POST和GET数据所允许的最大时间值,单位为秒','noswitch'=>1),
+                'max_input_vars'=>array('desc'=>'设置能够接受input变量的数值','noswitch'=>1),
+                'memory_limit'=>array('desc'=>'设置一个脚本执行时所能分配内存的最大值,单位为字节','noswitch'=>1),
+                'output_buffering'=>array('desc'=>'设置输出缓冲区的最大值','noswitch'=>1),
+                'post_max_size'=>array('desc'=>'设置POST数据所允许的最大值','noswitch'=>1),
+                'precision'=>array('desc'=>'设置浮点数中显示有效数字的位数','noswitch'=>1),
+                'realpath_cache_size'=>array('desc'=>'设置realpath_cache的内存使用大小,对include require所包含的文件路径进行缓存,默认为16k','noswitch'=>1),
+                'realpath_cache_ttl'=>array('desc'=>'设置realpath_cache的缓存有效时间','noswitch'=>1),
+                'register_argc_argv'=>array('desc'=>'在CLI中，设置是否可以访问到argc和argv的值'),
+                'report_memleaks'=>array('desc'=>'设置是否显示内存泄露消息'),
+                'request_order'=>array('desc'=>'定义$_REQUEST数组的构成,G代表$_GET,P代表$_POST,C代表$_COOKIE,变量从左至右被覆盖','noswitch'=>1),
+                'short_open_tag'=>array('desc'=>'是否打开短标记<?= ?>'),
+                'smtp'=>array('desc'=>'邮件服务器域名','noswitch'=>1),
+                'smtp_port'=>array('desc'=>'邮件服务器端口','noswitch'=>1),
+                'sql.safe_mode'=>array('desc'=>'开启后数据库连接函数会忽略参数'),
+                'upload_max_filesize'=>array('desc'=>'设置单个上传文件所允许的大小','noswitch'=>1),
+                'upload_tmp_dir'=>array('desc'=>'设置上传文件的临时存放文件夹','noswitch'=>1),
 
             );
-            //转换函数
+            //转换函数 将布尔值转换成显示更友好的图形方式
             function getStatus($status){
-                return $status ? 'On' : 'Off';
+                return $status ? '<img src="../assets/img/tick_circle.png" />' : '<img src="../assets/img/cross_circle.png" />';
             }
             ?>
             <div id="grid">
@@ -501,12 +544,17 @@
                         <tr>
                             <th width="80" class="bui-grid-hd ">
                                 <div class="bui-grid-hd-inner">
-                                    <span class="bui-grid-hd-title">功能性</span>
+                                    <span class="bui-grid-hd-title">配置项</span>
+                                </div>
+                            </th>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">配置描述</span>
                                 </div>
                             </th>
                             <th width="100" class="bui-grid-hd ">
                                 <div class="bui-grid-hd-inner">
-                                    <span class="bui-grid-hd-title">状态</span>
+                                    <span class="bui-grid-hd-title">配置值</span> ( <img src="../assets/img/tick_circle.png" />说明该配置项为打开 <img src="../assets/img/cross_circle.png" />说明该配置项关闭或未配置 )
                                 </div>
                             </th>
                         </tr>
@@ -516,7 +564,12 @@
                             <tr class="bui-grid-row bui-grid-row-odd">
                                 <td class="bui-grid-cell ">
                                     <div class="bui-grid-cell-inner">
-                                        <span class="bui-grid-cell-text"><?php echo $key.'  ('.$php_core_info[$key]['desc'].')';?></span>
+                                        <span class="bui-grid-cell-text"><?php echo $key;?></span>
+                                    </div>
+                                </td>
+                                <td class="bui-grid-cell ">
+                                    <div class="bui-grid-cell-inner">
+                                        <span class="bui-grid-cell-text"><?php echo $php_core_info[$key]['desc'];?></span>
                                     </div>
                                 </td>
                                 <td class="bui-grid-cell ">
