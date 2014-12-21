@@ -7,14 +7,14 @@
     <link href="../assets/css/dpl-min.css" rel="stylesheet" type="text/css"/>
     <link href="../assets/css/bui-min.css" rel="stylesheet" type="text/css"/>
     <link href="../assets/css/page-min.css" rel="stylesheet" type="text/css"/>
-    <!-- 下面的样式，仅是为了显示代码，而不应该在项目中使用-->
     <style type="text/css">
-        code {
+        /*code {
             padding: 0px 4px;
             color: #dd1144;
             background-color: #f7f7f9;
             border: 1px solid #e1e1e8;
-        }
+        }*/
+        #grid{margin-top:10px;}
     </style>
 </head>
 <body>
@@ -99,8 +99,14 @@
                 ?></span>
         </div>
         <div class="span8">
-            <label>服务器CPU数量：</label>
-            <span class="detail-text"><?=getenv('NUMBER_OF_PROCESSORS')?></span>
+            <label>服务器物理CPU数量：</label>
+            <span class="detail-text">
+                <?php if(substr(PHP_OS,0,3) == 'WIN'){
+                    echo getenv('NUMBER_OF_PROCESSORS');
+                } elseif(PHP_OS =='Linux') {
+                    echo system('cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l');
+                }
+                ?></span>
         </div>
     </div>
     <div class="row detail-row">
@@ -113,7 +119,7 @@
                 echo "<a href='http://httpd.apache.org/docs/2.4/mod/" . $module . ".html' target='_new'>" . $module . "</a> ";
             }
         }?></span>
-                 </div>-->
+         </div>-->
         <div class="span24">
             <label>Apache加载模块：</label>
             <?php //根据$_SERVER['SERVER_SOFTWARE']的值获取Apache版本
@@ -286,6 +292,7 @@
             'gettext'=>'Gettext 函数库 PHP <= 4.2.0 需要 gnu_gettext.dll（已附带），PHP >= 4.2.3 需要 libintl-1.dll，iconv.dll（已附带）。',
             'hyperwave'=>'HyperWave 函数库',
             'hash'=>'信息摘要（哈希）引擎。允许使用各种哈希算法直接或增量处理任意长度的信息',
+            'haru'=>'一个使得PHP支持PDF的库',
             'iconv'=>'ICONV 字符集转换 需要：iconv-1.3.dll（已附带），PHP >=4.2.1 需要 iconv.dll',
             'ifx'=>'Informix 函数库 需要：Informix 库',
             'iisfunc'=>'IIS 管理函数库',
@@ -349,13 +356,13 @@
         );
     ?>
     <div class="row detail-row">
-	<div class="span8">
+        <div class="span8">
             <label>PHP接口类型：</label><span class="detail-text"><?= php_sapi_name() ?></span>
         </div>
         <div class="span8">
             <label>PHP版本：</label><span class="detail-text"><?= PHP_VERSION ?></span>
         </div>
-	<div class="span8">
+	    <div class="span8">
             <label>PHP扩展存放路径：</label><span class="detail-text"><?= ini_get('extension_dir') ?></span>
         </div>
     </div>
@@ -587,6 +594,177 @@
                         <?php }
                             } ?>
                         </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- grid end -->
+        </div>
+    </div>
+    <div class="row detail-row">
+        <div class="span24">
+            <label>PHP常见组件支持检测：( <img src="../assets/img/tick_circle.png" /> 说明该配置项为打开 <img src="../assets/img/cross_circle.png" /> 说明该配置项关闭或未配置 )</label>
+            <?php
+            //转换函数 将布尔值转换成显示更友好的图形方式
+
+            ?>
+            <div id="grid">
+                <div class="bui-simple-grid bui-simple-list bui-grid-border" style="width: 950px;" aria-disabled="false"
+                     aria-pressed="false">
+                    <table cellspacing="0" cellpadding="0" class="bui-grid-table">
+                        <tr>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">Mysql数据库支持</span>
+                                </div>
+                            </th>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('mysql'));?></span>
+                                </div>
+                            </th>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">Mysqli支持</span>
+                                </div>
+                            </th>
+                            <th width="100" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('mysqli'));?></span>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">Mysqlnd支持</span>
+                                </div>
+                            </th>
+                            <th width="100" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('mysqlnd'));?></span>
+                                </div>
+                            </th>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">图形处理 GD 库</span>
+                                </div>
+                            </th>
+                            <th width="100" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('gd'));?></span>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">Session支持</span>
+                                </div>
+                            </th>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('session'));?></span>
+                                </div>
+                            </th>
+                            <th width="100" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">Ftp支持</span>
+                                </div>
+                            </th>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('ftp'));?></span>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">Socket支持</span>
+                                </div>
+                            </th>
+                            <th width="100" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('sockets'));?></span>
+                                </div>
+                            </th>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">Xml支持</span>
+                                </div>
+                            </th>
+                            <th width="100" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('xml'));?></span>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">PDF支持</span>
+                                </div>
+                            </th>
+                            <th width="100" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('haru'));?></span>
+                                </div>
+                            </th>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">Zlib支持</span>
+                                </div>
+                            </th>
+                            <th width="100" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('zlib'));?></span>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">PCRE支持</span>
+                                </div>
+                            </th>
+                            <th width="100" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('pcre'));?></span>
+                                </div>
+                            </th>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">多字节字符支持</span>
+                                </div>
+                            </th>
+                            <th width="100" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('mbstring'));?></span>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">openssl支持</span>
+                                </div>
+                            </th>
+                            <th width="100" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('openssl'));?></span>
+                                </div>
+                            </th>
+                            <th width="80" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title">Curl支持</span>
+                                </div>
+                            </th>
+                            <th width="100" class="bui-grid-hd ">
+                                <div class="bui-grid-hd-inner">
+                                    <span class="bui-grid-hd-title"><?php echo getStatus(extension_loaded('curl'));?></span>
+                                </div>
+                            </th>
+                        </tr>
                     </table>
                 </div>
             </div>
