@@ -21,14 +21,24 @@ class Admin extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->helper('url');
+		$this->load->helper('common_func');
+		$this->load->library('session_');
 		$this->admin_res = base_url().'/admin_res';
+		dump($this);
 	}
 
 	public function index(){
 		$this->load->view('index',array('PUBLIC'=>$this->admin_res));
 	}
 
+	/**
+	 * 显示后台管理员登录界面
+	 */
 	public function login(){
+		$this->load->view('login');
+	}
+
+	public function logout(){
 
 	}
 

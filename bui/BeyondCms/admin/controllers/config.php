@@ -6,7 +6,7 @@ class Config extends CI_Controller{
     public function __construct(){
         parent::__construct();
         $this->load->helper('url');
-        $this->admin_res = base_url().'/admin_res';
+        $this->admin_res = base_url().'admin_res/';
     }
 
     public function env(){

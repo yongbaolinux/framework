@@ -17,7 +17,7 @@
         </a>
       </div>
 
-    <div class="dl-log">欢迎您，<span class="dl-log-user">**.**@alibaba-inc.com</span><a href="###" title="退出系统" class="dl-log-quit">[退出]</a><a href="http://http://www.builive.com/" title="文档库" class="dl-log-quit">文档库</a>
+    <div class="dl-log">欢迎您，<span class="dl-log-user">**.**@alibaba-inc.com</span><a href="<?=base_url()?>system.php/admin/logout" title="退出系统" class="dl-log-quit">[退出]</a><a href="http://http://www.builive.com/" title="文档库" class="dl-log-quit">文档库</a>
     </div>
   </div>
    <div class="content">
@@ -48,6 +48,7 @@
               text:'首页内容',
               items:[
                 {id:'env',text:'环境信息',href:'<?=base_url()?>system.php/config/env',closeable : false},
+                {id:'collect',text:'采集管理',href:'<?=base_url()?>system.php/content/collect',closeable : false},
                 {id:'code',text:'首页代码',href:'main/code.html'},
                 {id:'main-menu',text:'顶部导航',href:'main/menu.html'},
                 {id:'second-menu',text:'右边菜单',href:'main/second-menu.html'},
