@@ -22,20 +22,28 @@ class Admin extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->helper('common_func');
-		$this->load->library('session_');
+		$this->load->library('session');
 		$this->admin_res = base_url().'/admin_res';
-		dump($this);
+		dump($this->session);die(0);
 	}
 
 	public function index(){
-		$this->load->view('index',array('PUBLIC'=>$this->admin_res));
+		if($this->session_::getSession('login')) {
+			$this->load->view('index', array('PUBLIC' => $this->admin_res));
+		} else {
+			redirect('/system.php/admin/login','location');
+		}
 	}
 
 	/**
 	 * 显示后台管理员登录界面
 	 */
 	public function login(){
-		$this->load->view('login');
+		if(getSession('login')) {
+			redirect('/system.php','location');
+		} else {
+			$this->load->view('login');
+		}
 	}
 
 	public function logout(){
