@@ -22,16 +22,17 @@ class Admin extends CI_Controller {
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->helper('common_func');
-		$this->load->library('session');
-		$this->admin_res = base_url().'/admin_res';
-		dump($this->session);die(0);
+		$this->load->library('session_');
+		$this->load->database();
+		$this->admin_res = base_url().'admin_res';
+		//dump(($this->session_));die(0);
 	}
 
 	public function index(){
-		if($this->session_::getSession('login')) {
+		if($this->session_->getSession('login')) {
 			$this->load->view('index', array('PUBLIC' => $this->admin_res));
 		} else {
-			redirect('/system.php/admin/login','location');
+			redirect(base_url().'system.php/admin/login','location');
 		}
 	}
 
@@ -39,15 +40,34 @@ class Admin extends CI_Controller {
 	 * 显示后台管理员登录界面
 	 */
 	public function login(){
-		if(getSession('login')) {
-			redirect('/system.php','location');
+		if($this->session_->getSession('login')) {
+			redirect(base_url().'system.php','location');
 		} else {
-			$this->load->view('login');
+			$this->load->view('login',array('PUBLIC' => $this->admin_res));
 		}
 	}
 
 	public function logout(){
 
+	}
+
+	/**
+	 * ajax验证管理员帐号是否合法
+	 */
+	public function ajaxValidateAdminAccountPwd(){
+		$adminAccount = $this->input->post('admin_account');
+		$adminPwd = $this->input->post('admin_pwd');
+		if(empty($adminAccount)){
+			exit(json_encode(array('account'=>array('code'=>0,'msg'=>'帐号不能为空'))));
+		}
+
+		$adminAccountExist = $this->db->query("SELECT COUNT(*) as count FROM `bd_admin` WHERE `admin_account`='".$adminAccount."'");
+		$adminAccountExist = $adminAccountExist->result_array();
+		if($adminAccountExist[0]['count'] == 0){
+			exit(json_encode(array('code'=>0,'msg'=>'该帐号不存在')));
+		} else {
+			exit(json_encode(array('code'=>1)));
+		}
 	}
 
 }
