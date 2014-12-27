@@ -53,22 +53,46 @@ class Admin extends CI_Controller {
 
 	/**
 	 * ajax验证管理员帐号是否合法
+	 * code	代表验证结果
+	 * 0 验证通过
+	 * 1 帐号为空
+	 * 2 帐号不存在
+	 * 4 密码为空
+	 * 8 密码不正确
 	 */
 	public function ajaxValidateAdminAccountPwd(){
-		$adminAccount = $this->input->post('admin_account');
-		$adminPwd = $this->input->post('admin_pwd');
+		$adminAccount = trim($this->input->post('admin_account'));
+		$adminPwd = trim($this->input->post('admin_pwd'));
+		$accountInfo = 0;
+		$pwdInfo = 0;
+		//帐号验证信息
 		if(empty($adminAccount)){
-			exit(json_encode(array('account'=>array('code'=>0,'msg'=>'帐号不能为空'))));
-		}
-
-		$adminAccountExist = $this->db->query("SELECT COUNT(*) as count FROM `bd_admin` WHERE `admin_account`='".$adminAccount."'");
-		$adminAccountExist = $adminAccountExist->result_array();
-		if($adminAccountExist[0]['count'] == 0){
-			exit(json_encode(array('code'=>0,'msg'=>'该帐号不存在')));
+			$accountInfo = 1;
 		} else {
-			exit(json_encode(array('code'=>1)));
+			$adminAccountExist = $this->db->query("SELECT COUNT(*) AS count FROM `bd_admin` WHERE `admin_account`='".$adminAccount."'");
+			$adminAccountExist = $adminAccountExist->result_array();
+			if($adminAccountExist[0]['count'] == 0){
+				$accountInfo = 2;
+			}
 		}
+		//密码验证信息
+		if(empty($adminPwd)){
+			$pwdInfo = 4;
+		} else {
+			if($accountInfo == 0){
+				$adminPwdCorrect = $this->db->query("SELECT COUNT(*) AS count FROM `bd_admin` WHERE `admin_account`='".$adminAccount."' AND `admin_pwd`='".md5($adminPwd)."'");
+				$adminPwdCorrect = $adminPwdCorrect->result_array();
+				if($adminPwdCorrect[0]['count'] == 0){
+					$pwdInfo = 8;
+				} else {
+					$this->session_->setSession('login',1);
+				}
+			}
+		}
+		echo json_encode($accountInfo+$pwdInfo);
+
 	}
+
 
 }
 

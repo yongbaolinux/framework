@@ -64,6 +64,8 @@
     function login(){
       var admin_account = $.trim(admin_account_obj.val());
       var admin_pwd = $.trim(admin_pwd_obj.val());
+      admin_account_obj.next().removeClass('error').html('');
+      admin_pwd_obj.next().removeClass('error').html('');
       if(admin_account == ''){
           admin_account_obj.next().addClass('error').html('帐号不能为空');
           return false;
@@ -78,13 +80,31 @@
         'data':{'admin_account':admin_account,'admin_pwd':admin_pwd},
         'dataType':'json',
         'success':function(json){
-          if(!json.code){
-            admin_account_obj.next().addClass('error').html(json.msg);
-          } else {
-            admin_account_obj.next().removeClass('error').html('');
-            $.ajax({
-
-            })
+          switch(json){
+            case 0:
+                  admin_account_obj.next().removeClass('error').html('');
+                  admin_pwd_obj.next().removeClass('error').addClass('success').html('登录成功');
+                  window.location.href = '<?php echo base_url();?>system.php';break;
+            case 1:
+                  admin_account_obj.next().addClass('error').html('帐号不能为空');
+                  admin_pwd_obj.next().removeClass('error').removeClass('success').html('');break;
+            case 2:
+                  admin_account_obj.next().addClass('error').html('该帐号不存在');
+                  admin_pwd_obj.next().removeClass('error').removeClass('success').html('');break;
+            case 4:
+                  admin_account_obj.next().removeClass('error').html('');
+                  admin_pwd_obj.next().addClass('error').html('密码不能为空');break;
+            case 5:
+                  admin_account_obj.next().addClass('error').html('帐号不能为空');
+                  admin_pwd_obj.next().addClass('error').html('密码不能为空');break;
+            case 6:
+                  admin_account_obj.next().addClass('error').html('该帐号不存在');
+                  admin_pwd_obj.next().addClass('error').html('密码不能为空');break;
+            case 8:
+                  admin_account_obj.next().removeClass('error').html('');
+                  admin_pwd_obj.next().addClass('error').html('密码错误');break;
+            default:
+                  break;
           }
         }
       });
