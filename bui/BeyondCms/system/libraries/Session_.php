@@ -47,8 +47,13 @@ class CI_Session_{
         if(empty($key)){
             return $_SESSION;
         } else {
-            if(@isset($_SESSION[$key])){
-                return $_SESSION[$key];
+            $key_ = explode('.',$key);
+            $temp = $_SESSION;
+            foreach($key_ as $v){
+                $temp = @$temp[$v];
+            }
+            if(@isset($temp)){
+                return $temp;
             } else {
                 return null;
             }
@@ -61,32 +66,59 @@ class CI_Session_{
      * 否则在另一页面读取不到该会话值
      * 也就是说 全局会话没有生效
      * 开启前先检测系统是否已自动开启
-     * @param unknown $key
-     * @param string $value
+     * @param string $key 用'.'号隔开 'admin.login' 则表示 $_SESSION['admin']['login']
+     * @param string $value 这个函数的核心即是eval 和 引用
      */
     static public function setSession($key,$value=''){
         self::startSession();
         if(empty($key)){
             throw new Exception("设置会话的键名不能为空");
+        } else {
+            $key_ = explode('.',$key);
+            $str = '$_SESSION';
+            foreach($key_ as $v){
+                $str .= '["'.$v.'"]';
+                //判断$str 是否为数组
+                unset($temp);           //取消引用绑定
+                $temp = null;
+                eval('$temp=&'.$str.';');
+                //dump($temp);
+                if(!is_array($temp)){
+                    $temp = array();
+                }
+            }
+            /*ob_start();
+            var_export($value);
+            $value = ob_get_contents();
+            ob_end_clean();*/
+
+            eval($str.'=$value;');
         }
-        $_SESSION[$key] = $value;
     }
     
     /**
-     * 清除会话
+     * 清除内存中的会话数据
      * 清除对应键名的会员 若未指定键名 则清除所有会话
      * @param  $key 要清除的会话键名
      */
     static public function cleanSession($key=''){
         self::startSession();
         if(empty($key)){
-            unset($_SESSION);
+            session_unset($_SESSION);
         }
         if(@isset($_SESSION[$key])){
-            unset($_SESSION[$key]);
+            session_unset($_SESSION[$key]);
         }
     }
-    
+
+    /**
+     * 清除服务器上的会话文件数据
+     */
+    static public function destroySession(){
+        self::startSession();
+
+    }
+
     /**
      * 返回当前会话开启状态
      * php >= 5.4 session_status函数可用

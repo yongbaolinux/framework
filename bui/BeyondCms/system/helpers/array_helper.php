@@ -115,5 +115,23 @@ if ( ! function_exists('elements'))
 	}
 }
 
+/**
+ * 根据参数的数量来动态构造多维数组
+ * @param $key array
+ */
+if ( ! function_exists('createMultiArr'))
+{
+	function createMultiArr($key,$value)
+	{
+		$key_ = explode('.',$key);
+		$return = array();
+		$str = '$return';
+		foreach($key_ as $v){
+			$str .= '["'.$v.'"]';
+		}
+		eval($str.'='.$value);
+		return $return;
+	}
+}
 /* End of file array_helper.php */
 /* Location: ./system/helpers/array_helper.php */

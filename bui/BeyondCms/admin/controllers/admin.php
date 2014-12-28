@@ -29,7 +29,7 @@ class Admin extends CI_Controller {
 	}
 
 	public function index(){
-		if($this->session_->getSession('login')) {
+		if($this->session_->getSession('admin.login')) {
 			$this->load->view('index', array('PUBLIC' => $this->admin_res));
 		} else {
 			redirect(base_url().'system.php/admin/login','location');
@@ -40,15 +40,17 @@ class Admin extends CI_Controller {
 	 * 显示后台管理员登录界面
 	 */
 	public function login(){
-		if($this->session_->getSession('login')) {
+		if($this->session_->getSession('admin.login')) {
 			redirect(base_url().'system.php','location');
 		} else {
+			//dump($this->session_->getSession('admin.login'));
 			$this->load->view('login',array('PUBLIC' => $this->admin_res));
 		}
 	}
 
 	public function logout(){
-
+		$this->session_->setSession('admin.login',false);
+		redirect(base_url().'system.php/admin/index','location');
 	}
 
 	/**
@@ -85,7 +87,7 @@ class Admin extends CI_Controller {
 				if($adminPwdCorrect[0]['count'] == 0){
 					$pwdInfo = 8;
 				} else {
-					$this->session_->setSession('login',1);
+					$this->session_->setSession('admin.login',true);
 				}
 			}
 		}

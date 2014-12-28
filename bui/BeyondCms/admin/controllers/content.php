@@ -5,8 +5,13 @@ class Content extends CI_Controller{
         parent::__construct();
     }
 
+    /**
+     * 采集管理
+     */
     public function collect(){
 
     }
+
+
 }
 ?>
