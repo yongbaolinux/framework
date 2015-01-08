@@ -43,7 +43,12 @@
 			'srcNode':'#form',
 			'submitType':'ajax',
 			'callback':function(data){
-			  alert(data.msg);
+			  if(data.code > 0 ){
+				  alert(data.msg);
+				  this.close();
+			  } else {
+				  alert(data.msg);
+			  }
 			}}).render();
 		
 		var dialog = new Overlay.Dialog({
