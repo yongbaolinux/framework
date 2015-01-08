@@ -32,7 +32,7 @@
 <script type="text/javascript">
 
 	BUI.use(['bui/overlay','bui/form'],function(Overlay,Form){
-		new Form.Form({'srcNode':'#form'}).render();
+		//new Form.Form({'srcNode':'#form'}).render();
 		var dialog = new Overlay.Dialog({
 			'title':'新增文章',
 			'width':500,

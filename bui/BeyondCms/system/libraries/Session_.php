@@ -4,12 +4,13 @@
  * @author yongbaolinux
  * 2014-12-10
  * TODO 去掉自定义的常量 使用PHP自身的常量 - PHP_SESSION_DISABLED/PHP_SESSION_NONE/PHP_SESSION_ACTIVE
+ * 在低版本的PHP中 这几个变量可能不能用
  */
 class CI_Session_{
     static private $session_status = 0;
-    /*const PHP_SESSION_DISABLED = 0;        //会话不可用
+    const PHP_SESSION_DISABLED = 0;        //会话不可用
     const PHP_SESSION_NONE = 1;             //会话可用 但不能全局访问
-    const PHP_SESSION_ACTIVE = 2;           //全局会话可用 */
+    const PHP_SESSION_ACTIVE = 2;           //全局会话可用 
     
     /**
      * 检测会话是否已经自动开启
@@ -21,16 +22,16 @@ class CI_Session_{
      */
     static protected function startSession(){
         if(function_exists('session_status')){
-            if(session_status() === PHP_SESSION_DISABLED || session_status() === PHP_SESSION_NONE){
+            if(session_status() === self::PHP_SESSION_DISABLED || session_status() === self::PHP_SESSION_NONE){
                 session_start();
             }
         } else {
-            if(self::$session_status === PHP_SESSION_DISABLED){
+            if(self::$session_status === self::PHP_SESSION_DISABLED){
                 $auto_start = ini_get('session.auto_start');
                 if(!$auto_start){
                     session_start();
                 }
-                self::$session_status = PHP_SESSION_ACTIVE;
+                self::$session_status = self::PHP_SESSION_ACTIVE;
             }
         }
     }
@@ -137,13 +138,13 @@ class CI_Session_{
      */
     static public function closeSession(){
         if(function_exists('session_status')){
-            if(session_status() === PHP_SESSION_ACTIVE){
+            if(session_status() === self::PHP_SESSION_ACTIVE){
                 session_write_close();
             }
         } else {
-            if(self::$session_status === PHP_SESSION_ACTIVE){
+            if(self::$session_status === self::PHP_SESSION_ACTIVE){
                 session_write_close();
-                self::$session_status = PHP_SESSION_DISABLED;
+                self::$session_status = self::PHP_SESSION_DISABLED;
             } else {
                 if(@ini_get('session.auto_start')){
                     session_write_close();
