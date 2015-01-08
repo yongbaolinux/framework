@@ -14,14 +14,20 @@
 		<button id="btnShow" class="button button-primary">添加分类</button>
 	</div>
 	<div id="content" class="hidden" style="display:none;">
-		<form id="form" class="form-horizontal">
+		<form id="form" class="form-horizontal" action="<?=$CONTROLLER?>/ajaxAddArticleCate" method="POST">
 			<div class="row">
 				<div class="control-group span12">
 					<label class="control-label">分类名：</label>
 					<div class="controls">
-						<input type="text" class="input-normal control-text" data-rules="{required : true}">
+						<input type="text" name="cateName" class="input-normal control-text" data-rules="{required : true}">
 					</div>
 				</div>
+				<div class="control-group span12">       
+                  <div class="form-actions span13 offset3">
+                    <button class="button button-primary" type="submit">保存</button>
+                    <button class="button" type="reset">重置</button>
+                  </div>
+                </div>
 			</div>
 		</form>
 	</div>
@@ -32,14 +38,24 @@
 <script type="text/javascript">
 
 	BUI.use(['bui/overlay','bui/form'],function(Overlay,Form){
-		//new Form.Form({'srcNode':'#form'}).render();
+		
+		new Form.Form({
+			'srcNode':'#form',
+			'submitType':'ajax',
+			'callback':function(data){
+			  alert(data.msg);
+			}}).render();
+		
 		var dialog = new Overlay.Dialog({
 			'title':'新增文章',
 			'width':500,
 			'height':120,
 			'contentId':'content',
+			'buttons':[],
 			'success':function(){
-				
+				 $.ajax({
+					    
+			     });
 			     this.close();
 			}
 		});
