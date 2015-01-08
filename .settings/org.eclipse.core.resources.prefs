@@ -1,11 +1,2 @@
 eclipse.preferences.version=1
-encoding//company/system/helpers/file_helper.php=UTF-8
-encoding//framework/class/Net.php=UTF-8
-encoding//framework/conf/cookie.ini.php=UTF-8
-encoding//framework/conf/db.ini.php=UTF-8
-encoding//framework/conf/session.ini.php=UTF-8
-encoding//framework/core/base.php=UTF-8
-encoding//framework/core/common.php=UTF-8
-encoding//framework/core/db.php=UTF-8
-encoding//framework/core/loader.php=UTF-8
-encoding//framework/test.php=UTF-8
+encoding/<project>=UTF-8

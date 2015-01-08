@@ -55,12 +55,12 @@
             menu:[{
                 text:'文章管理',
                 items:[
-                  {id:'code',text:'文章列表',href:'<?=base_url()?>system.php/content/env'},
+                  {id:'articlesCate',text:'文章分类',href:'<?=base_url()?>system.php/content/articlesCate'}, 
+                  {id:'articlesList',text:'文章列表',href:'<?=base_url()?>system.php/content/articlesList'},
                 ]
               },{
                 text:'采集管理',
                 items:[
-                {id:'code',text:'文章列表',href:'form/code.html'},
                 {id:'collect',text:'采集管理',href:'<?=base_url()?>system.php/content/collect'},
             ]
         }]
