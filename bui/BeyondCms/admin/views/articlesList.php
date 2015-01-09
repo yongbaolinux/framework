@@ -31,9 +31,6 @@
 							<option value="">淘宝卖家</option>
 							<option value="">大厂直供</option>
 						</select>
-						<script type="text/javascript">
-						   
-						</script>
 					</div>
 				</div>
 			</div>
@@ -94,6 +91,11 @@
 		$("#btnShow").click(function(){
 			dialog.show();
 		});
+	});
+
+	//ajax获取全部文章分类信息
+	$.ajax({
+	    
 	});
 </script>
 </html>

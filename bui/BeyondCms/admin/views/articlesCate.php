@@ -44,10 +44,21 @@
 			'submitType':'ajax',
 			'callback':function(data){
 			  if(data.code > 0 ){
-				  alert(data.msg);
-				  this.close();
+				   BUI.Message.Show({
+					   'msg':'添加成功',
+					   'icon':'success',
+					   'buttons':[],
+					   'autoHide':true,
+					   'autoHideDelay':2000
+					  }); 
 			  } else {
-				  alert(data.msg);
+				  BUI.Message.Show({
+					   'msg':data.msg,
+					   'icon':'error',
+					   'buttons':[],
+					   'autoHide':true,
+					   'autoHideDelay':2000
+					  }); 
 			  }
 			}}).render();
 		
@@ -57,10 +68,7 @@
 			'height':120,
 			'contentId':'content',
 			'buttons':[],
-			'success':function(){
-				 $.ajax({
-					    
-			     });
+			'success':function(){ 
 			     this.close();
 			}
 		});
