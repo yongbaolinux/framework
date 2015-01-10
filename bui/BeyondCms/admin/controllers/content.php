@@ -72,5 +72,24 @@ class Content extends CI_Controller{
             exit('非法访问');
         }
     }
+    
+    /**
+     * ajax方式添加一篇文章
+     */
+    public function ajaxAddArticle(){
+        if(isAjax()){
+            $cateId = $this->input->post('cate_id');
+            $content = $this->input->post('content');
+            $title = $this->input->post('title');
+            $insertResult = $this->db->query("INSERT INTO `bd_articles`(`title`,`content`,`cate_id`,`author`,`ctime`) VALUES('".$title."','".$content."','".$cateId."','".$_SESSION['admin']['name']."','".time()."')");
+            if($insertResult){
+                echo json_encode(array('code'=>1,'msg'=>'添加成功'));
+            } else {
+                echo json_encode(array('code'=>0,'msg'=>'添加失败'));
+            }
+        } else {
+            exit('非法访问');
+        }
+    }
 }
 ?>
