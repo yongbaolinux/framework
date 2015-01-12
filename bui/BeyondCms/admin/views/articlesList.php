@@ -13,13 +13,14 @@
 	<div style="margin:20px;">
 		<button id="addArticle" class="button button-primary">添加文章</button>
 	</div>
-    
+    <div id="grid">
+    </div>
 </body>
 <script type="text/javascript" src="<?=$PUBLIC?>/js/jquery-1.8.1.min.js"></script>
 <script type="text/javascript" src="<?=$PUBLIC?>/js/kindeditor-4.1.9/kindeditor-min.js"></script>
 <script type="text/javascript" src="<?=$PUBLIC?>/js/kindeditor-4.1.9/lang/zh_CN.js"></script>
-<!--  <script type="text/javascript" src="<?=$PUBLIC?>/js/bui-min.js"></script>
-<script type="text/javascript" src="<?=$PUBLIC?>/js/config-min.js"></script>-->
+<script type="text/javascript" src="<?=$PUBLIC?>/js/bui-min.js"></script>
+<script type="text/javascript" src="<?=$PUBLIC?>/js/config-min.js"></script>
 <!-- Black Box -->
 <script type="text/javascript" src="<?=$PUBLIC?>/js/jquery.blackbox.min.js"></script>
 <!-- 引入Black Box CSS文件 切记切记 -->
@@ -28,7 +29,8 @@
     //全局函数
     //点击列表选择目录
     function chooseCategory(dom){
-    	  var category_id = parseInt($(dom).attr('mid'));
+    	  //var category_id = parseInt($(dom).attr('mid'));
+		  var category_id = $(dom).html();
     	  var category_name = $(dom).html();
     	  $("#current_category").html(category_name).attr('data-id',category_id);
     	  $("#category_list").hide();
@@ -44,10 +46,10 @@
     	  dom.style.display = 'none';  
     }
    var box = new BlackBox();
-   //添加文章
+   	  //添加文章
 	  $("#addArticle").click(function(){
 		  var menuSelect = '<select name="template">';
-		  box.popup('<p>添加新文章</p><div id="addArticleDiv" style="width:960px; padding:10px; background:#F5F5F5;"><form id="addArticleForm"><p><span style="display:inline-block;width:80px;">文章标题</span><input class="text-input small-input" type="text" id="title" name="title" /><span class="input-notification png_bg"></span><label></label></p>\
+		  box.popup('<p>添加新文章</p><div id="addArticleDiv" style="width:960px; padding:10px; background:#F5F5F5;"><form id="addArticleForm"><p><span style="display:inline-block;width:80px;">文章标题</span><input class="text-input small-input" type="text" id="title" name="title" /><span class="x-field-error"><span class="input-notification png_bg"></span><label></label></span></p>\
 		  <div style="padding:5px 0px 10px 0px;">\
 		  	<span style="display:inline-block;width:80px;font-size:14px;">文章分类</span>\
 			<div id="CategoryPicker" style="border-radius:5px 5px 5px 5px;display:inline-block;background:linear-gradient(#FFFCFC, #EDEEEF) repeat scroll 0 0 rgba(0, 0, 0, 0);border:1px solid #AD9C9C;padding:0 24px 0 12px;width:100px;cursor:pointer;position:relative;">\
@@ -59,9 +61,9 @@
     			  </div>\
 			  </div>\
 		     </div>\
-			<span class="input-notification png_bg"></span><label></label>\
+			<span class="x-field-error"><span class="input-notification png_bg"></span><label></label></span>\
 		  </div>\
-		  <p><span style="display:inline-block;width:80px;vertical-align:top;line-height:14px;">文章内容</span><textarea style="width:800px !important;height:342px;" class="text-input small-input" id="content" name="content"></textarea><span class="input-notification png_bg"></span><label></label></p><p><span style="display:inline-block;width:80px;"><input class="button" type="button" value="确认添加" id="addArticleSure" name="submit"/></span><input class="button" type="button" value="取消添加" id="addArticleCancel"/></p></form></div>',function(content){
+		  <p><span style="display:inline-block;width:80px;vertical-align:top;line-height:14px;">文章内容</span><textarea style="width:800px !important;height:342px;" class="text-input small-input" id="content" name="content"></textarea><span class="x-field-error"><span class="input-notification png_bg"></span><label></label></span></p><p><span style="display:inline-block;width:80px;"><input class="button" type="button" value="确认添加" id="addArticleSure" name="submit"/></span><input class="button" type="button" value="取消添加" id="addArticleCancel"/></p></form></div>',function(content){
 			  	//编辑器初始化
 			  	var editor = KindEditor.create(content.find("#content"),{allowImageUpload:false,width:'700px',items:['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist','insertunorderedlist', '|', 'emoticons', 'image', 'multiimage', 'link', 'code','media','flash'],cssPath:['<?=$PUBLIC?>/js/kindeditor-4.1.9/plugins/code/prettify.css']});
 				//目录选择的js
@@ -75,7 +77,7 @@
 						'success':function(data){
 							var category = '<ul>';
 							for(var i = 0;i < data.length;i++){
-								category += '<li style="padding-left:'+data[i].cate_level*10+'px;" mid="'+data[i].id+'" onclick="chooseCategory(this);" onmouseover="hoverCategory(this);" onmouseout="outCategory(this);">'+data[i].cate_cname+'</li>';
+								category += '<li style="padding-left:'+data[i].cate_level*10+'px;padding:5px;" mid="'+data[i].id+'" onclick="chooseCategory(this);" onmouseover="hoverCategory(this);" onmouseout="outCategory(this);">'+data[i].cate_cname+'</li>';
 							}
 							category += '</ul>';
 							$("#exist_category").html(category);
@@ -108,22 +110,22 @@
 			  	content.find('#addArticleSure').click(function(){
 				 	//验证数据  
 					if($("#title").val() === ''){
-						$("#title").next().html('!').addClass('x-icon x-icon-mini x-icon-error').next().html('标题不能为空!');
+						$("#title").next().find('span').html('!').addClass('x-icon x-icon-mini x-icon-error').next().addClass('x-field-error-text').html('标题不能为空');
 						return false;
 					} else {
-						$("#title").next().html('').removeClass('x-icon x-icon-mini x-icon-error').next().html('');
+						$("#title").next().find('span').html('').removeClass('x-icon x-icon-mini x-icon-error').next().html('');
 					}
 					if($("#current_category").attr('data-id') === ''){
-						$("#CategoryPicker").next().html('!').addClass('x-icon x-icon-mini x-icon-error').next().html('分类不能为空');
+						$("#CategoryPicker").next().find('span').html('!').addClass('x-icon x-icon-mini x-icon-error').next().addClass('x-field-error-text').html('分类不能为空');
 						return false;
 					} else {
-						$("#CategoryPicker").next().html('').removeClass('x-icon x-icon-mini x-icon-error').next().html('');
+						$("#CategoryPicker").next().find('span').html('').removeClass('x-icon x-icon-mini x-icon-error').next().html('');
 					}
 					if(editor.html() === ''){
-						$("#content").next().html('!').addClass('x-icon x-icon-mini x-icon-error').next().html('内容不能为空');
+						$("#content").next().find('span').html('!').addClass('x-icon x-icon-mini x-icon-error').next().addClass('x-field-error-text').html('内容不能为空');
 						return false;
 					} else {
-						$("#content").next().html('').removeClass('x-icon x-icon-mini x-icon-error').next().html('');;
+						$("#content").next().find('span').html('').removeClass('x-icon x-icon-mini x-icon-error').next().html('');;
 						var cate_id = $("#current_category").attr("data-id");
 						//var cate_name = $("#current_category").html();
 						//ajax提交数据
@@ -137,14 +139,14 @@
 							'async':false,
 							/*'processData':false,*/
 							'success':function(data){
-								if(res.res){
+								if(data.code){
 									//时间戳转换为时间字符串
-									res.data.postime = new Date(parseInt(res.data.postime) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日|星期/g, " ");
+									//res.data.postime = new Date(parseInt(res.data.postime) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日|星期/g, " ");
 									//利用boxClose的回调函数
 									box.boxClose(function(){
-										var tr = '<tr><td>'+res.data.id+'</td><td><a target="_blank" href="<?=base_url()?>index.php/index/article/'+res.data.id+'">'+res.data.title+'</a></td><td>'+res.data.module_name+'</td><td>'+res.data.module_type+'</td><td>'+res.data.author+'</td><td>'+res.data.postime+'</td><td><a href="javascript:void(0);" title="article_edit" onclick="article_edit(this,'+res.data.id+')"><img src="<?=base_url()?>admin_res/images/icons/pencil.png" alt="article_edit" /></a> <a href="javascript:void(0);" title="article_del" onclick="article_del(this,'+res.data.id+')" style="cursor:pointer;"><img src="<?=base_url()?>admin_res/images/icons/cross.png" alt="article_del" /></a></td></tr>';
+										/*var tr = '<tr><td>'+res.data.id+'</td><td><a target="_blank" href="<?=base_url()?>index.php/index/article/'+res.data.id+'">'+res.data.title+'</a></td><td>'+res.data.module_name+'</td><td>'+res.data.module_type+'</td><td>'+res.data.author+'</td><td>'+res.data.postime+'</td><td><a href="javascript:void(0);" title="article_edit" onclick="article_edit(this,'+res.data.id+')"><img src="<?=base_url()?>admin_res/images/icons/pencil.png" alt="article_edit" /></a> <a href="javascript:void(0);" title="article_del" onclick="article_del(this,'+res.data.id+')" style="cursor:pointer;"><img src="<?=base_url()?>admin_res/images/icons/cross.png" alt="article_del" /></a></td></tr>';*/
 										box.alert('添加成功',function(){
-											$("#articles tbody").prepend(tr);
+											window.location.reload();
 										},{});
 										
 									});	
@@ -175,6 +177,17 @@
 			$("#article-cate").html(html);
 		}
 	});
-
+	//渲染文章列表数据
+	BUI.use(['bui/grid','bui/data'],function(Grid){
+		var Format = Grid.Format;
+		var columns = [{title : 'id',dataIndex :'id', width:'10%'},{title : '文章标题',dataIndex :'title', width:'20%'},{title : '所属分类',dataIndex : 'cate_cname',width:'20%'},{title : '发布作者',dataIndex :'author', width:'20%'},{title : '发表时间',dataIndex :'ctime', width:'20%',renderer:BUI.Grid.Format.datetimeRenderer},{title : '置顶操作',dataIndex :'top', width:'10%'}];
+		var data = <?=$articles?>;
+		 var grid = new Grid.SimpleGrid({
+		  render:'#grid',
+		  columns : columns,
+		  items : data,
+		 });
+ 		 grid.render();
+	});
 </script>
 </html>

@@ -88,6 +88,7 @@ class Admin extends CI_Controller {
 					$pwdInfo = 8;
 				} else {
 					$this->session_->setSession('admin.login',true);
+					$this->session_->setSession('admin.name',$adminAccount);
 				}
 			}
 		}

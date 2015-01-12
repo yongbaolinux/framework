@@ -3,25 +3,27 @@
 class Content extends CI_Controller{
     public function __construct(){
         parent::__construct();
+        $this->load->library('session_');                           //载入会话函数库
         $this->load->helper('url');
         $this->load->helper('common_func');
         $this->admin_res = base_url().'admin_res/';                 //后台资源存放路径(js css images)
         $this->cur_controller = base_url().'system.php/Content';    //当前控制器路径
         $this->load->database();                                    //连接数据库
+        if(!$this->session_->getSession('admin.login')){
+            redirect('admin/login','location');
+        }
     }
 
-    /**
-     * 采集管理
-     */
-    public function collect(){
-        
-    }
 
     /**
      * 文章列表
      */
     public function articlesList(){
-        $this->load->view('articlesList.php',array('PUBLIC'=>$this->admin_res,'CONTROLLER'=>$this->cur_controller));
+        //输出json数据供前端渲染
+        $articles_resource = $this->db->query("SELECT * FROM `bd_articles` ORDER BY `ctime` DESC");
+        $articles_array = $articles_resource->result_array();
+        $articles_json = json_encode($articles_array);
+        $this->load->view('articlesList.php',array('PUBLIC'=>$this->admin_res,'CONTROLLER'=>$this->cur_controller,'articles'=>$articles_json));
     }
     
     /**
@@ -81,7 +83,8 @@ class Content extends CI_Controller{
             $cateId = $this->input->post('cate_id');
             $content = $this->input->post('content');
             $title = $this->input->post('title');
-            $insertResult = $this->db->query("INSERT INTO `bd_articles`(`title`,`content`,`cate_id`,`author`,`ctime`) VALUES('".$title."','".$content."','".$cateId."','".$_SESSION['admin']['name']."','".time()."')");
+            $ctime = time()*1000;
+            $insertResult = $this->db->query("INSERT INTO `bd_articles`(`title`,`content`,`cate_cname`,`author`,`ctime`) VALUES('".$title."','".$content."','".$cateId."','".$this->session_->getSession('admin.name')."','".$ctime."')");
             if($insertResult){
                 echo json_encode(array('code'=>1,'msg'=>'添加成功'));
             } else {
