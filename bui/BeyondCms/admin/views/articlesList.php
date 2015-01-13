@@ -180,8 +180,24 @@
 	//渲染文章列表数据
 	BUI.use(['bui/grid','bui/data'],function(Grid){
 		var Format = Grid.Format;
-		var columns = [{title : 'id',dataIndex :'id', width:'10%'},{title : '文章标题',dataIndex :'title', width:'20%'},{title : '所属分类',dataIndex : 'cate_cname',width:'20%'},{title : '发布作者',dataIndex :'author', width:'20%'},{title : '发表时间',dataIndex :'ctime', width:'20%',renderer:BUI.Grid.Format.datetimeRenderer},{title : '置顶操作',dataIndex :'top', width:'10%'}];
+		var columns = [{title : 'id',dataIndex :'id', width:'10%'},
+			       		{title : '文章标题',dataIndex :'title', width:'20%'},
+			       		{title : '所属分类',dataIndex : 'cate_cname',width:'20%'},
+			       		{title : '发布作者',dataIndex :'author', width:'20%'},
+			       		{title : '发表时间',dataIndex :'ctime', width:'20%',renderer:BUI.Grid.Format.datetimeRenderer},
+			       		{title : '置顶操作',dataIndex :'top', width:'10%',
+				       		renderer:function(value,obj){
+					       		 if(value === '1'){
+						       		   return '<a href="javascript:topArticle('+obj.id+',0)">取消置顶</a><a href="javascript:editArticle('+obj.id+')">编辑</a><a href="javascript:delArticle('+obj.id+')">删除</a>';
+					       		 } else {
+						       			return '<a href="javascript:topArticle('+obj.id+',1)">置顶</a><a href="javascript:editArticle('+obj.id+')">编辑</a><a href="javascript:delArticle('+obj.id+')">删除</a>';
+					       		 }
+					       	}
+			       		}];
 		var data = <?=$articles?>;
+		for(i in data){
+			data[i]['ctime'] = parseInt(data[i]['ctime'])*1000;//BUI.Grid.Format.datetimeRenderer的参数为整形 所以在这里需要对其进行强制类型转换 （并且要注意 是毫秒数）
+		}
 		 var grid = new Grid.SimpleGrid({
 		  render:'#grid',
 		  columns : columns,

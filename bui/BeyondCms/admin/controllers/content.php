@@ -83,8 +83,7 @@ class Content extends CI_Controller{
             $cateId = $this->input->post('cate_id');
             $content = $this->input->post('content');
             $title = $this->input->post('title');
-            $ctime = time()*1000;
-            $insertResult = $this->db->query("INSERT INTO `bd_articles`(`title`,`content`,`cate_cname`,`author`,`ctime`) VALUES('".$title."','".$content."','".$cateId."','".$this->session_->getSession('admin.name')."','".$ctime."')");
+            $insertResult = $this->db->query("INSERT INTO `bd_articles`(`title`,`content`,`cate_cname`,`author`,`ctime`) VALUES('".$title."','".$content."','".$cateId."','".$this->session_->getSession('admin.name')."','".time()."')");
             if($insertResult){
                 echo json_encode(array('code'=>1,'msg'=>'添加成功'));
             } else {
