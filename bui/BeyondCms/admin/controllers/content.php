@@ -20,7 +20,7 @@ class Content extends CI_Controller{
      */
     public function articlesList(){
         //输出json数据供前端渲染
-        $articles_resource = $this->db->query("SELECT * FROM `bd_articles` ORDER BY `ctime` DESC");
+        $articles_resource = $this->db->query("SELECT * FROM `bd_articles` WHERE `status`=2 ORDER BY `ctime` DESC");
         $articles_array = $articles_resource->result_array();
         $articles_json = json_encode($articles_array);
         $this->load->view('articlesList.php',array('PUBLIC'=>$this->admin_res,'CONTROLLER'=>$this->cur_controller,'articles'=>$articles_json));
@@ -83,12 +83,42 @@ class Content extends CI_Controller{
             $cateId = $this->input->post('cate_id');
             $content = $this->input->post('content');
             $title = $this->input->post('title');
-            $insertResult = $this->db->query("INSERT INTO `bd_articles`(`title`,`content`,`cate_cname`,`author`,`ctime`) VALUES('".$title."','".$content."','".$cateId."','".$this->session_->getSession('admin.name')."','".time()."')");
+            $status = 2;
+            $insertResult = $this->db->query("INSERT INTO `bd_articles`(`title`,`content`,`cate_cname`,`author`,`ctime`,`status`) VALUES('".$title."','".$content."','".$cateId."','".$this->session_->getSession('admin.name')."','".time()."',".$status.")");
             if($insertResult){
                 echo json_encode(array('code'=>1,'msg'=>'添加成功'));
             } else {
                 echo json_encode(array('code'=>0,'msg'=>'添加失败'));
             }
+        } else {
+            exit('非法访问');
+        }
+    }
+    
+    /**
+     * ajax方式删除文章(放进回收站)
+     */
+    public function ajaxDelArticles(){
+        if(isAjax()){
+            $articleIds = $this->input->post('article_ids');
+            $where = implode(',', $articleIds);
+            $res = $this->db->query("UPDATE `bd_articles` SET `status`=0 WHERE `id` IN(".$where.")");
+            echo json_encode($res);
+        } else {
+            exit('非法访问');
+        }
+    }
+    
+    /**
+     * ajax方式批量置顶和取消置顶文章
+     */
+    public function ajaxTopArticles(){
+        if(isAjax()){
+            $articleIds = $this->input->post('article_ids');
+            $top = $this->input->post('top');
+            $where = implode(',', $articleIds);
+            $res = $this->db->query("UPDATE `bd_articles` SET `top`=".$top." WHERE `id` IN(".$where.")");
+            echo json_encode($res);
         } else {
             exit('非法访问');
         }
