@@ -188,9 +188,9 @@
 			       		{title : '置顶操作',dataIndex :'top', width:'10%',
 				       		renderer:function(value,obj){
 					       		 if(value === '1'){
-						       		   return '<a href="javascript:topArticle('+obj.id+',0)">取消置顶</a><a href="javascript:editArticle('+obj.id+')">编辑</a><a href="javascript:delArticle('+obj.id+')">删除</a>';
+						       		   return '<a href="javascript:topArticle('+obj.id+',0)">取消置顶</a> <a href="javascript:editArticle('+obj.id+')">编辑</a> <a href="javascript:delArticle('+obj.id+')">删除</a>';
 					       		 } else {
-						       			return '<a href="javascript:topArticle('+obj.id+',1)">置顶</a><a href="javascript:editArticle('+obj.id+')">编辑</a><a href="javascript:delArticle('+obj.id+')">删除</a>';
+						       			return '<a href="javascript:topArticle('+obj.id+',1)">置顶</a> <a href="javascript:editArticle('+obj.id+')">编辑</a> <a href="javascript:delArticle('+obj.id+')">删除</a>';
 					       		 }
 					       	}
 			       		}];
