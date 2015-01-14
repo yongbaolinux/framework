@@ -93,5 +93,22 @@ class Content extends CI_Controller{
             exit('非法访问');
         }
     }
+    
+    /**
+     * ajax方式删除一篇文章(放进回收站)
+     */
+    public function ajaxDelArticle(){
+        if(isAjax()){
+            $articleId = $this->input->post('article_id');
+            $this->db->query("UPDATE `bd_articles` SET `status`=0 WHERE `id`=".$articleId);
+            if($this->db->affected_rows()){
+                echo json_encode(array('code'=>1,'msg'=>'删除成功'));
+            } else {
+                echo json_encode(array('code'=>0,'msg'=>'删除失败'));
+            }
+        } else {
+            exit('非法访问');
+        }
+    }
 }
 ?>
