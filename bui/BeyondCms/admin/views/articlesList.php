@@ -14,7 +14,7 @@
 		<button id="addArticle" class="button button-primary">添加文章</button>
 	</div>
     <div id="grid" style="margin:20px;">
-    	<select onChange="javascript:multiOperateArticles()">
+    	<select onChange="javascript:multiOperateArticles(this)">
         	<option value="0">批量操作</option>
     		<option value="1">置顶所选</option>
         	<option value="2">删除所选</option>
@@ -186,26 +186,20 @@
 	//删除文章
 	function delArticle(id){
 		BUI.use('bui/overlay',function(Overlay){
-		  var dialog = new Overlay.Dialog({
-			  width:250,
-			  height:125,
-			  bodyContent:'<p>确定要删除吗?</p>',
-			  success:function () {
-				var this_ = this;
+		  BUI.Message.Confirm('确定要删除该项吗?',function(){
 			  	$.ajax({
-					'url':'ajaxDelArticle',
+					'url':'ajaxDelArticles',
 					'type':'POST',
 					'data':{'article_id':id},
 					'dataType':'json',
 					'success':function(data){
-						this_.close();
 						if(data.code){
 							 BUI.Message.Show({
 								msg : '删除成功',
 								icon : 'success',
 								buttons : [],
 								autoHide : true,
-								autoHideDelay : 1500
+								autoHideDelay : 1000
 							 });
 						} else {
 							 BUI.Message.Show({
@@ -216,14 +210,23 @@
 								autoHideDelay : 1000
 							});
 						}
+						function refresh_(){
+							window.location.reload();	
+						}
+						setTimeout(refresh_,1000);
 					}
 				});
-			  	
-			  }
-		  });
-		  dialog.show();
+			},'question');
 		});
 	}
+	//置顶一篇文章
+	function topArticle(id,top){
+		$.ajax({
+			'url':'ajaxTopArticles',
+			'data':{'article_ids':id,'top':top},
+		});
+	}
+	
 	//选中所有文章
 	function chooseAllArticles(dom){
 		if(dom.checked === true){
@@ -241,18 +244,78 @@
 		}
 	}
 	//批量操作文章
-	function multiOperateArticles(){
-		var selected_count = 0;	//被选中的单位数
-		$("#grid").find(".bui-grid-cell-text-checkbox").each(function(index, element) {
-			  if(element.checked === true){
-				  selected_count++;
-			  }
-		});
-		if(selected_count === 0 ){
-			alert('1');
+	function multiOperateArticles(dom){
+		if(dom.value !== '0'){
+			var selected_count = 0;	//被选中的单位数
+			var selected_ids = [];  //被选中的单位的id数组
+			$("#grid").find(".bui-grid-cell-text-checkbox").each(function(index, element) {
+				  if(element.checked === true){
+					  selected_count++;
+					  selected_ids.push(element.value);
+				  }
+			});
+			if(selected_count === 0 ){
+				$(dom).children().get(0).selected = true;
+				/*BUI.Message.Show({
+					msg : '未选中任何单位',
+					icon : 'error',
+					buttons : [],
+					//autoHide : true,
+					//autoHideDelay : 2000		//这个属性会给后面的Message.Confirm带来影响 这个BUG会让Confirem也自动隐藏掉
+				});*/
+				BUI.Message.Alert('未选中任何单位','error');
+			} else {
+				if(dom.value == '1'){
+					BUI.Message.Confirm('确定要置顶所选项?',function(){
+						$.ajax({
+							'url':'ajaxTopArticles',
+							'type':'POST',
+							'data':{'article_ids':selected_ids,'top':1},
+							'datType':'json',
+							'success':function(data){
+								if(data){
+									BUI.Message.Show({
+										msg : '置顶成功',
+										icon : 'success',
+										buttons : [],
+									});
+									window.location.reload();
+								}
+							}
+						});
+					},'question');
+				}
+				if(dom.value == '2'){
+					BUI.Message.Confirm('确定要删除所选项?',function(){
+						$.ajax({
+							'url':'ajaxDelArticles',
+							'type':'POST',
+							'data':{'article_ids':selected_ids},
+							'datType':'json',
+							'success':function(data){
+								if(data){
+									BUI.Message.Show({
+										msg : '删除成功',
+										icon : 'success',
+										buttons : [],
+									});
+									
+								} else {
+									BUI.Message.Show({
+										msg : '删除失败',
+										icon : 'success',
+										buttons : [],
+									});
+								}
+								window.location.reload();
+							}
+						});
+					},'question');
+				}
+			}
 		}
 	}
-	
+
 	//渲染文章列表数据
 	BUI.use(['bui/grid','bui/data'],function(Grid){
 		var columns = [ {title : '<input type="checkbox" onClick="javascript:chooseAllArticles(this)"/>',dataIndex :'', width:'2%',renderer:function(value,obj){
@@ -263,7 +326,7 @@
 			       		{title : '所属分类',dataIndex : 'cate_cname',width:'20%'},
 			       		{title : '发布作者',dataIndex :'author', width:'20%'},
 			       		{title : '发表时间',dataIndex :'ctime', width:'20%',renderer:BUI.Grid.Format.datetimeRenderer},
-			       		{title : '置顶操作',dataIndex :'top', width:'10%',
+			       		{title : '操作',dataIndex :'top', width:'10%',
 				       		renderer:function(value,obj){
 					       		 if(value === '1'){
 						       		   return '<a href="javascript:topArticle('+obj.id+',0)">取消置顶</a> <a href="javascript:editArticle('+obj.id+')">编辑</a><a href="javascript:delArticle('+obj.id+')">删除</a>';
