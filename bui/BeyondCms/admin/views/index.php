@@ -57,6 +57,8 @@
                 items:[
                   {id:'articlesCate',text:'文章分类',href:'<?=base_url()?>system.php/content/articlesCate'}, 
                   {id:'articlesList',text:'文章列表',href:'<?=base_url()?>system.php/content/articlesList'},
+				  {id:'articlesVerify',text:'文章审核',href:'<?=base_url()?>system.php/content/articlesVerify'},
+				  {id:'articlesRecycle',text:'文章回收站',href:'<?=base_url()?>system.php/content/articlesRecycle'},
                 ]
               },{
                 text:'采集管理',

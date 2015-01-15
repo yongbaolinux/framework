@@ -13,10 +13,13 @@ class Content extends CI_Controller{
             redirect('admin/login','location');
         }
     }
-
+    
+    public function index(){
+        
+    }
 
     /**
-     * 文章列表
+     * 审核后文章列表
      */
     public function articlesList(){
         //输出json数据供前端渲染
@@ -25,6 +28,19 @@ class Content extends CI_Controller{
         $articles_json = json_encode($articles_array);
         $this->load->view('articlesList.php',array('PUBLIC'=>$this->admin_res,'CONTROLLER'=>$this->cur_controller,'articles'=>$articles_json));
     }
+    
+    /**
+     * 待审核文章列表
+     */
+    public function articlesVerify(){
+        //输出json数据供前端渲染
+        $articles_resource = $this->db->query("SELECT * FROM `bd_articles` WHERE `status`=1 ORDER BY `ctime` DESC");
+        $articles_array = $articles_resource->result_array();
+        $articles_json = json_encode($articles_array);
+        $this->load->view('articlesVerify.php',array('PUBLIC'=>$this->admin_res,'CONTROLLER'=>$this->cur_controller,'articles'=>$articles_json));
+    }
+    
+    
     
     /**
      * 文章分类
@@ -76,6 +92,21 @@ class Content extends CI_Controller{
     }
     
     /**
+     * ajax方式获取一篇文章的数据
+     * 以json的方式返送
+     */
+    public function ajaxGetOneArticle(){
+        if(isAjax()){
+            $articleId = $this->input->post('article_id');
+            $resource = $this->db->query("SELECT * FROM `bd_articles` WHERE `id`=".$articleId);
+            $articleData =  $resource->result_array();
+            echo json_encode($articleData[0]);
+        } else {
+            exit('非法访问');
+        }
+    }
+    
+    /**
      * ajax方式添加一篇文章
      */
     public function ajaxAddArticle(){
@@ -116,7 +147,11 @@ class Content extends CI_Controller{
         if(isAjax()){
             $articleIds = $this->input->post('article_ids');
             $top = $this->input->post('top');
-            $where = implode(',', $articleIds);
+            if(is_string($articleIds)){
+               $where = $articleIds;
+            } elseif(is_array($articleIds)){
+               $where = implode(',', $articleIds); 
+            }
             $res = $this->db->query("UPDATE `bd_articles` SET `top`=".$top." WHERE `id` IN(".$where.")");
             echo json_encode($res);
         } else {

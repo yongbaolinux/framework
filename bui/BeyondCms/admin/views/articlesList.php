@@ -18,6 +18,7 @@
         	<option value="0">批量操作</option>
     		<option value="1">置顶所选</option>
         	<option value="2">删除所选</option>
+            <option value="3">取消置顶</option>
     	</select>
     </div>
     
@@ -220,10 +221,29 @@
 		});
 	}
 	//置顶一篇文章
-	function topArticle(id,top){
+	function topArticle(id,top,dom){
 		$.ajax({
 			'url':'ajaxTopArticles',
 			'data':{'article_ids':id,'top':top},
+			'dataType':'json',
+			'type':'POST',
+			'success':function(data){
+				if(data === false){
+					BUI.Message.Show({
+						msg : '置顶失败',
+						icon : 'error',
+						buttons : [],
+						autoHide : true,
+						autoHideDelay : 2000
+					});
+				} else {
+					if(top == 1){
+						$(dom).html('取消置顶').attr('onClick','javascript:topArticle('+id+',0,this)');
+					} else if(top == 0){
+						$(dom).html('置顶').attr('onClick','javascript:topArticle('+id+',1,this)');
+					}
+				}
+			}
 		});
 	}
 	
@@ -329,9 +349,9 @@
 			       		{title : '操作',dataIndex :'top', width:'10%',
 				       		renderer:function(value,obj){
 					       		 if(value === '1'){
-						       		   return '<a href="javascript:topArticle('+obj.id+',0)">取消置顶</a> <a href="javascript:editArticle('+obj.id+')">编辑</a> <a href="javascript:delArticle('+obj.id+')">删除</a>';
+						       		   return '<a onClick="javascript:topArticle('+obj.id+',0,this)" href="javascript:void(0)">取消置顶</a> <a href="javascript:editArticle('+obj.id+')">编辑</a> <a href="javascript:delArticle('+obj.id+')">删除</a>';
 					       		 } else {
-						       			return '<a href="javascript:topArticle('+obj.id+',1)">置顶</a> <a href="javascript:editArticle('+obj.id+')">编辑</a> <a href="javascript:delArticle('+obj.id+')">删除</a>';
+						       			return '<a onClick="javascript:topArticle('+obj.id+',1,this)" href="javascript:void(0)">置顶</a> <a href="javascript:editArticle('+obj.id+')">编辑</a> <a href="javascript:delArticle('+obj.id+')">删除</a>';
 					       		 }
 					       	}
 			       		}];
