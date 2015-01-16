@@ -38,7 +38,7 @@
     	  //var category_id = parseInt($(dom).attr('mid'));
 		  var category_id = $(dom).html();
     	  var category_name = $(dom).html();
-    	  $("#current_category").html(category_name).attr('data-id',category_id);
+    	  $("#current_category").html(category_name).attr('data-cname',category_id);
     	  $("#category_list").hide();
     }
     function hoverCategory(dom){
@@ -62,20 +62,21 @@
 			'type':'POST',
 			'dataType':'json',
 			'success':function(result){
+				result.thumbPath = result.thumbPath ? result.thumbPath : '<?=$PUBLIC?>img/defaultArticleThumb.jpg';
 				box.popup('<p class="title">修改文章</p><div id="editNewDiv" style="width:960px; padding:10px; background:#F5F5F5;"><form id="editArticleForm">\
 				  <p><span style="display:inline-block;width:80px;">文章标题</span><input class="text-input small-input" type="text" id="title" name="title" value="'+result.title+'"/><span class="input-notification png_bg"></span><small></small></p>\
 				  <div style="padding:5px 0px 10px 0px;">\
 					<span style="display:inline-block;width:80px;font-size:14px;">文章分类</span>\
 					<div style="border-radius:5px 5px 5px 5px;display:inline-block;background:linear-gradient(#FFFCFC, #EDEEEF) repeat scroll 0 0 rgba(0, 0, 0, 0);border:1px solid #AD9C9C;padding:0 24px 0 12px;width:100px;cursor:pointer;position:relative;">\
-					  <div class="current"><span style="height:30px;line-height:30px;" id="current_category" data-id="'+result.cate_id+'">'+result.cate_cname+'</span><span class="downArrow"></span></div>\
-					  <div id="category_list" style="display:none;position:absolute;background-color:#ffffff;border:1px solid #AAAAAA;border-radius:6px;box-shadow:0 0 17px #BBBBBB;width:200px;top:-1px;left:-1px;z-index:999;">\
-						<div id="exist_category"></div><div class="create_category"><input id="close_category" type="button" value="关闭" onclick="closeCategory();"style="border-radius:6px;border:1px solid #BBBBBB;background:-moz-linear-gradient(center top , #FDFAFB, #F9F7F7 50%, #F6F3F4 50%, #F0EDED) repeat scroll 0 0 rgba(0, 0, 0, 0);padding:6px;font-size:14px;"/></div>\
+					  <div class="current"><span style="height:30px;line-height:30px;" id="current_category" data-cname="'+result.cate_cname+'">'+result.cate_cname+'</span><span class="downArrow"></span></div>\
+					  <div id="category_list" onmouseleave="closeCategory(this);" style="display:none;position:absolute;background-color:#ffffff;border:1px solid #AAAAAA;border-radius:6px;box-shadow:0 0 17px #BBBBBB;width:200px;top:-1px;left:-1px;z-index:999;">\
+						<div id="exist_category"></div>\
 					  </div>\
 					</div>\
 				  </div>\
 				  <p><span style="display:inline-block;width:80px;">文章封面</span><input type="file" id="editThumb" /><span class="input-notification png_bg"></span><small></small></p>\
-				  <p><span style="display:inline-block;width:80px;"></span><img src="'+result.thumbPath+'" width="150px" height="150px" id="editThumbImg"/><input type="hidden" id="editThumbPath" name="editThumbPath" value="'+result.thumbPath+'"/></p>\
-				  <p><span style="display:inline-block;width:80px;vertical-align:top;line-height:14px;">文本内容</span><textarea style="width:800px !important;height:342px;" class="text-input small-input" id="content" name="content"></textarea></p><p><span style="display:inline-block;width:80px;"><input class="button" type="button" value="确认修改" id="editNewSure" name="submit"/></span><input class="button" type="button" value="取消修改" id="editArticleCancel"/></p></form></div>',
+				  <p><span style="display:inline-block;width:80px;"></span><img src="'+result.thumbPath+'" width="150px" height="150px" id="editThumbImg"/><input type="hidden" id="verifyThumbPath" name="verifyThumbPath" value="'+result.thumbPath+'"/></p>\
+				  <p><span style="display:inline-block;width:80px;vertical-align:top;line-height:14px;">文本内容</span><textarea style="width:800px !important;height:342px;" class="text-input small-input" id="content" name="content"></textarea></p><p><span style="display:inline-block;width:80px;"><input class="button" type="button" value="通过审核" id="verifyArticleSure"/></span><input class="button" type="button" value="取消" id="verifyArticleCancel"/></p></form></div>',
 					function(content){
 						//初始化封面上传插件uploadify
 						content.find("#editThumb").uploadify({
@@ -86,26 +87,26 @@
 							'fileTypeExts':'*.*',						//所允许上传文件的类型
 							'fileSizeLimit':'6144KB',					//所允许上传文件的大小
 							'buttonText':'修改文章封面',					//控件外观文字
-							'formData':{'time' : '<?php echo time();?>','token' : '<?php echo md5('I_love_you' . time());?>','session_id':'<?php echo session_id(); ?>'},							//POST提交给图片接口的数据
+							'formData':{'time' : '<?php echo time();?>','token' : '<?php echo md5('I_love_you' . time());?>','session_id':'<?php echo session_id(); ?>','savePath':'articleThumbs'},				//POST提交给图片接口的数据
 							'swf':'<?=$PUBLIC?>/js/uploadify_flash/uploadify.swf',	//swf地址
-							'uploader':'/wx/system.php/article/dealArticleCover',	//图片上传接口
+							'uploader':'imageUploaderApi',							//图片上传接口
 							'onUploadSuccess':function(file,data,response){			//图片上传成功后的回调方法
 								var data = $.parseJSON(data);
 								$("#editThumb-queue").next().removeClass('error').addClass('success').html('上传成功');
 								$("#editThumbImg").attr('src',data.msg);
-								$("#editThumbPath").val(data.msg);
+								$("#verifyThumbPath").val(data.msg);
 							}
 						});
 						//变换博文的目录
 						content.find(".current").click(function(){
 							$.ajax({
-								'url':'<?php echo base_url();?>system.php/article/getCates',
+								'url':'ajaxGetArticleCates',
 								'type':'POST',
 								'dataType':'json',
 								'success':function(res){
 									var category = '<ul>';
 									for(var i = 0;i < res.length;i++){
-										category += '<li style="padding:10px;" mid="'+res[i].id+'" onclick="chooseCategory(this);">'+res[i].cate_name+'</li>';
+										category += '<li style="padding:10px;" mid="'+res[i].id+'" onclick="chooseCategory(this);" onmouseover="hoverCategory(this);" onmouseout="outCategory(this);">'+res[i].cate_cname+'</li>';
 									}
 									category += '</ul>';
 									$("#exist_category").html(category);
@@ -113,44 +114,39 @@
 							});
 							$("#category_list").show();	
 						});
-						//变换博文属性
-						content.find("#article_attr").click(function(){
-							$("#attr_list").show();
-							$("#attr_list").html('<ul><li style="padding:10px;" mid="1" onclick="chooseAttr(this);">默认</li><li style="padding:10px;" mid="2" onclick="chooseAttr(this);">软文</li><li style="padding:10px;" mid="3" onclick="chooseAttr(this);">广告</li></ul>');
-						});
+
 						//初始化编辑器及设置好编辑器的值
 					  var editor = KindEditor.create(content.find("#content"),{allowImageUpload:false,width:'700px',items:['fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline','removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist','insertunorderedlist', '|', 'emoticons', 'image', 'multiimage', 'link', 'code','media','flash'],cssPath:['<?=$PUBLIC?>/js/kindeditor-4.1.9/plugins/code/prettify.css'] });
 					  editor.html(result.content);
-					  content.find('#editNewSure').click(function(){
-						  var cate_id = $("#current_category").attr("data-id");
-						  var attr_id = $("#current_attr").attr("data-id");
-						  //var module_cname = $.trim($("#current_category").html());
-						  //var edit_data = 'title='+$("#title").val()+'&id='+id+'&content='+editor.html()+'&category_id='+cate_id+'&category_name='+cate_name;
-						  //提交的内容里有html实体 就用对象提交
-						  var edit_data = {'title':$("#title").val(),'id':id,'content':editor.html(),'cate_id':cate_id,'thumb':$("#editThumbPath").val(),'attr_id':attr_id};	
+					  
+					  content.find('#verifyArticleSure').click(function(){
+						  //Todo 验证表单数据
+						  var cate_cname = $("#current_category").attr("data-cname");
+						  var verify_data = {'title':$("#title").val(),'id':id,'content':editor.html(),'cate_cname':cate_cname,'thumb':$("#verifyThumbPath").val()};	
 						  $.ajax({
-							  'url':'<?php echo base_url();?>system.php/article/saveOneArticle',
+							  'url':'ajaxVerifyOneArticle',
 							  'type':'POST',
-							  'data':edit_data,
+							  'data':verify_data,
 							  'dataType':'json',
 							  'success':function(result){
-								 if(result){
-									 box.boxClose(function(){								 	/*$(dom).parent().parent().children().eq(1).children().html(result.data.title);
-											$(dom).parent().parent().children().eq(2).html(result.data.category_name);*/
-											box.alert('修改成功',function(){
-												window.location.reload();
-												},{});													
-										});
+								 if(result.code > 0){
+									/*box.boxClose(function(){
+										box.alert('修改成功',function(){
+											window.location.reload();
+											},{});							
+									});*/
+									window.location.reload();
 								 } else {
-									box.boxClose(function(){
-											alert('修改失败');
-										}); 
+									/*box.boxClose(function(){
+										alert('修改失败');
+									}); */
+									alert(result.msg);
 								 }
 							  }
 						  });
 					  })
 					  
-					  content.find('#editNewCancel').click(function(){
+					  content.find('#verifyArticleCancel').click(function(){
 						  box.boxClose();
 					  });
 				  });	
@@ -267,21 +263,19 @@
 				BUI.Message.Alert('未选中任何单位','error');
 			} else {
 				if(dom.value == '1'){
-					BUI.Message.Confirm('确定要置顶所选项?',function(){
+					BUI.Message.Confirm('确定要将所选中的文章通过审核?',function(){
 						$.ajax({
-							'url':'ajaxTopArticles',
+							'url':'ajaxVerifyArticles',
 							'type':'POST',
-							'data':{'article_ids':selected_ids,'top':1},
+							'data':{'article_ids':selected_ids},
 							'datType':'json',
 							'success':function(data){
-								if(data){
-									BUI.Message.Show({
-										msg : '置顶成功',
-										icon : 'success',
-										buttons : [],
-									});
-									window.location.reload();
-								}
+								BUI.Message.Show({
+									msg : data.msg,
+									icon : 'success',
+									buttons : [],
+								});
+								window.location.reload();
 							}
 						});
 					},'question');

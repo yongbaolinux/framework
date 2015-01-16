@@ -1,3 +1,4 @@
 <?php
-system('php -m');
+//system('php -m');
+var_dump(rtrim($_SERVER['SCRIPT_FILENAME'],'/'));
 ?>

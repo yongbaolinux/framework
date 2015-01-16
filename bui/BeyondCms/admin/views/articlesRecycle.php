@@ -10,18 +10,13 @@
 </head>
 
 <body>
-	<div style="margin:20px;">
-		<button id="addArticle" class="button button-primary">添加文章</button>
-	</div>
     <div id="grid" style="margin:20px;">
     	<select onChange="javascript:multiOperateArticles(this)" style="margin-bottom:20px;">
         	<option value="0">批量操作</option>
-    		<option value="1">置顶所选</option>
-        	<option value="2">删除所选</option>
-            <option value="3">取消置顶</option>
+    		<option value="1">还原所选</option>
+        	<option value="2">清空所选</option>
     	</select>
     </div>
-    
 </body>
 <script type="text/javascript" src="<?=$PUBLIC?>/js/jquery-1.8.1.min.js"></script>
 <script type="text/javascript" src="<?=$PUBLIC?>/js/kindeditor-4.1.9/kindeditor-min.js"></script>
@@ -64,7 +59,6 @@
     			  <div id="category_list" onmouseleave="closeCategory(this);" style="display:none;position:absolute;background-color:#ffffff;border:1px solid #AAAAAA;border-radius:6px;box-shadow:0 0 17px #BBBBBB;width:245px;top:-1px;left:-1px;">\
     			  	<div id="exist_category"></div>\
     			  	<div class="create_category">\
-    				<!--<input type="text" id="category_name" class="text-input" placeholder="创建新模块" style="width:100px;margin-right:8px;"/><input id="add_category" type="button" value="创建" style="border-radius:6px;border:1px solid #BBBBBB;background:-moz-linear-gradient(center top , #FDFAFB, #F9F7F7 50%, #F6F3F4 50%, #F0EDED) repeat scroll 0 0 rgba(0, 0, 0, 0);padding:6px;font-size:14px;margin-right:8px;"/>-->\
     			  </div>\
 			  </div>\
 		     </div>\
