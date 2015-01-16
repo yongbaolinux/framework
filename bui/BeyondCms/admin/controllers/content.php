@@ -53,7 +53,11 @@ class Content extends CI_Controller{
      * 文章回收站(被删除的文章放到这里 可以还原 可以清空 清空后无法再找回)
      */
     public function articlesRecycle(){
-        $this->load->view('articlesRecycle.php',array('PUBLIC'=>$this->admin_res));
+        //输出json数据供前端渲染
+        $articles_resource = $this->db->query("SELECT * FROM `bd_articles` WHERE `status`=0 ORDER BY `ctime` DESC");
+        $articles_array = $articles_resource->result_array();
+        $articles_json = json_encode($articles_array);
+        $this->load->view('articlesRecycle.php',array('PUBLIC'=>$this->admin_res,'articles'=>$articles_json));
     }
     
     /**
@@ -143,7 +147,21 @@ class Content extends CI_Controller{
             $res = $this->db->query("UPDATE `bd_articles` SET `status`=0 WHERE `id` IN(".$where.")");
             echo json_encode($res);
         } else {
-            exit('非法访问');
+            exit(json_encode(array('code'=>-100,'msg'=>'非法访问')));
+        }
+    }
+    
+    /**
+     * ajax方式清空文章(彻底删除 不可恢复)
+     */
+    public function ajaxDestroyArticles(){
+        if(isAjax()){
+            $articleIds = $this->input->post('article_ids');
+            $where = implode(',', $articleIds);
+            $res = $this->db->query("DELETE FROM `bd_articles` WHERE `id` IN(".$where.")");
+            echo json_encode($res);
+        } else {
+            exit(json_encode(array('code'=>-100,'msg'=>'非法访问')));
         }
     }
     
