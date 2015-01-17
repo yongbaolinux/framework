@@ -30,17 +30,17 @@
 <script type="text/javascript">
     //全局函数
 
-	//删除文章
-	function delArticle(id){
+	//清空一篇文章
+	function destroyArticle(id){
 		BUI.use('bui/overlay',function(Overlay){
-		  BUI.Message.Confirm('确定要删除该项吗?',function(){
+		  BUI.Message.Confirm('确定要清空该项吗?',function(){
 			  	$.ajax({
-					'url':'ajaxDelArticles',
+					'url':'ajaxDestroyArticles',
 					'type':'POST',
-					'data':{'article_id':id},
+					'data':{'article_ids':id},
 					'dataType':'json',
 					'success':function(data){
-						if(data.code){
+						if(data){
 							 BUI.Message.Show({
 								msg : '删除成功',
 								icon : 'success',
@@ -66,7 +66,7 @@
 			},'question');
 		});
 	}
-	//置顶一篇文章
+	//还原一篇文章
 	function topArticle(id,top,dom){
 		$.ajax({
 			'url':'ajaxTopArticles',
@@ -132,7 +132,7 @@
 				BUI.Message.Alert('未选中任何单位','error');
 			} else {
 				if(dom.value == '1'){
-					BUI.Message.Confirm('确定要置顶所选项?',function(){
+					BUI.Message.Confirm('确定要还原所选项?',function(){
 						$.ajax({
 							'url':'ajaxTopArticles',
 							'type':'POST',
@@ -193,7 +193,7 @@
 			       		{title : '发表时间',dataIndex :'ctime', width:'20%',renderer:BUI.Grid.Format.datetimeRenderer},
 			       		{title : '操作',dataIndex :'top', width:'10%',
 				       		renderer:function(value,obj){
-						       	return '<a onClick="javascript:topArticle('+obj.id+',0,this)" href="javascript:void(0)">还原</a> <a href="javascript:delArticle('+obj.id+')">清空</a>';
+						       	return '<a onClick="javascript:topArticle('+obj.id+',0,this)" href="javascript:void(0)">还原</a> <a href="javascript:destroyArticle('+obj.id+')">清空</a>';
 					       	}
 			       		}];
 		var data = <?=$articles?>;

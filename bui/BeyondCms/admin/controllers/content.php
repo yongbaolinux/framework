@@ -143,6 +143,7 @@ class Content extends CI_Controller{
     public function ajaxDelArticles(){
         if(isAjax()){
             $articleIds = $this->input->post('article_ids');
+            $articleIds = is_string($articleIds) ? array($articleIds) : $articleIds;
             $where = implode(',', $articleIds);
             $res = $this->db->query("UPDATE `bd_articles` SET `status`=0 WHERE `id` IN(".$where.")");
             echo json_encode($res);
@@ -157,6 +158,7 @@ class Content extends CI_Controller{
     public function ajaxDestroyArticles(){
         if(isAjax()){
             $articleIds = $this->input->post('article_ids');
+            $articleIds = is_string($articleIds) ? array($articleIds) : $articleIds;
             $where = implode(',', $articleIds);
             $res = $this->db->query("DELETE FROM `bd_articles` WHERE `id` IN(".$where.")");
             echo json_encode($res);
