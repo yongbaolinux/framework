@@ -175,10 +175,10 @@
 			  	$.ajax({
 					'url':'ajaxDelArticles',
 					'type':'POST',
-					'data':{'article_id':id},
+					'data':{'article_ids':id},
 					'dataType':'json',
 					'success':function(data){
-						if(data.code){
+						if(data){
 							 BUI.Message.Show({
 								msg : '删除成功',
 								icon : 'success',

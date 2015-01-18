@@ -125,7 +125,11 @@ class Content extends CI_Controller{
             $cateId = $this->input->post('cate_id');
             $content = $this->input->post('content');
             $title = $this->input->post('title');
-            $status = 2;
+            //读取系统配置表 检查是否开启了文章审核功能
+            $verify = $this->db->query("SELECT `config_value` FROM `bd_config` WHERE `config_key`='config_article_verify'");
+            $verify = $verify->result_array();
+            $verify = intval($verify[0]['config_value']);
+            $status = $verify ? 1 : 2;
             $insertResult = $this->db->query("INSERT INTO `bd_articles`(`title`,`content`,`cate_cname`,`author`,`ctime`,`status`) VALUES('".$title."','".$content."','".$cateId."','".$this->session_->getSession('admin.name')."','".time()."',".$status.")");
             if($insertResult){
                 echo json_encode(array('code'=>1,'msg'=>'添加成功'));
@@ -145,8 +149,19 @@ class Content extends CI_Controller{
             $articleIds = $this->input->post('article_ids');
             $articleIds = is_string($articleIds) ? array($articleIds) : $articleIds;
             $where = implode(',', $articleIds);
-            $res = $this->db->query("UPDATE `bd_articles` SET `status`=0 WHERE `id` IN(".$where.")");
-            echo json_encode($res);
+            //查询当前状态 放入回收站后 将当前状态写入上一个状态字段中
+            $curStauts = $this->db->query("SELECT `status` FROM `bd_articles` WHERE `id` IN(".$where.")");
+            $curStauts = $curStauts->result_array();
+            //构造批量更改 VALUES 字符串
+            foreach ($articleIds as $key=>$id){
+                $values[] = '('.$id.',0,'.$curStauts[$key].')';
+            }
+            $values = implode(',', $values);
+            //使用REPLACE INTO进行批量更改文章状态
+            $delResult = $this->db->query("REPLACE INTO `bd_articles`(`id`,`status`,`prev_status`) VALUES ".$values);
+            
+            
+            //echo json_encode($res);
         } else {
             exit(json_encode(array('code'=>-100,'msg'=>'非法访问')));
         }
