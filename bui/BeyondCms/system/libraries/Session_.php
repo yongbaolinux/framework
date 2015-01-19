@@ -8,11 +8,13 @@
  */
 class CI_Session_{
     static private $session_status = 0;
+    static private $session_id;
     const PHP_SESSION_DISABLED = 0;        //会话不可用
     const PHP_SESSION_NONE = 1;             //会话可用 但不能全局访问
     const PHP_SESSION_ACTIVE = 2;           //全局会话可用 
     
     /**
+     * @param string/null $sessid
      * 检测会话是否已经自动开启
      * 如果没有开启就开启会话
      * php >= 5.4 session_status函数可用
@@ -20,7 +22,7 @@ class CI_Session_{
      * 所以不需要手动调用该函数
      * 在应用程序中直接使用 getSession/setSession系列函数即可
      */
-    static protected function startSession(){
+    static public function startSession($sessid=''){
         if(function_exists('session_status')){
             if(session_status() === self::PHP_SESSION_DISABLED || session_status() === self::PHP_SESSION_NONE){
                 session_start();
@@ -34,6 +36,7 @@ class CI_Session_{
                 self::$session_status = self::PHP_SESSION_ACTIVE;
             }
         }
+        
     }
     
     /**
@@ -43,7 +46,10 @@ class CI_Session_{
      * @param string $key 键名
      * @return mixed|NULL
      */
-    static public function getSession($key=''){
+    static public function getSession($key='',$sessid=''){
+        if($sessid){
+            session_id($sessid);        //session_id要在session_start之前执行
+        }
         self::startSession();
         if(empty($key)){
             return $_SESSION;
@@ -152,5 +158,9 @@ class CI_Session_{
             }
         }
     }
+    
+    /**
+     * 
+     */
 }
 ?>

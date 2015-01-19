@@ -67,28 +67,14 @@
 		});
 	}
 	//还原一篇文章
-	function topArticle(id,top,dom){
+	function restoreArticle(id,top,dom){
 		$.ajax({
-			'url':'ajaxTopArticles',
-			'data':{'article_ids':id,'top':top},
+			'url':'ajaxRestoreArticles',
+			'data':{'article_ids':id},
 			'dataType':'json',
 			'type':'POST',
 			'success':function(data){
-				if(data === false){
-					BUI.Message.Show({
-						msg : '置顶失败',
-						icon : 'error',
-						buttons : [],
-						autoHide : true,
-						autoHideDelay : 2000
-					});
-				} else {
-					if(top == 1){
-						$(dom).html('取消置顶').attr('onClick','javascript:topArticle('+id+',0,this)');
-					} else if(top == 0){
-						$(dom).html('置顶').attr('onClick','javascript:topArticle('+id+',1,this)');
-					}
-				}
+				window.location.reload();
 			}
 		});
 	}
@@ -134,19 +120,17 @@
 				if(dom.value == '1'){
 					BUI.Message.Confirm('确定要还原所选项?',function(){
 						$.ajax({
-							'url':'ajaxTopArticles',
+							'url':'ajaxRestoreArticles',
 							'type':'POST',
-							'data':{'article_ids':selected_ids,'top':1},
+							'data':{'article_ids':selected_ids},
 							'datType':'json',
 							'success':function(data){
-								if(data){
-									BUI.Message.Show({
-										msg : '置顶成功',
-										icon : 'success',
-										buttons : [],
-									});
-									window.location.reload();
-								}
+								/* BUI.Message.Show({
+									msg : '还原成功',
+									icon : 'success',
+									buttons : [],
+								}); */
+								window.location.reload();
 							}
 						});
 					},'question');

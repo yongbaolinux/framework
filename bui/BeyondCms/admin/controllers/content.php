@@ -9,7 +9,8 @@ class Content extends CI_Controller{
         $this->admin_res = base_url().'admin_res/';                 //后台资源存放路径(js css images)
         $this->cur_controller = base_url().'system.php/Content';    //当前控制器路径
         $this->load->database();                                    //连接数据库
-        if(!$this->session_->getSession('admin.login')){
+        $session_id = $this->input->post('session_id');             //上传图片是获取控件传递的session_id
+        if(!$this->session_->getSession('admin.login',$session_id)){
             redirect('admin/login','location');
         }
     }
@@ -118,6 +119,26 @@ class Content extends CI_Controller{
     }
     
     /**
+     * ajax方式保存编辑后的文章
+     * 如果开启文章审核 每次编辑后都会进入审核状态 如果关闭审核 则修改后依然保留在文章列表中
+     */
+    public function ajaxSaveOneArticle(){
+        if(isAjax()){
+            $title = $this->input->post('title');
+            $content = $this->input->post('content');
+            $cate_cname = $this->input->post('cate_cname');
+            $thumb = $this->input->post('thumb');
+            $id = $this->input->post('id');
+            //查找是否开启文章审核功能
+            $return = $this->db->query("SELECT `config_value` FROM `bd_articles` WHERE `config_key`='config_article_verify'");
+            $config_article_verify = $return[0]['config_value'];
+            
+        } else {
+            exit(json_encode(array('code'=>-100,'msg'=>'非法访问')));
+        }
+    }
+    
+    /**
      * ajax方式添加一篇文章
      */
     public function ajaxAddArticle(){
@@ -150,18 +171,19 @@ class Content extends CI_Controller{
             $articleIds = is_string($articleIds) ? array($articleIds) : $articleIds;
             $where = implode(',', $articleIds);
             //查询当前状态 放入回收站后 将当前状态写入上一个状态字段中
-            $curStauts = $this->db->query("SELECT `status` FROM `bd_articles` WHERE `id` IN(".$where.")");
+            $curStauts = $this->db->query("SELECT * FROM `bd_articles` WHERE `id` IN(".$where.")");
             $curStauts = $curStauts->result_array();
+            
             //构造批量更改 VALUES 字符串
             foreach ($articleIds as $key=>$id){
-                $values[] = '('.$id.',0,'.$curStauts[$key].')';
+                $values[] = '('.$id.',"'.$curStauts[$key]['title'].'","'.$curStauts[$key]['content'].'",'.$curStauts[$key]['share'].',"'.$curStauts[$key]['cate_cname'].'","'.$curStauts[$key]['author'].'",'.$curStauts[$key]['ctime'].','.$curStauts[$key]['top'].',"'.$curStauts[$key]['thumbPath'].'",0,'.$curStauts[$key]['status'].')';
             }
+            
             $values = implode(',', $values);
+            
             //使用REPLACE INTO进行批量更改文章状态
-            $delResult = $this->db->query("REPLACE INTO `bd_articles`(`id`,`status`,`prev_status`) VALUES ".$values);
-            
-            
-            //echo json_encode($res);
+            $delResult = $this->db->query("REPLACE INTO `bd_articles`(`id`,`title`,`content`,`share`,`cate_cname`,`author`,`ctime`,`top`,`thumbPath`,`status`,`prev_status`) VALUES ".$values);
+            echo json_encode($delResult);
         } else {
             exit(json_encode(array('code'=>-100,'msg'=>'非法访问')));
         }
@@ -239,11 +261,12 @@ class Content extends CI_Controller{
     }
     
     /**
-     * ajax方式批量审核通过文章
+     * ajax方式批量审核通过文章(不推荐使用 以后可能会废弃)
      */
     public function ajaxVerifyArticles(){
         if(isAjax()){
             $article_ids = $this->input->post('article_ids');
+            $article_ids = is_string($article_ids) ? array($article_ids) : $article_ids;
             $where = implode(',',$article_ids);
             $verifyResult = $this->db->query("UPDATE `tb_articles` SET `status`=2 WHERE `id` IN(".$where.")");
             if($verifyResult){
@@ -251,6 +274,26 @@ class Content extends CI_Controller{
             } else {
                 echo json_encode(array('code'=>0,'msg'=>'审核失败'));
             }
+        } else {
+            exit(json_encode(array('code'=>-100,'msg'=>'非法访问')));
+        }
+    }
+    
+    /**
+     * ajax方式还原文章
+     */
+    public function ajaxRestoreArticles(){
+        if(isAjax()){
+            $article_ids = $this->input->post('article_ids');
+            $article_ids = is_string($article_ids) ? array($article_ids) : $article_ids;
+            $where = implode(',',$article_ids);
+            $prevStatus = $this->db->query("SELECT `id`,`prev_status` FROM `bd_articles` WHERE `id` IN(".$where.")");
+            $prevStatus = $prevStatus->result_array();
+            foreach ($prevStatus as $value){
+                $sql .= " WHEN ".$value['id']." THEN ".$value['prev_status'];
+            }
+            $restoreResult = $this->db->query("UPDATE `bd_articles` SET `status`= CASE `id` ".$sql." END");
+            echo $restoreResult;
         } else {
             exit(json_encode(array('code'=>-100,'msg'=>'非法访问')));
         }
