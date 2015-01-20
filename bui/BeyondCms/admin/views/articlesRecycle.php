@@ -177,7 +177,7 @@
 			       		{title : '发表时间',dataIndex :'ctime', width:'20%',renderer:BUI.Grid.Format.datetimeRenderer},
 			       		{title : '操作',dataIndex :'top', width:'10%',
 				       		renderer:function(value,obj){
-						       	return '<a onClick="javascript:topArticle('+obj.id+',0,this)" href="javascript:void(0)">还原</a> <a href="javascript:destroyArticle('+obj.id+')">清空</a>';
+						       	return '<a onClick="javascript:restoreArticle('+obj.id+',0,this)" href="javascript:void(0)">还原</a> <a href="javascript:destroyArticle('+obj.id+')">清空</a>';
 					       	}
 			       		}];
 		var data = <?=$articles?>;

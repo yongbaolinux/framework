@@ -155,14 +155,25 @@
 								//利用boxClose的回调函数
 								box.boxClose(function(){
 									/*var tr = '<tr><td>'+res.data.id+'</td><td><a target="_blank" href="<?=base_url()?>index.php/index/article/'+res.data.id+'">'+res.data.title+'</a></td><td>'+res.data.module_name+'</td><td>'+res.data.module_type+'</td><td>'+res.data.author+'</td><td>'+res.data.postime+'</td><td><a href="javascript:void(0);" title="article_edit" onclick="article_edit(this,'+res.data.id+')"><img src="<?=base_url()?>admin_res/images/icons/pencil.png" alt="article_edit" /></a> <a href="javascript:void(0);" title="article_del" onclick="article_del(this,'+res.data.id+')" style="cursor:pointer;"><img src="<?=base_url()?>admin_res/images/icons/cross.png" alt="article_del" /></a></td></tr>';*/
-									box.alert('添加成功',function(){
+									/* box.alert('添加成功',function(){
 										window.location.reload();
-									},{});
-									
+									},{}); */
+									BUI.Message.Show({
+										msg : '添加成功',
+										icon : 'success',
+										buttons : [],
+									});	
 								});	
 							} else {
-								alert('添加失败');	
+								box.boxClose(function(){
+									BUI.Message.Show({
+										msg : '添加失败',
+										icon : 'success',
+										buttons : [],
+									});
+								});	
 							}
+							window.location.reload();
 						}
 					});
 				}
@@ -250,19 +261,19 @@
 							  'data':save_data,
 							  'dataType':'json',
 							  'success':function(result){
-								 if(result.code > 0){
-									/*box.boxClose(function(){
-										box.alert('修改成功',function(){
+								 if(result > 0){
+									box.boxClose(function(){
+										/* box.alert('修改成功',function(){
 											window.location.reload();
-											},{});							
-									});*/
-									window.location.reload();
-								 } else {
-									/*box.boxClose(function(){
-										alert('修改失败');
-									}); */
-									alert(result.msg);
+											},{});	 */
+										BUI.Message.Show({
+											msg : '保存成功',
+											icon : 'success',
+											buttons : [],
+										});				
+									});
 								 }
+								 window.location.reload();
 							  }
 						  });
 					  })

@@ -129,10 +129,22 @@ class Content extends CI_Controller{
             $cate_cname = $this->input->post('cate_cname');
             $thumb = $this->input->post('thumb');
             $id = $this->input->post('id');
-            //查找是否开启文章审核功能
-            $return = $this->db->query("SELECT `config_value` FROM `bd_articles` WHERE `config_key`='config_article_verify'");
-            $config_article_verify = $return[0]['config_value'];
             
+            //根据 受影响的行来判断更科学 因为如果没有作任何修改就不应该使其进入审核状态
+            //$updateResult = $this->db->query("UPDATE `bd_articles` SET `title`='".$title."',`content`='".$content."',`cate_cname`='".$cate_cname."',`thumbPath`='".$thumb."',`status`=".$status." WHERE `id`=".$id);
+            //echo $updateResult;
+            $this->db->query("UPDATE `bd_articles` SET `title`='".$title."',`content`='".$content."',`cate_cname`='".$cate_cname."',`thumbPath`='".$thumb."' WHERE `id`=".$id);
+            $affect_rows = $this->db->affected_rows();
+            if($affect_rows){
+                //查找是否开启文章审核功能
+                $resource = $this->db->query("SELECT `config_value` FROM `bd_config` WHERE `config_key`='config_article_verify'");
+                $config_article_verify = $resource->result_array();
+                $config_article_verify = $config_article_verify[0]['config_value'];
+                if($config_article_verify){
+                    $this->db->query("UPDATE `bd_articles` SET `status`= 1 WHERE `id`=".$id);
+                    echo $this->db->affected_rows();
+                }
+            }
         } else {
             exit(json_encode(array('code'=>-100,'msg'=>'非法访问')));
         }
@@ -176,7 +188,7 @@ class Content extends CI_Controller{
             
             //构造批量更改 VALUES 字符串
             foreach ($articleIds as $key=>$id){
-                $values[] = '('.$id.',"'.$curStauts[$key]['title'].'","'.$curStauts[$key]['content'].'",'.$curStauts[$key]['share'].',"'.$curStauts[$key]['cate_cname'].'","'.$curStauts[$key]['author'].'",'.$curStauts[$key]['ctime'].','.$curStauts[$key]['top'].',"'.$curStauts[$key]['thumbPath'].'",0,'.$curStauts[$key]['status'].')';
+                $values[] = '('.$id.',"'.$curStauts[$key]['title'].'","'.addslashes($curStauts[$key]['content']).'",'.$curStauts[$key]['share'].',"'.$curStauts[$key]['cate_cname'].'","'.$curStauts[$key]['author'].'",'.$curStauts[$key]['ctime'].','.$curStauts[$key]['top'].',"'.$curStauts[$key]['thumbPath'].'",0,'.$curStauts[$key]['status'].')';
             }
             
             $values = implode(',', $values);
@@ -289,10 +301,15 @@ class Content extends CI_Controller{
             $where = implode(',',$article_ids);
             $prevStatus = $this->db->query("SELECT `id`,`prev_status` FROM `bd_articles` WHERE `id` IN(".$where.")");
             $prevStatus = $prevStatus->result_array();
+            $sql = '';
+            $ids = array();
             foreach ($prevStatus as $value){
                 $sql .= " WHEN ".$value['id']." THEN ".$value['prev_status'];
+                $ids[] = $value['id'];
             }
-            $restoreResult = $this->db->query("UPDATE `bd_articles` SET `status`= CASE `id` ".$sql." END");
+            $ids = implode(',', $ids);
+            $sql = "UPDATE `bd_articles` SET `status`= CASE `id` ".$sql." END WHERE `id` IN(".$ids.")"; //加 where 子句才正常
+            $restoreResult = $this->db->query($sql);
             echo $restoreResult;
         } else {
             exit(json_encode(array('code'=>-100,'msg'=>'非法访问')));
