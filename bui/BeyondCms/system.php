@@ -200,6 +200,7 @@ if (defined('ENVIRONMENT'))
  *
  */
 require_once BASEPATH.'core/CodeIgniter.php';
-
+ @ini_get('short_open_tag', 'On');
+  
 /* End of file index.php */
 /* Location: ./index.php */

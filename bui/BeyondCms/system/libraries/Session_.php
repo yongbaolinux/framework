@@ -22,7 +22,7 @@ class CI_Session_{
      * 所以不需要手动调用该函数
      * 在应用程序中直接使用 getSession/setSession系列函数即可
      */
-    static public function startSession($sessid=''){
+    static public function startSession(){
         if(function_exists('session_status')){
             if(session_status() === self::PHP_SESSION_DISABLED || session_status() === self::PHP_SESSION_NONE){
                 session_start();

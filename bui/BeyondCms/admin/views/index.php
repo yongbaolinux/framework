@@ -17,7 +17,7 @@
         </a>
       </div>
 
-    <div class="dl-log">欢迎您，<span class="dl-log-user">**.**@alibaba-inc.com</span><a href="<?=base_url()?>system.php/admin/logout" title="退出系统" class="dl-log-quit">[退出]</a><a href="http://www.builive.com/" title="文档库" class="dl-log-quit">文档库</a>
+    <div class="dl-log">欢迎您，<span class="dl-log-user"><?=$adminName?></span><a href="<?=base_url()?>system.php/admin/logout" title="退出系统" class="dl-log-quit">[退出]</a><a href="http://www.builive.com/" title="文档库" class="dl-log-quit">文档库</a>
     </div>
   </div>
    <div class="content">
@@ -53,7 +53,7 @@
           },{
             id:'form',
             menu:[{
-                text:'文章管理',
+                text:'内部文章管理',
                 items:[
                   {id:'articlesCate',text:'文章分类',href:'<?=base_url()?>system.php/content/articlesCate'}, 
                   {id:'articlesList',text:'文章列表',href:'<?=base_url()?>system.php/content/articlesList'},
@@ -61,9 +61,9 @@
 				  {id:'articlesRecycle',text:'文章回收站',href:'<?=base_url()?>system.php/content/articlesRecycle'},
                 ]
               },{
-                text:'采集管理',
+                text:'外部数据管理',
                 items:[
-                {id:'collect',text:'采集管理',href:'<?=base_url()?>system.php/content/collect'},
+                {id:'collect',text:'导入文章',href:'<?=base_url()?>system.php/outerData/importArticles'},
             ]
         }]
           },{

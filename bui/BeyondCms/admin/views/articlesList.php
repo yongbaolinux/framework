@@ -29,6 +29,7 @@
 <!-- 引入上传插件uploadify -->
 <script type="text/javascript" src="<?=$PUBLIC?>/js/uploadify_flash/jquery.uploadify.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<?=$PUBLIC?>/js/uploadify_flash/uploadify.css" media="screen" />
+<!-- 引入BUI -->
 <script type="text/javascript" src="<?=$PUBLIC?>/js/bui-min.js"></script>
 <script type="text/javascript" src="<?=$PUBLIC?>/js/config-min.js"></script>
 <!-- Black Box -->

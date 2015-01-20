@@ -30,7 +30,8 @@ class Admin extends CI_Controller {
 
 	public function index(){
 		if($this->session_->getSession('admin.login')) {
-			$this->load->view('index', array('PUBLIC' => $this->admin_res));
+		    $adminName = $this->session_->getSession('admin.name');
+			$this->load->view('index', array('PUBLIC' => $this->admin_res,'adminName'=>$adminName));
 		} else {
 			redirect(base_url().'system.php/admin/login','location');
 		}
@@ -43,8 +44,8 @@ class Admin extends CI_Controller {
 		if($this->session_->getSession('admin.login')) {
 			redirect(base_url().'system.php','location');
 		} else {
-			//dump($this->session_->getSession('admin.login'));
-			$this->load->view('login',array('PUBLIC' => $this->admin_res));
+			$adminName = $this->session_->getSession('admin.name');
+			$this->load->view('login',array('PUBLIC' => $this->admin_res,'adminName'=>$adminName));
 		}
 	}
 
