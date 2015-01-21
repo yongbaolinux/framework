@@ -1,5 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * 内容控制器
+ * @author yongbaolinux@gmail.com
+ *
+ */
 class Content extends CI_Controller{
     public function __construct(){
         parent::__construct();

@@ -211,6 +211,22 @@ if(!function_exists('isAjax')){
  if(!function_exists('getArrayDimension')){
  	
  }
-//var_dump(checkBOM('C:\wamp\www\company\admin_s\controllers\api.php'));
+
+/**
+ * 获取一个文件夹下的所有文件的md5哈希值 (不包括文件夹)
+ * @param   string  文件夹路径
+ * @return  array   包含的所有文件的md5哈希值集合
+ */
+ if(!function_exists('getFilesHash')){
+     function getFilesHash($filePath){
+         $files = array();
+         foreach (glob($filePath.'/*') as $file){
+             $files[] = md5_file($file);
+         }
+         return $files;
+     }
+ }
+ 
+//var_dump(getFilesHash('C:\wamp\www\framework\data'));
 //echo (__FILE__.' '.__LINE__);
 ?>

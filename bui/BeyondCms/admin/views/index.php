@@ -47,9 +47,14 @@
           menu:[{
               text:'基础信息',
               items:[
-                {id:'env',text:'环境信息',href:'<?=base_url()?>system.php/info/env'},
+                {id:'env',text:'环境信息',href:'<?=base_url()?>system.php/info/envInfo'},
               ]
-            }]
+            },{
+			  text:'网站配置',
+			  items:[
+			  	{id:'config',text:'基础配置',href:'<?=base_url()?>system.php/config/baseConfig'}
+			  ]
+			}]
           },{
             id:'form',
             menu:[{
