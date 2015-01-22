@@ -7,4 +7,11 @@
 
 <body>
 </body>
+<script type="text/javascript" src="<?=$PUBLIC?>/js/jquery-1.8.1.min.js"></script>
+<!-- 引入BUI -->
+<script type="text/javascript" src="<?=$PUBLIC?>/js/bui-min.js"></script>
+<script type="text/javascript" src="<?=$PUBLIC?>/js/config-min.js"></script>
+<script type="text/javascript">
+
+</script>
 </html>
