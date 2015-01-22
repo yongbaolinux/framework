@@ -19,6 +19,8 @@
 
     <div class="dl-log">欢迎您，<span class="dl-log-user"><?=$adminName?></span><a href="<?=base_url()?>system.php/admin/logout" title="退出系统" class="dl-log-quit">[退出]</a><a href="http://www.builive.com/" title="文档库" class="dl-log-quit">文档库</a>
     </div>
+    
+    
   </div>
    <div class="content">
     <div class="dl-main-nav">
