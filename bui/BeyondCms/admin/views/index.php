@@ -54,7 +54,8 @@
             },{
 			  text:'网站配置',
 			  items:[
-			  	{id:'config',text:'基础配置',href:'<?=base_url()?>system.php/config/baseConfig'}
+			  	{id:'baseConfig',text:'基础配置',href:'<?=base_url()?>system.php/config/baseConfig'},
+			  	{id:'emailConfig',text:'邮件发送',href:'<?=base_url()?>system.php/config/emailConfig'}
 			  ]
 			}]
           },{
