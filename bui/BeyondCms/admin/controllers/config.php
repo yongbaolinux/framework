@@ -127,6 +127,29 @@ class config extends CI_Controller{
     }
     
     /**
+     * ajax方式添加分布式主机
+     */
+    public function ajaxAddHost(){
+        if(isAjax()){
+            $validator = array(
+                '主机ip'=>array('required'=>true),
+                '端口'=>array('required'=>true),
+            );
+            $host = $this->input->post('host');
+            $port = $this->input->post('port');
+            $this->validate(array($host,'主机ip'), $validator);
+            $this->validate(array($port,'端口'), $validator);
+            if($this->db->query("INSERT INTO `bd_distributed`(`host`,`port`) VALUES('".$host."','".$port."')")){
+                echo json_encode(array('code'=>1,'msg'=>'添加成功'));
+            } else {
+                echo json_encode(array('code'=>0,'msg'=>'添加失败'));
+            }
+        } else {
+            exit(json_encode(array('code'=>-1,'msg'=>'非法访问')));
+        }
+    }
+    
+    /**
      * 数据验证方法
      */
     private function validate($data,$validator){

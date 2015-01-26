@@ -175,7 +175,10 @@
 				icon : $icon,
 				buttons : [],
 			});
-			window.location.reload();
+			function reload_(){
+				window.location.reload();
+			}
+			setTimeout(reload_,2000);
 		}});
 		form.render();
 		$("#addHost").click(function(){

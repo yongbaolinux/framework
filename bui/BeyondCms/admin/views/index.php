@@ -28,7 +28,7 @@
       <ul id="J_Nav"  class="nav-list ks-clear">
         <li class="nav-item dl-selected"><div class="nav-item-inner nav-home">网站信息</div></li>
         <li class="nav-item"><div class="nav-item-inner nav-order">内容管理</div></li>
-        <li class="nav-item"><div class="nav-item-inner nav-inventory">搜索页</div></li>
+        <li class="nav-item"><div class="nav-item-inner nav-inventory">会员管理</div></li>
         <li class="nav-item"><div class="nav-item-inner nav-supplier">详情页</div></li>
         <li class="nav-item"><div class="nav-item-inner nav-marketing">图表</div></li>
       </ul>
@@ -44,7 +44,7 @@
   <script>
     BUI.use('common/main',function(){
       var config = [{
-          id:'menu',
+          id:'config',
           homePage : 'env',
           menu:[{
               text:'基础信息',
@@ -59,7 +59,7 @@
 			  ]
 			}]
           },{
-            id:'form',
+            id:'content',
             menu:[{
                 text:'内部文章管理',
                 items:[
@@ -75,9 +75,9 @@
             ]
         }]
           },{
-            id:'search',
+            id:'user',
             menu:[{
-                text:'搜索页面',
+                text:'系统管理员',
                 items:[
                   {id:'code',text:'搜索页面代码',href:'search/code.html'},
                   {id:'example',text:'搜索页面示例',href:'search/example.html'},
@@ -86,9 +86,9 @@
                   {id:'config',text:'搜索配置',href:'search/config.html'}
                 ]
               },{
-                text : '更多示例',
+                text : '注册用户',
                 items : [
-                  {id : 'tab',text : '使用tab过滤',href : 'search/tab.html'}
+                  {id : 'userList',text : '用户列表',href : '<?=base_url()?>system.php/user/userList'}
                 ]
               }]
           },{
