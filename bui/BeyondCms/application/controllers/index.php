@@ -35,7 +35,7 @@ class Index extends CI_Controller {
 	        $configs_[$config['config_key']] = $config['config_value'];
 	    }
 	    
-		$this->load->view('index',array('PUBLIC'=>$this->res));
+		$this->load->view('index',array('PUBLIC'=>$this->res,'CONFIGS'=>$configs_));
 	}
 }
 

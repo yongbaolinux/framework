@@ -27,17 +27,19 @@
 						<input type="text" name="configDesc" class="input-normal control-text">
 					</div>
 				</div>
-				<div class="control-group span12">
+				<div class="control-group span16">
 					<label class="control-label">配置项值：</label>
 					<div class="controls">
 						<input type="text" name="configValue" class="input-normal control-text" data-rules="{required : true}">
+					    <input type="file" id="configPic"/>
 					</div>
 				</div>
-				<div class="control-group span12">       
-                  <div class="form-actions span13 offset3">
-                    <button class="button button-primary" type="submit">添加</button>
-                    <button class="button" type="reset">重置</button>
-                  </div>
+				<div class="control-group span12">
+				    <label class="control-label">&nbsp;</label>
+                    <div class="controls">
+                        <button class="button button-primary" type="submit">添加</button>
+                        <!-- <button class="button" type="reset">重置</button> -->
+                    </div>
                 </div>
 			</div>
 		</form>
@@ -47,7 +49,32 @@
 <!-- 引入BUI -->
 <script type="text/javascript" src="<?=$PUBLIC?>/js/bui-min.js"></script>
 <script type="text/javascript" src="<?=$PUBLIC?>/js/config-min.js"></script>
+<!-- 引入上传插件uploadify -->
+<script type="text/javascript" src="<?=$PUBLIC?>/js/uploadify_flash/jquery.uploadify.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<?=$PUBLIC?>/js/uploadify_flash/uploadify.css" media="screen" />
 <script type="text/javascript">
+    //图片或文件上传
+    $("#configPic").uploadify({
+    	'multi':false,								//是否允许多文件上传
+    	'auto':true,								//是否允许自动上传
+    	'width':'60',								//上传控件宽度
+    	'height':'20',								//上传控件高度
+    	'fileTypeExts':'*.*',						//所允许上传文件的类型
+    	'fileSizeLimit':'6144KB',					//所允许上传文件的大小
+    	'buttonText':'上传',					        //控件外观文字
+    	'formData':{'time' : '<?php echo time();?>','token' : '<?php echo md5('I_love_you' . time());?>','session_id':'<?php echo session_id(); ?>','savePath':'articleThumbs'},				//POST提交给图片接口的数据
+    	'swf':'<?=$PUBLIC?>/js/uploadify_flash/uploadify.swf',	//swf地址
+    	'uploader':'imageUploaderApi',							//图片上传接口
+    	'onUploadSuccess':function(file,data,response){			//图片上传成功后的回调方法
+    		var data = $.parseJSON(data);
+    		$("#editThumb-queue").next().removeClass('error').addClass('success').html('上传成功');
+    		$("#editThumbImg").attr('src',data.msg);
+    		$("#saveThumbPath").val(data.msg);
+    	},
+ 	    'onInit': function () {                        //载入时触发，将flash设置到最小
+	    	$(".uploadify-queue").hide();
+        }
+    });
     var store;
 	//渲染配置列表数据
 	BUI.use(['bui/grid','bui/data'],function(Grid,Data){
@@ -158,6 +185,6 @@
 			addConfigDialog.show();
 		});
 	});
-
+    
 </script>
 </html>

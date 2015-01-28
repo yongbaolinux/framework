@@ -16,6 +16,10 @@ class config extends CI_Controller{
         }
     }
     
+    public function index(){
+        
+    }
+    
     /**
      * 基础配置
      */
