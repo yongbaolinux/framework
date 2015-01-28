@@ -9,7 +9,7 @@
 	<div class="container" id="wrap">
     	<div id="header">
           <div id="logo-tools">
-          	<a href="http://www.diskroom.com" id="logo"><img src="<?=$PUBLIC?>/images/logo.png"/><span id="name">XXX有限公司</span>
+          	<a href="/" id="logo"><img src="<?=$PUBLIC?>/images/logo.png"/><span id="name">XXX有限公司</span>
             </a>
             
             <ul id="tools">

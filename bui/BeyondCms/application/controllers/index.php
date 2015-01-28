@@ -27,6 +27,14 @@ class Index extends CI_Controller {
     
 	public function index()
 	{
+	    //读取网站配置项
+	    $configs = $this->db->query("SELECT * FROM `bd_config`")->result_array();
+	    $configs_ = array();
+	    //按要求重新组装配置项
+	    foreach ($configs as $k=>$config){
+	        $configs_[$config['config_key']] = $config['config_value'];
+	    }
+	    
 		$this->load->view('index',array('PUBLIC'=>$this->res));
 	}
 }
