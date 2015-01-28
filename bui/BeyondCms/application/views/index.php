@@ -9,12 +9,12 @@
 	<div class="container" id="wrap">
     	<div id="header">
           <div id="logo-tools">
-          	<a href="/" id="logo"><img src="<?=$CONFIGS['config_logo']?>"/><span id="name">XXX有限公司</span>
+          	<a href="/" id="logo"><img width="145" height="50" src="<?=$CONFIGS['config_logo']?>"/><span id="name"><?=$CONFIGS['config_company_name']?></span>
             </a>
             
             <ul id="tools">
             	<li><a href="javascript:void(0);">WAP站</a> | <a href="javascript:void(0);">英文版</a> | <a href="javascript:void(0);">加为收藏</a></li>
-                <li>QQ : 304513573</li>
+                <li>QQ : <?=$CONFIGS['config_qq']?></li>
             </ul>
           </div>
           <!-- 导航菜单 -->
@@ -50,10 +50,10 @@
             	<h3>联系我们</h3>
                 <div id="us">
                 	<ul>
-                    	<li>企业QQ : 400-xxxxx</li>
-                        <li>固话 ： 0731-xxxxxx</li>
-                        <li>传真 ： 0731-xxxxxx</li>
-                        <li>地址 ： 湖南省长沙市岳麓区xx村xx号</li>
+                    	<li>企业QQ : <?=$CONFIGS['config_company_qq']?></li>
+                        <li>固话 : <?=$CONFIGS['config_company_phone']?></li>
+                        <li>传真 : <?=$CONFIGS['config_company_fax']?></li>
+                        <li>地址 : <?=$CONFIGS['config_company_address']?></li>
                     </ul>
                 </div>
             </div>

@@ -28,7 +28,7 @@
 					</div>
 				</div>
 				<div class="control-group span16">
-					<label class="control-label">配置项值：</label>
+					<label class="control-label">配置项值(或路径)：</label>
 					<div class="controls">
 						<input type="text" name="configValue" class="input-normal control-text" data-rules="{required : true}">
 					    <input type="file" id="configPic"/>
@@ -64,15 +64,19 @@
     	'buttonText':'上传',					        //控件外观文字
     	'formData':{'time' : '<?php echo time();?>','token' : '<?php echo md5('I_love_you' . time());?>','session_id':'<?php echo session_id(); ?>','savePath':'articleThumbs'},				//POST提交给图片接口的数据
     	'swf':'<?=$PUBLIC?>/js/uploadify_flash/uploadify.swf',	//swf地址
-    	'uploader':'imageUploaderApi',							//图片上传接口
+    	'uploader':'<?=base_url()?>/system.php/api/imageUploaderApi',							//图片上传接口
     	'onUploadSuccess':function(file,data,response){			//图片上传成功后的回调方法
     		var data = $.parseJSON(data);
-    		$("#editThumb-queue").next().removeClass('error').addClass('success').html('上传成功');
-    		$("#editThumbImg").attr('src',data.msg);
-    		$("#saveThumbPath").val(data.msg);
+    		//$("#editThumb-queue").next().removeClass('error').addClass('success').html('上传成功');
+    		//$("#editThumbImg").attr('src',data.msg);
+    		$("input[name='configValue']").val(data.msg);
+    		
     	},
- 	    'onInit': function () {                        //载入时触发，将flash设置到最小
+ 	    'onInit':function(){                        
 	    	$(".uploadify-queue").hide();
+        },
+        'onUploadError':function(event,queueId,fileObj,errorObj){
+            alert(errorObj);
         }
     });
     var store;
