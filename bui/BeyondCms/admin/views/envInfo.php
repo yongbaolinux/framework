@@ -780,12 +780,5 @@
 </div>
 </div>
 </div>
-<script type="text/javascript" src="<?=$PUBLIC?>/js/jquery-1.8.1.min.js"></script>
-<script type="text/javascript" src="<?=$PUBLIC?>/js/bui-min.js"></script>
-<script type="text/javascript" src="<?=$PUBLIC?>/js/config-min.js"></script>
-<script type="text/javascript">
-    BUI.use('common/page');
-</script>
-
 <body>
 </html>

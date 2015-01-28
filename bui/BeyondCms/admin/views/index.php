@@ -17,7 +17,7 @@
         </a>
       </div>
 
-    <div class="dl-log">欢迎您，<span class="dl-log-user"><?=$adminName?></span><a href="<?=base_url()?>system.php/admin/logout" title="退出系统" class="dl-log-quit">[退出]</a><a href="http://www.builive.com/" title="文档库" class="dl-log-quit">文档库</a>
+    <div class="dl-log">欢迎您，<span class="dl-log-user"><?=$adminName?></span><a href="<?=base_url()?>system.php/admin/logout" title="退出系统" class="dl-log-quit">[退出]</a><a href="http://www.builive.com/" title="文档库" class="dl-log-quit">文档库</a><a href="<?=base_url()?>" title="访问前台" class="dl-log-quit" target="_blank">访问前台</a>
     </div>
     
     
@@ -40,7 +40,6 @@
   <script type="text/javascript" src="<?=$PUBLIC?>/js/jquery-1.8.1.min.js"></script>
   <script type="text/javascript" src="<?=$PUBLIC?>/js/bui.js"></script>
   <script type="text/javascript" src="<?=$PUBLIC?>/js/config.js"></script>
-
   <script>
     BUI.use('common/main',function(){
       var config = [{
