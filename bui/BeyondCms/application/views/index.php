@@ -43,7 +43,7 @@
                 	<div class="left" id="pic-company">
                     	<img src="<?=$PUBLIC?>/images/images/pic-company_03.png"/>
                     </div>
-                    <p>公司简介公司简介公司简介公司简介简公司简介公司简介公司简介公司简介公司简介简公司简介公司简介公司简介公司简介公司简介简公司简介公司简介公司简介公司简介公司简介简公司简介公司简介公司简介公司简介公司简介简公司简介公司简介公司简介公司简介公司简介简公司简介公司简介公司简介公司简介公司简介简公司简介公司简介公司简介公司简介公司简介简公司简介公司简介公司简介公司简介公司简介简公司简介。。。<a href="#">全部简介 ></a></p>
+                    <p><?=mb_substr($CONFIGS['config_company_info'],0,100)?><a href="#">全部简介 ></a></p>
                 </div>
             </div>
             <div id="contact" class="right">
