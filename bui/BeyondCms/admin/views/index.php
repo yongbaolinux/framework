@@ -71,8 +71,13 @@
                 text:'外部数据管理',
                 items:[
                 {id:'collect',text:'导入文章',href:'<?=base_url()?>system.php/outerData/importArticles'},
-            ]
-        }]
+                ]
+              },{
+          	    text:'分类管理',
+            	  items:[
+                    {id:'catesList',text:'分类列表',href:'<?=base_url()?>system.php/cate/catesList'},
+                ]
+              }]
           },{
             id:'user',
             menu:[{
